@@ -1,0 +1,27 @@
+{
+  "name": "proy",
+  "version": "1.0.0",
+  "description": "un proyecto de pruebas",
+  "main": "bin/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergioooAGS/pruebas-ts.git"
+  },
+  "author": "Sergio Garcia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergioooAGS/pruebas-ts/issues"
+  },
+  "homepage": "https://github.com/SergioooAGS/pruebas-ts#readme",
+  "dependencies": {
+    "@types/d3": "^7.4.3"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
