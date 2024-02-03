@@ -13,4 +13,5 @@ var Miagencia1;
     }
     Miagencia1.carros1 = carros1;
 })(Miagencia1 || (exports.Miagencia1 = Miagencia1 = {}));
+//poo con la 5
 //# sourceMappingURL=prueba5-2.js.map
