@@ -99,3 +99,8 @@ addButton.on("click", () => {
   createCircle(200, 200);
   console.log("botooonadd   ")
 });
+
+//Pruebas de aqui en adelante svg
+
+
+
