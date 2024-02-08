@@ -4,12 +4,11 @@ exports.TiendaMov = void 0;
 var TiendaMov;
 (function (TiendaMov) {
     class Celulares {
-        constructor(Marca, Stock) {
+        constructor(Marca) {
             this.Marca = Marca;
-            this.Stock = Stock;
         }
         VerTelefonos() {
-            console.log(`${this.Marca}, Piezas restantes: ${this.Stock}`);
+            console.log(`${this.Marca} "Apple" `);
         }
     }
     TiendaMov.Celulares = Celulares;
