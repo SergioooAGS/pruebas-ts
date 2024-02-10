@@ -10,6 +10,7 @@
         "outDir": "bin/js",
         "declaration": false,
         "moduleResolution": "node",
-        "experimentalDecorators": false
+        "experimentalDecorators": false,
+        "allowSyntheticDefaultImports": false 
     }
  }

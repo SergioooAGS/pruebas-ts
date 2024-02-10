@@ -1,4 +1,3 @@
-import { TiendaMov } from "./prueba6-2"
 namespace TiendaMov2 {
     export class Celulares2 {
         private instanciaCel: TiendaMov.Celulares;
