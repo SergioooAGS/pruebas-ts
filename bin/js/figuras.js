@@ -2,6 +2,7 @@ var AppHolaMundo;
 (function (AppHolaMundo) {
     class P1 {
         constructor() {
+            this.circles = [];
             const body = d3.select("body");
             var menu = body.append('svg') //bote trash-id
                 .attr('id', 'miSVG2')

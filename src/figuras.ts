@@ -2,6 +2,7 @@ namespace AppHolaMundo {
     export class P1 {
         svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
+        circles: d3.Selection<SVGCircleElement, any, any, any>[] = [];
         _p2: P2;
         
         constructor() {
@@ -24,8 +25,6 @@ namespace AppHolaMundo {
                 .style('position', 'fixed') 
                 .style('top', '28px') 
                 .style('left', '20px'); 
-                
-
 
                 //se crea un btn y se le añade la propiedad para que este imprima el circulo
             
