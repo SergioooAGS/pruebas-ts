@@ -2,16 +2,20 @@ namespace AppHolaMundo {
     export class P1 {
         svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
+        svgtop: d3.Selection<SVGElement, any,any,any>;
+        svgRight: d3.Selection<SVGElement, any,any,any>;
+
         circles: d3.Selection<SVGCircleElement, any, any, any>[] = [];
         _p2: P2;
         
         constructor() {
             const body = d3.select("body");
+            
 
             var menu = body.append('svg')   //bote trash-id
                 .attr('id', 'miSVG2')
                 .attr('width', '100')
-                .attr('height', '900')
+                .attr('height', '911')
                 .style('background-color', "grey")
                 .style('position', "absolute")
                 .style('left', "0px")
@@ -38,7 +42,7 @@ namespace AppHolaMundo {
 
             this.svgHeader = body.append('svg')   //bote trash-id
                 .attr('id', 'svgHeader')
-                .attr('width', '800')
+                .attr('width', '1800')
                 .attr('height', '100')
                 .style('background-color', "grey")
                 .style('position', "absolute")
@@ -49,12 +53,32 @@ namespace AppHolaMundo {
 
             this.svgContenedor = body.append('svg')   //bote trash-id
                 .attr("id", "svgContenedor")
-                .attr('width', '800')
-                .attr('height', '800')
+                .attr('width', '1800')
+                .attr('height', '811')
                 .style('background-color', "black")
                 .style('position', "absolute")
                 .style('left', "100px")
                 .style('top', "100px");
+            
+            this.svgtop = body.append('svg')
+                .attr("id", "Svgbottom")
+                .attr('width', '1912')
+                .attr('height', '100')
+                .style('background-color', "grey")
+                .style('position', "absolute")
+                .style('bottom', "100px")
+                .style('top', "811");
+
+
+            this.svgRight = body.append('svg')
+                .attr("id", "SvgRight")
+                .attr('width', '100')
+                .attr('height', '811')
+                .style('background-color', "grey")
+                .style('position', "absolute")
+                .style('top', "0px")
+                .style('right', "0px");
+
 
             this._p2 = new P2();
         }

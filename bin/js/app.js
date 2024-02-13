@@ -6,6 +6,8 @@ var AppHolaMundo;
             this.offsetX = 0;
             this.offsetY = 0;
             this.svgContenedor = d3.select("#svgContenedor");
+            this.svgtop = d3.select("#Svgbottom");
+            this.svgRight = d3.select("#SvgRight");
         }
         createCircle() {
             const cx = 100;
@@ -25,8 +27,8 @@ var AppHolaMundo;
                 this.offsetY = event.y - +newCircle.attr("cy") || 1000;
             };
             const dragging = (event) => {
-                const newX = Math.max(0, Math.min(event.x - this.offsetX, 1500));
-                const newY = Math.max(0, Math.min(event.y - this.offsetY, 1500));
+                const newX = Math.max(0, Math.min(event.x - this.offsetX, 1700));
+                const newY = Math.max(0, Math.min(event.y - this.offsetY, 700));
                 newCircle.attr("cx", newX).attr("cy", newY);
             };
             const dragEnd = (event) => {
@@ -44,7 +46,7 @@ var AppHolaMundo;
                     newCircle.transition()
                         .duration(500)
                         .attr("r", 0)
-                        .attr("fill", "red")
+                        .attr("fill", "white")
                         .remove();
                     console.log("se ha eliminado");
                 }
