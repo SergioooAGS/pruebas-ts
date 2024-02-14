@@ -1,24 +1,75 @@
 namespace AppHolaMundo {
-    export class P2 {
+    export class P1 {
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
-        svgtop: d3.Selection<SVGElement, any,any,any>;
         circles: d3.Selection<SVGCircleElement, any, any, any>[] = [];
-        svgRight: d3.Selection<SVGElement, any,any,any>;
         newColor: d3.Selection<SVGAElement, any , any, any>;
+        btnA: d3.Selection<Element, any,any,any>
+        svgHeader: d3.Selection<SVGElement, any, any, any>;
         offsetX = 0;
         offsetY = 0;
         
-
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
-            this.svgtop = d3.select("#Svgbottom");
-            this.svgRight = d3.select("#SvgRight")
+            this.btnA = d3.select("#BtnAd");
+            const body = d3.select("body");
+
+        //contenedor left
+            var menu = body.append('svg')
+                .attr('id', 'miSVG2')
+                .attr('width', '100')
+                .attr('height', '911')
+                .style('background-color', "grey")
+                .style('position', "absolute")
+                .style('left', "0px")
+                .style('top', "0px");
+            
+                this.svgHeader = body.append('svg')   //bote trash-id
+                .attr('id', 'svgHeader')
+                .attr('width', '1800')
+                .attr('height', '100')
+                .style('background-color', "Grey")
+                .style('position', "absolute")
+                .style('left', "100px")
+                .style('top', "0px");
+ 
+            this.svgContenedor = body.append('svg')   //bote trash-id
+            .attr("id", "svgContenedor")
+            .attr('width', '1800')
+            .attr('height', '811')
+            .style('background-color', "black")
+            .style('position', "absolute")
+            .style('left', "100px")
+            .style('top', "100px");
+
+
+
+        //contenedor top
+
+            this.svgContenedor.append("image")
+                .attr('href', 'images/traash.svg')
+                .attr('width', '100')
+                .attr('height', '100')
+                .style('position', 'absolute') 
+                .style('top', '170px') 
+                .style('right', '120px'); 
+
+
+            var boton = body.append('button').text('add circle')
+                .attr('width', '50px')
+                .attr('height', '50px')
+                .style('position', 'absolute') 
+                .style('top', '120px') 
+                .style('left', '200px')
+                boton.on('click', () => {
+                this.createCircle();
+                console.log("se ha creado un circulo")
+            });
 
         }
     
         public createCircle() {
-            const cx = 100;
-            const cy = 100;
+            const cx = 300;
+            const cy = 300;
             const colors = d3.interpolate("Green", "Red");
             const newColor = colors(Math.random());
             const newCircle = this.svgContenedor.append("circle")
@@ -26,9 +77,9 @@ namespace AppHolaMundo {
                 .attr("cy", cy)
                 .attr("r", 50)
                 .attr("cursor", "grab")
-                .attr("fill", newColor);
+                .attr("fill", newColor)
+                .attr("overflow", "visible");
             
-                console.log("Se ha creao un circulo");
 
             this.circles.push(newCircle);
 
@@ -70,8 +121,11 @@ namespace AppHolaMundo {
             newCircle.call(d3.drag()
                 .on("start", dragStart)
                 .on("drag", dragging)
-                .on("end", dragEnd)
-            );
+                .on("end", dragEnd));
+
+           
         }
     }
+    //var _app = new AppHolaMundo.P1();
+    
 }
