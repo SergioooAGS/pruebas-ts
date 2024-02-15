@@ -1,13 +1,11 @@
 namespace AppHolaMundo {
     export class P1 {
-        svgContenedor: d3.Selection<SVGElement, any, any, any>;
         svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgleft: d3.Selection<SVGElement, any, any, any>;
         _figuras: P2;
         _clientes: P3;
         
         constructor() {
-            this.svgContenedor = d3.select("#svgContenedor");
             this.svgleft = d3.select("#svgLeft")
             const body = d3.select("body");
 

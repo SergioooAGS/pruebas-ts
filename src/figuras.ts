@@ -2,15 +2,15 @@ namespace AppHolaMundo {
     export class P2 {
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
         circles: d3.Selection<SVGCircleElement, any, any, any>[] = [];
-        newColor: d3.Selection<SVGAElement, any , any, any>;
+        newColor: d3.Selection<SVGAElement, any, any, any>;
         offsetX = 0;
         offsetY = 0;
         _figuras: P2;
-        
+
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
             const body = d3.select("body");
-            
+
             this.svgContenedor = body.append('svg')
                 .attr("id", "svgContenedor")
                 .style('display', 'block')
@@ -47,9 +47,9 @@ namespace AppHolaMundo {
                 .attr('y', '50px')
                 .attr('x', '175px')
                 .attr('fill', 'white')
-                .text('Add Circle');  
+                .text('Add Circle');
         }
-        
+
         public createCircle() {
             const cx = 300;
             const cy = 300;
@@ -61,8 +61,8 @@ namespace AppHolaMundo {
                 .attr("r", 50)
                 .attr("cursor", "grab")
                 .attr("fill", newColor);
-                
-            
+
+
 
             this.circles.push(newCircle);
 
@@ -98,14 +98,14 @@ namespace AppHolaMundo {
                         .attr("r", 0)
                         .attr("fill", "red")
                         .remove()
-                        console.log("se ha eliminado");
+                    console.log("se ha eliminado");
                 }
             }
             newCircle.call(d3.drag()
                 .on("start", dragStart)
                 .on("drag", dragging)
                 .on("end", dragEnd));
-            
+
         }
     }
 }

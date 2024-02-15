@@ -2,7 +2,6 @@ var AppHolaMundo;
 (function (AppHolaMundo) {
     class P1 {
         constructor() {
-            this.svgContenedor = d3.select("#svgContenedor");
             this.svgleft = d3.select("#svgLeft");
             const body = d3.select("body");
             this.svgleft = body.append('svg')
