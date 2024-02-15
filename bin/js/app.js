@@ -13,73 +13,54 @@ var AppHolaMundo;
                 .style('position', "absolute")
                 .style('left', "0px")
                 .style('bottom', "0px");
-            var g1 = this.svgleft.append("g")
-                .attr('transform', 'translate(0, 0)')
-                .style('fill', 'Black')
-                .style('position', 'absolute')
-                .style('top', '100px')
-                .style('right', '40px');
+            var g1 = this.svgleft.append("g");
             g1.append("rect")
-                .attr('width', '100px')
-                .attr('height', '30px')
-                .style('cursor', 'pointer');
+                .style('x', '0')
+                .style('y', '0')
+                .style('rx', '20')
+                .style('ry', '20')
+                .style('fill', 'black')
+                .style('position', 'absolute')
+                .style('width', '100px') //tamaños de el rec
+                .style('height', '30px')
+                .style('cursor', 'value');
             g1.append("text")
-                .attr('y', '17px')
-                .attr('x', '20px')
+                .attr('y', '20px')
+                .attr('x', '25px')
                 .attr('fill', 'white')
                 .text('Figuras');
             g1.on('click', () => {
+                this._figuras = new AppHolaMundo.P2;
+                console.log("Figuras");
+            });
+            var g2 = this.svgleft.append("g");
+            g2.append("rect")
+                .style('x', '0')
+                .style('y', '40')
+                .style('rx', '20')
+                .style('ry', '20')
+                .style('fill', 'black')
+                .style('position', 'absolute')
+                .style('width', '100px') //size rec
+                .style('height', '30px')
+                .style('cursor', 'pointer');
+            g2.append("text")
+                .attr('y', '60px')
+                .attr('x', '20px')
+                .attr('fill', 'white')
+                .text('Ejemplo 2');
+            g2.on('click', () => {
+                //this._clientes = new AppHolaMundo.P3;
+                console.log("Ejemplo");
             });
             this.svgHeader = body.append('svg')
                 .attr('id', 'svgHeader')
-                .attr('width', '1800')
-                .attr('height', '100')
+                .attr('width', '1950px')
+                .attr('height', '100px')
                 .style('background-color', "Grey")
                 .style('position', "absolute")
                 .style('left', "0px")
                 .style('top', "0px");
-            this.svgContenedor = body.append('svg')
-                .attr("id", "svgContenedor")
-                .attr('width', '1800')
-                .attr('height', '811')
-                .style('background-color', "black")
-                .style('position', "absolute")
-                .style('left', "100px")
-                .style('top', "100px");
-            this.svgContenedor.append("image")
-                .attr('href', 'images/traash.svg')
-                .attr('width', '100')
-                .attr('height', '100')
-                .style('position', 'absolute')
-                .style('top', '170px')
-                .style('right', '120px');
-            this.svgContenedor.append('rect')
-                .style('width', '50px')
-                .style('height', '30px')
-                .style('fill', 'white');
-            var g = this.svgContenedor.append("g")
-                .style('y', '15px')
-                .style('width', '120px')
-                .style('height', '230px')
-                .style('fill', 'red')
-                .style('position', 'static')
-                .style('bottom', '300px')
-                .style('right', '40px');
-            g.append("rect")
-                .attr('width', '100px')
-                .attr('height', '30px')
-                .style('cursor', 'pointer');
-            g.append("text")
-                .attr('y', '15px')
-                .attr('y', '17px')
-                .attr('x', '15px')
-                .attr('fill', 'white')
-                .text('Add Circle');
-            g.on('click', () => {
-                this._figuras.createCircle();
-                console.log('klik');
-            });
-            this._figuras = new AppHolaMundo.P2;
         }
     }
     AppHolaMundo.P1 = P1;

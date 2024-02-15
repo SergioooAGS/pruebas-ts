@@ -5,13 +5,49 @@ namespace AppHolaMundo {
         newColor: d3.Selection<SVGAElement, any , any, any>;
         offsetX = 0;
         offsetY = 0;
-        _figuras: P1;
+        _figuras: P2;
         
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
             const body = d3.select("body");
+            
+            this.svgContenedor = body.append('svg')
+                .attr("id", "svgContenedor")
+                .style('display', 'block')
+                .attr('width', '1800')
+                .attr('height', '795')
+                .style('background-color', "white")
+                .style('position', "absolute")
+                .style('left', "100px")
+                .style('top', "100px");
 
-           
+
+            this.svgContenedor.append("image")
+                .attr('href', 'images/traash.svg')
+                .attr('width', '100')
+                .attr('height', '100');
+
+
+            var g = this.svgContenedor.append("g")
+            g.append("rect")
+                .style('x', '150')
+                .style('y', '30')
+                .style('rx', '20')
+                .style('ry', '20')
+                .style('fill', 'red')
+                .style('position', 'absolute')
+                .style('width', '120px')//tamaños de el rec
+                .style('height', '40px')
+                .style('cursor', 'pointer')
+                .on('click', () => {
+                    this.createCircle();
+                });
+
+            g.append("text")
+                .attr('y', '50px')
+                .attr('x', '175px')
+                .attr('fill', 'white')
+                .text('Add Circle');  
         }
         
         public createCircle() {
@@ -25,7 +61,7 @@ namespace AppHolaMundo {
                 .attr("r", 50)
                 .attr("cursor", "grab")
                 .attr("fill", newColor);
-                //.attr("overflow", "visible");
+                
             
 
             this.circles.push(newCircle);
@@ -58,9 +94,9 @@ namespace AppHolaMundo {
                     circleY <= imageY + imageHeight
                 ) {
                     newCircle.transition()
-                        .duration(500)
+                        .duration(1000)
                         .attr("r", 0)
-                        .attr("fill", "white")
+                        .attr("fill", "red")
                         .remove()
                         console.log("se ha eliminado");
                 }
