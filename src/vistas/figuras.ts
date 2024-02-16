@@ -28,7 +28,10 @@ namespace AppHolaMundo {
                 .attr('height', '100');
 
 
-            var g = this.svgContenedor.append("g")
+            var g = this.svgContenedor.append("g");
+                g.on('click', () => {
+                this.createCircle();
+            });
             g.append("rect")
                 .style('x', '150')
                 .style('y', '30')
@@ -39,12 +42,10 @@ namespace AppHolaMundo {
                 .style('width', '120px')//tamaños de el rec
                 .style('height', '40px')
                 .style('cursor', 'pointer')
-                .on('click', () => {
-                    this.createCircle();
-                });
+                .style('pointer-events', 'auto')
 
             g.append("text")
-                .attr('y', '50px')
+                .attr('y', '55px')
                 .attr('x', '175px')
                 .attr('fill', 'white')
                 .text('Add Circle');
