@@ -12,6 +12,7 @@ var AppHolaMundo;
                 .style('display', 'block')
                 .attr('width', '1800')
                 .attr('height', '795')
+                .style('overflow', 'visible')
                 .style('background-color', "white")
                 .style('position', "absolute")
                 .style('left', "100px")
@@ -34,7 +35,7 @@ var AppHolaMundo;
                 .style('width', '120px') //tamaños de el rec
                 .style('height', '40px')
                 .style('cursor', 'pointer')
-                .style('pointer-events', 'auto');
+                .style('pointer-events', 'none');
             g.append("text")
                 .attr('y', '55px')
                 .attr('x', '175px')
@@ -65,6 +66,7 @@ var AppHolaMundo;
             const dragEnd = (event) => {
                 const circleX = +newCircle.attr("cx") || 0;
                 const circleY = +newCircle.attr("cy") || 0;
+                event + dragEnd;
                 const image = d3.select("image");
                 const imageX = +image.attr("x") || 0;
                 const imageY = +image.attr("y") || 0;

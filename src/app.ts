@@ -12,12 +12,33 @@ namespace AppHolaMundo {
 
             this.svgleft = body.append('svg')
                 .attr('id', 'miSVG2')
-                .attr('width', '100px')
+                .attr('width', '300px')
                 .attr('height', '795px')
                 .style('background-color', "grey")
                 .style('position', "absolute")
                 .style('left', "0px")
-                .style('bottom', "0px");
+                .style('bottom', "0px")
+                
+                .attr('transform', 'translate(-200, 0)')
+                .attr('id', 'svgleft');
+
+            
+            this.svgleft.append("image")
+                .attr('href', 'images/arrow.svg')
+                .attr('width', '100')
+                .attr('height', '100')
+                .attr('y', '20px')
+                .attr('x', '205px')
+                .on('click', () => {
+                const lateralActual = d3.select('#svgleft');
+
+                const isVisible = lateralActual.attr('transform') === 'translate(0, 0)';
+
+                lateralActual.transition()
+                    .duration(1000)
+                    .attr('transform', isVisible ? 'translate(-200, 0)' : 'translate(0, 0)'); 
+                            });
+
 
             var g1 = this.svgleft.append("g");
             g1.on('click', () => {
@@ -25,7 +46,7 @@ namespace AppHolaMundo {
             });
 
             g1.append("rect")
-                .style('x', '0')
+                .style('x', '50px')
                 .style('y', '0')
                 .style('rx', '20')
                 .style('ry', '20')
@@ -36,14 +57,14 @@ namespace AppHolaMundo {
                 .style('cursor', 'pointer')
                 .style('pointer-events', 'auto');
 
-            g1.append("text")
+            g1.append("text") //titulo
                 .attr('y', '20px')
-                .attr('x', '25px')
+                .attr('x', '80px')
                 .attr('fill', 'white')
-                .text('Figuras');
+                .text('Drag');
 
 
-            var g2 = this.svgleft.append("g")
+            var g2 = this.svgleft.append("g");
             g2.on('click', () => {
                 this._clientes = new AppHolaMundo.P3();
                 console.log("Ejemplo")
@@ -75,15 +96,13 @@ namespace AppHolaMundo {
                 .style('left', "0px")
                 .style('top', "0px")
                 .style('font-size', '50px')
+                .style('border','10px')
+                .style('color','black')
                 .append("text")
                 .attr('y', '65px')
                 .attr('x', '800px')
                 .attr('fill', 'White')
-                
-                .text('F I G U R A S');
-
-            
-                
-        }
+                .text('T I T U L O');   
     }
+  }
 }
