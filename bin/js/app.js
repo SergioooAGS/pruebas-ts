@@ -2,6 +2,7 @@ var AppHolaMundo;
 (function (AppHolaMundo) {
     class P1 {
         constructor() {
+            this.svgContenedor = d3.select("#svgContenedor");
             this.svgleft = d3.select("#svgLeft");
             this.svgHeader = d3.select("#header");
             const body = d3.select("body");
@@ -22,14 +23,15 @@ var AppHolaMundo;
                 .attr('y', '20px')
                 .attr('x', '205px')
                 .on('click', () => {
-                const lateralActual = d3.select('#svgleft');
-                const isVisible = lateralActual.attr('transform') === 'translate(0, 0)';
-                lateralActual.transition()
+                this.svgleft.transition()
+                    //this.svgContenedor.transition()
                     .duration(1000)
-                    .attr('transform', isVisible ? 'translate(-200, 0)' : 'translate(0, 0)');
+                    .attr('transform', !this._menu ? 'translate(200, 0)' : 'translate(0, 0)')
+                    .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(-200, 0)');
+                this._menu = true;
             });
             var g1 = this.svgleft.append("g");
-            g1.on('click', () => {
+            g1.on("click", () => {
                 this._figuras = new AppHolaMundo.P2();
             });
             g1.append("rect")
@@ -84,6 +86,17 @@ var AppHolaMundo;
                 .attr('x', '800px')
                 .attr('fill', 'White')
                 .text('T I T U L O');
+            this.svgContenedor = body.append('svg')
+                .attr("id", "svgContenedor")
+                .style('display', 'block')
+                .attr('width', '1800')
+                .attr('height', '795')
+                .style('background-color', "black")
+                .style('position', "absolute")
+                .style('left', "100px")
+                .style('top', "100px")
+                .attr('transform', 'translate(200, 0)')
+                .attr('id', 'svgContenedor');
         }
     }
     AppHolaMundo.P1 = P1;
