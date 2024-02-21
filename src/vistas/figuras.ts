@@ -4,6 +4,7 @@ namespace AppHolaMundo {
         circles: d3.Selection<SVGCircleElement, any, any, any>[] = [];
         newColor: d3.Selection<SVGAElement, any, any, any>;
         svgleft: d3.Selection<SVGElement, any, any, any>;
+        
         newCircle: d3.Selection<SVGCircleElement, any, any, any>;
         offsetX = 0;
         offsetY = 0;
@@ -11,11 +12,13 @@ namespace AppHolaMundo {
         
 
         constructor() {
+            this.svgContenedor = d3.select("#svgContenedor");
+            this.newCircle = d3.select("#newCircle");
+           
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
                 .attr('height', '100');
-
 
             var g = this.svgContenedor.append("g");
             g.on('click', () => {
@@ -50,11 +53,13 @@ namespace AppHolaMundo {
                 .attr("cy", cy)
                 .attr("r", 50)
                 .attr("cursor", "grab")
+                .on("start", this.dragStart)
+                .on("drag", this.dragging)
+                .on("end", this.dragEnd)
                 .attr("fill", newColor);
-            this.circles.push(newCircle);
+           this.circles.push(newCircle);
         }
 
-        
         public dragStart = (event: any) => {
             this.offsetX = event.x - +this.newCircle.attr("cx") || 1000;
             this.offsetY = event.y - +this.newCircle.attr("cy") || 1000;
@@ -88,16 +93,11 @@ namespace AppHolaMundo {
                     .attr("fill", "red")
                     .remove()
                 console.log("se ha eliminado");
-            }
-            
+            }  
+           
         }
-    //    this.newCircle.call(d3.drag()
-    //     .on("start", .dragStart)
-    //     .on("drag", .dragging)
-    //     .on("end", .dragEnd));
-
     }
-    
+   
 }
 var _app = new AppHolaMundo.P1();
 

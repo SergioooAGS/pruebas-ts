@@ -2,7 +2,8 @@ var AppHolaMundo;
 (function (AppHolaMundo) {
     class P1 {
         constructor() {
-            this.svgContenedor = d3.select("#svgContenedor");
+            this._menu = false;
+            this.svgContenedor = d3.select("#svgContenedor"); ////
             this.svgleft = d3.select("#svgLeft");
             this.svgHeader = d3.select("#header");
             const body = d3.select("body");
@@ -13,7 +14,7 @@ var AppHolaMundo;
                 .style('background-color', "grey")
                 .style('position', "absolute")
                 .style('left', "0px")
-                .style('bottom', "0px")
+                .style('top', "100px")
                 .attr('transform', 'translate(-200, 0)')
                 .attr('id', 'svgleft');
             this.svgleft.append("image")
@@ -24,14 +25,16 @@ var AppHolaMundo;
                 .attr('x', '205px')
                 .on('click', () => {
                 this.svgleft.transition()
-                    //this.svgContenedor.transition()
                     .duration(1000)
-                    .attr('transform', !this._menu ? 'translate(200, 0)' : 'translate(0, 0)')
-                    .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(-200, 0)');
-                this._menu = true;
+                    .attr('transform', !this._menu ? 'translate(-200, 0)' : 'translate(0, 0)');
+                this.svgContenedor.transition()
+                    .duration(1000)
+                    .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(200, 0)');
+                this._menu = !this._menu;
             });
             var g1 = this.svgleft.append("g");
             g1.on("click", () => {
+                //debugger
                 this._figuras = new AppHolaMundo.P2();
             });
             g1.append("rect")
@@ -56,7 +59,7 @@ var AppHolaMundo;
                 console.log("Ejemplo");
             });
             g2.append("rect")
-                .style('x', '0')
+                .style('x', '50px')
                 .style('y', '40')
                 .style('rx', '20')
                 .style('ry', '20')
@@ -67,7 +70,7 @@ var AppHolaMundo;
                 .style('cursor', 'auto');
             g2.append("text")
                 .attr('y', '60px')
-                .attr('x', '20px')
+                .attr('x', '70px')
                 .attr('fill', 'white')
                 .text('Ejemplo 2');
             this.svgHeader = body.append('svg')
@@ -94,11 +97,8 @@ var AppHolaMundo;
                 .style('background-color', "black")
                 .style('position', "absolute")
                 .style('left', "100px")
-                .style('top', "100px")
-                .attr('transform', 'translate(200, 0)')
-                .attr('id', 'svgContenedor');
+                .style('top', "100px");
         }
     }
     AppHolaMundo.P1 = P1;
 })(AppHolaMundo || (AppHolaMundo = {}));
-//# sourceMappingURL=app.js.map

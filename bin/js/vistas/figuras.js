@@ -35,6 +35,8 @@ var AppHolaMundo;
                     console.log("se ha eliminado");
                 }
             };
+            this.svgContenedor = d3.select("#svgContenedor");
+            this.newCircle = d3.select("#newCircle");
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
@@ -70,6 +72,9 @@ var AppHolaMundo;
                 .attr("cy", cy)
                 .attr("r", 50)
                 .attr("cursor", "grab")
+                .on("start", this.dragStart)
+                .on("drag", this.dragging)
+                .on("end", this.dragEnd)
                 .attr("fill", newColor);
             this.circles.push(newCircle);
         }
@@ -77,4 +82,3 @@ var AppHolaMundo;
     AppHolaMundo.P2 = P2;
 })(AppHolaMundo || (AppHolaMundo = {}));
 var _app = new AppHolaMundo.P1();
-//# sourceMappingURL=figuras.js.map

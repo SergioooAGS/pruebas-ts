@@ -7,4 +7,3 @@ var AppHolaMundo;
     AppHolaMundo.P3 = P3;
     var _app = new AppHolaMundo.P1();
 })(AppHolaMundo || (AppHolaMundo = {}));
-//# sourceMappingURL=clientes.js.map
