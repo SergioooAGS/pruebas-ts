@@ -25,14 +25,16 @@ namespace AppHolaMundo {
                 .attr('transform', 'translate(-200, 0)')
                 .attr('id', 'svgleft');
 
-
             this.svgleft.append("image")
                 .attr('href', 'images/arrow.svg')
                 .attr('width', '100')
                 .attr('height', '100')
                 .attr('y', '20px')
                 .attr('x', '205px')
+                .attr("transform", "rotate(15)")
+                .attr("transform-origin", "100px, 100px")                
                 .on('click', () => {
+                    
                     this.svgleft.transition()
                         .duration(1000) 
                         .attr('transform', !this._menu ? 'translate(-200, 0)' : 'translate(0, 0)');
@@ -58,7 +60,7 @@ namespace AppHolaMundo {
                 .style('width', '100px')//tamaños de el rec
                 .style('height', '30px')
                 .style('cursor', 'pointer')
-                .style('pointer-events', 'auto');
+                .style('pointer-events', 'none');
 
             g1.append("text") //titulo
                 .attr('y', '20px')
@@ -92,7 +94,7 @@ namespace AppHolaMundo {
 
             this.svgHeader = body.append('svg')
                 .attr('id', 'svgHeader')
-                .attr('width', '1950px')
+                .attr('width', '1900px')
                 .attr('height', '100px')
                 .style('background-color', "Grey")
                 .style('position', "absolute")

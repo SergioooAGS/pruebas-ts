@@ -23,6 +23,8 @@ var AppHolaMundo;
                 .attr('height', '100')
                 .attr('y', '20px')
                 .attr('x', '205px')
+                .attr("transform", "rotate(15)")
+                .attr("transform-origin", "100px, 100px")
                 .on('click', () => {
                 this.svgleft.transition()
                     .duration(1000)
@@ -47,7 +49,7 @@ var AppHolaMundo;
                 .style('width', '100px') //tamaños de el rec
                 .style('height', '30px')
                 .style('cursor', 'pointer')
-                .style('pointer-events', 'auto');
+                .style('pointer-events', 'none');
             g1.append("text") //titulo
                 .attr('y', '20px')
                 .attr('x', '80px')
@@ -75,7 +77,7 @@ var AppHolaMundo;
                 .text('Ejemplo 2');
             this.svgHeader = body.append('svg')
                 .attr('id', 'svgHeader')
-                .attr('width', '1950px')
+                .attr('width', '1900px')
                 .attr('height', '100px')
                 .style('background-color', "Grey")
                 .style('position', "absolute")
