@@ -26,12 +26,12 @@ namespace AppHolaMundo {
                 .attr('id', 'svgleft');
 
             this.svgleft.append("image")
-                .attr('href', 'images/arrow.svg')
-                .attr('width', '100')
-                .attr('height', '100')
+                .attr('href', 'images/icono_flecha_derecha.svg')
+                .attr('width', '50px')
+                .attr('height', '50px')
                 .attr('y', '20px')
-                .attr('x', '205px')
-                .attr("transform", "rotate(15)")
+                .attr('x', '220px')
+                .attr("transform","rotate(180 245 40)")
                 .attr("transform-origin", "100px, 100px")                
                 .on('click', () => {
                     
