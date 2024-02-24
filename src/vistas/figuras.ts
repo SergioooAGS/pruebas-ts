@@ -9,13 +9,15 @@ namespace AppHolaMundo {
         offsetY = 0;
         _figuras: P2;
         
+        
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
             this.newCircle = d3.select("#newCircle");   
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
-                .attr('height', '100');
+                .attr('height', '100')
+                debugger;
 
             var g = this.svgContenedor.append("g");
             g.on('click', () => {
@@ -89,12 +91,13 @@ namespace AppHolaMundo {
                 circleY <= imageY + imageHeight
             ) {
                 this.newCircle.transition()
+                
                     .duration(1000)
                     .attr("r", 5)
                     .attr("fill", "red")
-                    .remove()
-                console.log("se ha eliminado");
+                    .remove();
             }  
+            
         }
     }
 }

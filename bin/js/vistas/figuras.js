@@ -11,6 +11,7 @@ var AppHolaMundo;
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
                 .attr('height', '100');
+            debugger;
             var g = this.svgContenedor.append("g");
             g.on('click', () => {
                 this.createCircle();
@@ -77,7 +78,6 @@ var AppHolaMundo;
                     .attr("r", 5)
                     .attr("fill", "red")
                     .remove();
-                console.log("se ha eliminado");
             }
         }
     }

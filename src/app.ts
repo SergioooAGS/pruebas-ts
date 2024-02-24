@@ -5,15 +5,13 @@ namespace AppHolaMundo {
         svgleft: d3.Selection<SVGElement, any, any, any>;
         _figuras: P2;
         _clientes: P3;
+        _img: d3.Selection<SVGImageElement, any, any, any>;
         _menu: boolean;
 
         constructor() {
             this._menu = false;
-            this.svgContenedor = d3.select("#svgContenedor");////
-            this.svgleft = d3.select("#svgLeft")
-            this.svgHeader = d3.select("#header")
             const body = d3.select("body");
-
+            
             this.svgleft = body.append('svg')
                 .attr('id', 'miSVG2')
                 .attr('width', '300px')
@@ -25,24 +23,32 @@ namespace AppHolaMundo {
                 .attr('transform', 'translate(-200, 0)')
                 .attr('id', 'svgleft');
 
-            this.svgleft.append("image")
+            this._img = this.svgleft.append("image")
                 .attr('href', 'images/icono_flecha_derecha.svg')
                 .attr('width', '50px')
                 .attr('height', '50px')
-                .attr('y', '20px')
+                .attr('y', '15px')
                 .attr('x', '220px')
-                .attr("transform","rotate(180 245 40)")
-                .attr("transform-origin", "100px, 100px")                
+                
                 .on('click', () => {
-                    
+                    this._menu = !this._menu;
                     this.svgleft.transition()
-                        .duration(1000) 
-                        .attr('transform', !this._menu ? 'translate(-200, 0)' : 'translate(0, 0)');
+                        .duration(900) 
+                        .attr("transform", !this._menu ? "translate(-200, 0)" : "translate(0, 0)")
+                        .on('end', () =>{
+                                    if (this._menu){
+                                            this._img
+                                            .attr("transform","rotate(180 245 40)");
+                                    }else{
+                                            this._img
+                                            .attr("transform","rotate(0 0 0)");
+                                        }
+                          });                
                     this.svgContenedor.transition()
-                        .duration(1000)
+                        .duration(900)
                         .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(200, 0)');
-                        this._menu = !this._menu;
-                });
+                        console.log(this.svgleft)
+                    });
 
             var g1 = this.svgleft.append("g");
             g1.on("click", () => {
@@ -57,7 +63,7 @@ namespace AppHolaMundo {
                 .style('ry', '20')
                 .style('fill', 'black')
                 .style('position', 'absolute')
-                .style('width', '100px')//tamaños de el rec
+                .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer')
                 .style('pointer-events', 'none');
@@ -118,7 +124,6 @@ namespace AppHolaMundo {
                 .style('position', "absolute")
                 .style('left', "100px")
                 .style('top', "100px");
-                
+            }
         }
     }
-}
