@@ -36,7 +36,7 @@ namespace AppHolaMundo {
                         .duration(900) 
                         .attr("transform", !this._menu ? "translate(-200, 0)" : "translate(0, 0)")
                         .on('end', () =>{
-                                    if (this._menu){
+                                    if (this._menu){ 
                                             this._img
                                             .attr("transform","rotate(180 245 40)");
                                     }else{

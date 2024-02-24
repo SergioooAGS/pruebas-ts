@@ -11,7 +11,6 @@ var AppHolaMundo;
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
                 .attr('height', '100');
-            debugger;
             var g = this.svgContenedor.append("g");
             g.on('click', () => {
                 this.createCircle();
@@ -63,7 +62,6 @@ var AppHolaMundo;
         dragEnd(event) {
             const circleX = +this.newCircle.attr("cx") || 0;
             const circleY = +this.newCircle.attr("cy") || 0;
-            event + this.dragEnd;
             const image = d3.select("image");
             const imageX = +image.attr("x") || 0;
             const imageY = +image.attr("y") || 0;
