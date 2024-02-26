@@ -50,9 +50,8 @@ namespace AppHolaMundo {
                         console.log(this.svgleft)
                     });
 
-            var g1 = this.svgleft.append("g");
-            g1.on("click", () => {
-                //debugger
+            var g1 = this.svgleft.append("g")
+            .on("click", () => {
                 this._figuras = new AppHolaMundo.P2();
             });
 
@@ -75,8 +74,8 @@ namespace AppHolaMundo {
                 .text('Drag');
 
 
-            var g2 = this.svgleft.append("g");
-            g2.on('click', () => {
+            var g2 = this.svgleft.append("g")
+            .on('click', () => {
                 this._clientes = new AppHolaMundo.P3();
                 console.log("Ejemplo")
             });
@@ -88,7 +87,7 @@ namespace AppHolaMundo {
                 .style('ry', '20')
                 .style('fill', 'black')
                 .style('position', 'absolute')
-                .style('width', '100px')//size rec
+                .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'auto');
 

@@ -40,9 +40,8 @@ var AppHolaMundo;
                     .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(200, 0)');
                 console.log(this.svgleft);
             });
-            var g1 = this.svgleft.append("g");
-            g1.on("click", () => {
-                //debugger
+            var g1 = this.svgleft.append("g")
+                .on("click", () => {
                 this._figuras = new AppHolaMundo.P2();
             });
             g1.append("rect")
@@ -61,8 +60,8 @@ var AppHolaMundo;
                 .attr('x', '80px')
                 .attr('fill', 'white')
                 .text('Drag');
-            var g2 = this.svgleft.append("g");
-            g2.on('click', () => {
+            var g2 = this.svgleft.append("g")
+                .on('click', () => {
                 this._clientes = new AppHolaMundo.P3();
                 console.log("Ejemplo");
             });
@@ -73,7 +72,7 @@ var AppHolaMundo;
                 .style('ry', '20')
                 .style('fill', 'black')
                 .style('position', 'absolute')
-                .style('width', '100px') //size rec
+                .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'auto');
             g2.append("text")
