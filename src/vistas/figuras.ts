@@ -71,10 +71,9 @@ namespace AppHolaMundo {
             const newX = Math.max(50, Math.min(event.x - this.offsetX, 1700));
             const newY = Math.max(50, Math.min(event.y - this.offsetY, 700));
             this.newCircle.attr("cx", newX).attr("cy", newY);
-            console.log("sillego");
         }
     
-        public dragEnd(event: any) {
+        public dragEnd() {
             const circleX = +this.newCircle.attr("cx") || 0;
             const circleY = +this.newCircle.attr("cy") || 0; 
             const image = d3.select("image");
@@ -89,13 +88,11 @@ namespace AppHolaMundo {
                 circleY >= imageY &&
                 circleY <= imageY + imageHeight
             ) {
-                this.circles.transition()
+                this.newCircle.transition()
                     .duration(500)
                     .attr("r", 0)
                     .attr("fill", "red")
                     .remove();
-                    console.log("notebas")
-                    
             }
 
         }   

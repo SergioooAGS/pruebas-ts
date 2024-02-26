@@ -38,7 +38,6 @@ var AppHolaMundo;
                 this.svgContenedor.transition()
                     .duration(900)
                     .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(200, 0)');
-                console.log(this.svgleft);
             });
             var g1 = this.svgleft.append("g")
                 .on("click", () => {
