@@ -20,6 +20,7 @@ var AppHolaMundo;
                 .attr('height', '50px')
                 .attr('y', '15px')
                 .attr('x', '220px')
+                .style('cursor', 'pointer')
                 .on('click', () => {
                 this._menu = !this._menu;
                 this.svgleft.transition()
@@ -52,12 +53,12 @@ var AppHolaMundo;
                 .style('position', 'absolute')
                 .style('width', '100px')
                 .style('height', '30px')
-                .style('cursor', 'pointer')
-                .style('pointer-events', 'none');
+                .style('cursor', 'pointer');
             g1.append("text") //titulo
                 .attr('y', '20px')
                 .attr('x', '80px')
                 .attr('fill', 'white')
+                .style('pointer-events', 'none')
                 .text('Drag');
             var g2 = this.svgleft.append("g")
                 .on('click', () => {
@@ -73,11 +74,12 @@ var AppHolaMundo;
                 .style('position', 'absolute')
                 .style('width', '100px')
                 .style('height', '30px')
-                .style('cursor', 'auto');
+                .style('cursor', 'pointer');
             g2.append("text")
                 .attr('y', '60px')
                 .attr('x', '70px')
                 .attr('fill', 'white')
+                .style('pointer-events', 'none')
                 .text('Ejemplo 2');
             this.svgHeader = body.append('svg')
                 .attr('id', 'svgHeader')

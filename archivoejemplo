@@ -1,18 +1,23 @@
-var AppHolaMundo;
-(function (AppHolaMundo) {
-    class P2 {
+namespace AppHolaMundo {
+    export class P2 {
+        svgContenedor: d3.Selection<SVGElement, any, any, any>;
+        circles: d3.Selection<SVGCircleElement, any, any, any>;
+        newColor: d3.Selection<SVGAElement, any, any, any>;
+        svgleft: d3.Selection<SVGElement, any, any, any>;
+        newCircle: d3.Selection<SVGCircleElement, any, any, any>;
+        offsetX = 0;
+        offsetY = 0;
+        _figuras: P2;
+        
         constructor() {
-            this.offsetX = 0;
-            this.offsetY = 0;
-            this.idCircle = 0;
             this.svgContenedor = d3.select("#svgContenedor");
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
-                .attr('height', '100')
-                .style('cursor', 'pointer');
+                .attr('height', '100');
+
             var g = this.svgContenedor.append("g")
-                .on('click', () => {
+            .on('click', () => {
                 this.createCircle();
             });
             g.append("rect")
@@ -25,78 +30,70 @@ var AppHolaMundo;
                 .style('width', '120px')
                 .style('height', '40px')
                 .style('cursor', 'pointer');
+
             g.append("text")
                 .attr('y', '55px')
                 .attr('x', '175px')
                 .attr('fill', 'white')
                 .style('pointer-events', 'none')
                 .text('Add Circle');
-            console.log("si se creo");
         }
-        createCircle() {
+
+        public createCircle() {
             const cx = 500;
             const cy = 300;
-            const colors = d3.interpolate("blue", "red");
+            const colors = d3.interpolate("blue", "Red");
             const newColor = colors(Math.random());
-            const idfig = ++this.idCircle;
-            const circleMap = new Map();
-            circleMap.set(1, { cx: 50, cy: 50 });
-            const circles = this.svgContenedor.selectAll('circle')
-                .data(Array.from(circleMap));
-            const circleArray = Array.from(circleMap.entries());
-            for (const [key, value] of circleArray) {
-                console.log(`Clave: ${key}, Valor: { cx: ${value.cx}, cy: ${value.cy} }`);
-            }
-            circles.exit()
-                .transition()
-                .duration(500)
-                .attr("r", 0)
-                .attr("fill", "red")
-                .remove();
-            const newCircles = circles.enter()
-                .append('circle')
-                .attr("id", "figure_" + idfig)
-                .attr("cursor", "grab")
-                .call(d3.drag()
-                .on("start", this.dragStart.bind(this))
-                .on("drag", this.dragging.bind(this))
-                .on("end", this.dragEnd.bind(this)));
-            circles.merge(newCircles)
+            this.newCircle = this.svgContenedor.append("circle")
                 .attr("cx", cx)
                 .attr("cy", cy)
-                .attr("r", 50)
+                .attr("r", 50 )
+                .attr("cursor", "grab")
                 .attr("fill", newColor)
-                .attr("cursor", "grab");
+                // .call(d3.drag()
+                //     .on("start", this.dragStart.bind(this)) 
+                //     .on("drag", this.dragging.bind(this))   
+                //     .on("end", this.dragEnd.bind(this))     
+                //);
+            this.newCircle.attr("cx", cx).attr("cy", cy);
+            this.circles = this.newCircle;
         }
-        dragStart(event) {
+        
+        public dragStart(event: any) {
             this.offsetX = event.x - +this.newCircle.attr("cx") || 0;
             this.offsetY = event.y - +this.newCircle.attr("cy") || 0;
         }
-        dragging(event) {
+        
+        public dragging(event: any) {
             const newX = Math.max(50, Math.min(event.x - this.offsetX, 1700));
             const newY = Math.max(50, Math.min(event.y - this.offsetY, 700));
             this.newCircle.attr("cx", newX).attr("cy", newY);
         }
-        dragEnd(event) {
+    
+        public dragEnd() {
             const circleX = +this.newCircle.attr("cx") || 0;
-            const circleY = +this.newCircle.attr("cy") || 0;
+            const circleY = +this.newCircle.attr("cy") || 0; 
             const image = d3.select("image");
             const imageX = +image.attr("x") || 0;
             const imageY = +image.attr("y") || 0;
             const imageWidth = +image.attr("width") || 0;
             const imageHeight = +image.attr("height") || 0;
-            if (circleX >= imageX &&
+
+            if (
+                circleX >= imageX &&
                 circleX <= imageX + imageWidth &&
                 circleY >= imageY &&
-                circleY <= imageY + imageHeight) {
+                circleY <= imageY + imageHeight
+            ) {
                 this.newCircle.transition()
                     .duration(500)
                     .attr("r", 0)
                     .attr("fill", "red")
                     .remove();
             }
-        }
+
+        }   
     }
-    AppHolaMundo.P2 = P2;
-})(AppHolaMundo || (AppHolaMundo = {}));
-var _app = new AppHolaMundo.P1();
+}
+//var _app = new AppHolaMundo.P1();
+
