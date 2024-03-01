@@ -1,26 +1,41 @@
+
+
 namespace AppHolaMundo {
+    export interface CirculoDt {
+        id: number;
+        color: string;
+    }
+
     export class P2 {
-        svgContenedor: d3.Selection<SVGElement, any, any, any>;
-        circles: d3.Selection<SVGCircleElement, any, any, any>;
-        newColor: d3.Selection<SVGAElement, any, any, any>;
+        svgContenedor: d3.Selection<SVGSVGElement, any, any, any>;
         newCircle: d3.Selection<SVGCircleElement, any, any, any>;
         offsetX = 0;
         offsetY = 0;
-        _figuras: P2;
-        idCircle = 0;
+        circulos: CirculoDt[] = [];
         
+        
+
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
+            this.newCircle = this.svgContenedor.append("circle")
+                // .attr("fill", "blue")
+                // .attr("r", 10)
+                .call(d3.drag()
+                    .on("start", (event) => this.dragStart(event))
+                    .on("drag", (event) => this.dragging(event))
+                    .on("end", () => this.dragEnd())
+                );
+
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
-                .attr('height', '100')
-                .style('cursor', 'pointer');
+                .attr('height', '100');
 
             var g = this.svgContenedor.append("g")
-            .on('click', () => {
-                this.createCircle();
-            });
+                .on('click', () => {
+                    this.createCircle();
+                });
+
             g.append("rect")
                 .style('x', '150')
                 .style('y', '30')
@@ -38,89 +53,92 @@ namespace AppHolaMundo {
                 .attr('fill', 'white')
                 .style('pointer-events', 'none')
                 .text('Add Circle');
-                console.log("si se creo");
+                
+
+
+
+                const mapaSi = new Map();
+                mapaSi.set('01', {nombre: 'circulo', color: "red"});
+                mapaSi.set('02', {nombre: 'Limon', color: "green"});
+                mapaSi.set('03', {nombre: 'Estambre', color: "blue"});
+                mapaSi.set('04', {nombre: 'Luna', color: "yellow"});
+                mapaSi.set('05', {nombre: 'Queso', color: "white"});
+
+                console.log(mapaSi.get("03"))
+                console.log(mapaSi.get("02"))
         }
 
-        public createCircle() {
+        
+        mapacircle(data: CirculoDt[]) {
+            const svg = this.svgContenedor;
             const cx = 500;
             const cy = 300;
-            const colors = d3.interpolate("blue", "red");
-            const newColor = colors(Math.random());
-            const idfig = ++this.idCircle;
+            const circles = svg.selectAll("circle")
 
-            const circleMap = new Map<number, { cx: number, cy: number }>();
-            circleMap.set(1, { cx: 50, cy: 50 });
-            
-            
-        
-            const circles = this.svgContenedor.selectAll('circle')
-                .data(Array.from(circleMap)); 
-                const circleArray = Array.from(circleMap.entries());
-
-                for (const [key, value] of circleArray) {
-                    console.log(`Clave: ${key}, Valor: { cx: ${value.cx}, cy: ${value.cy} }`);
-                }
-            
-            circles.exit()
-                .transition()
-                .duration(500)
-                .attr("r", 0)
-                .attr("fill", "red")
-                .remove();
-        
-            const newCircles = circles.enter()
-                .append('circle')
-                .attr("id", "figure_" +idfig)
-                .attr("cursor", "grab")
-                .call(d3.drag()
-                    .on("start", this.dragStart.bind(this))
-                    .on("drag", this.dragging.bind(this))
-                    .on("end", this.dragEnd.bind(this))
-                );
-        
-            circles.merge(newCircles)
+                .data(data, d => 2)
+                .join(
+             enter => enter.append("circle")
+                .attr("fill", d => d.color)
+                .attr("r", 50)
                 .attr("cx", cx)
                 .attr("cy", cy)
-                .attr("r", 50) 
-                .attr("fill", newColor)
-                .attr("cursor", "grab");
+                .attr("cursor", "grab"),
+
+            update => update
+            ,
+
+             exit => {
+                 return exit.remove();
+             }
+        
+                );
+    }
+
+        createCircle() {
+            const nuevoCirculo = {
+                id: Math.random(),
+                color: "red"
+            };
+
+            this.circulos.push(nuevoCirculo);
+            this.mapacircle(this.circulos);
         }
 
-                public dragStart(event: any) {
-                    this.offsetX = event.x - +this.newCircle.attr("cx") || 0;
-                    this.offsetY = event.y - +this.newCircle.attr("cy") || 0;
-                }
-                
-                public dragging(event: any) {
-                    const newX = Math.max(50, Math.min(event.x - this.offsetX, 1700));
-                    const newY = Math.max(50, Math.min(event.y - this.offsetY, 700));
-                    this.newCircle.attr("cx", newX).attr("cy", newY);
-                }
-            
-                public dragEnd(event: any) {
-                    const circleX = +this.newCircle.attr("cx") || 0;
-                    const circleY = +this.newCircle.attr("cy") || 0; 
-                    const image = d3.select("image");
-                    const imageX = +image.attr("x") || 0;
-                    const imageY = +image.attr("y") || 0;
-                    const imageWidth = +image.attr("width") || 0;
-                    
-                    const imageHeight = +image.attr("height") || 0;
-                    if (
-                        circleX >= imageX &&
-                        circleX <= imageX + imageWidth &&
-                        circleY >= imageY &&
-                        circleY <= imageY + imageHeight
-                    ) {
-                        this.newCircle.transition()
-                            .duration(500)
-                            .attr("r", 0)
-                            .attr("fill", "red")
-                            .remove();
-                      }
-       }
-    }
- }
-var _app = new AppHolaMundo.P1();
+        dragStart(event: any) {
+            this.offsetX = event.x - +this.newCircle.attr("cx") || 0;
+            this.offsetY = event.y - +this.newCircle.attr("cy") || 0;
+        }
 
+        dragging(event: any) {
+            const newX = Math.max(50, Math.min(event.x - this.offsetX, 1700));
+            const newY = Math.max(50, Math.min(event.y - this.offsetY, 700));
+            this.newCircle.attr("cx", newX).attr("cy", newY);
+        }
+
+        dragEnd() {
+            const circleX = +this.newCircle.attr("cx") || 0;
+            const circleY = +this.newCircle.attr("cy") || 0;
+            const image = d3.select("image");
+                        const imageX = +image.attr("x") || 0;
+                        const imageY = +image.attr("y") || 0;
+                        const imageWidth = +image.attr("width") || 0;
+                        
+                        const imageHeight = +image.attr("height") || 0;
+                        if (
+                            circleX >= imageX &&
+                            circleX <= imageX + imageWidth &&
+                            circleY >= imageY &&
+                            circleY <= imageY + imageHeight
+                        ) {
+                            this.newCircle.transition()
+                                .duration(500)
+                                .attr("r", 0)
+                                .attr("fill", "red")
+                                .remove();
+                          }
+        }
+}
+
+}
+const app = new AppHolaMundo.P2();
 

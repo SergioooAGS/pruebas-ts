@@ -42,7 +42,7 @@ var AppHolaMundo;
             });
             var g1 = this.svgleft.append("g")
                 .on("click", () => {
-                this._figuras = new AppHolaMundo.P2();
+                this._figuras = new AppHolaMundo.P1();
             });
             g1.append("rect")
                 .style('x', '50px')
@@ -110,3 +110,4 @@ var AppHolaMundo;
     }
     AppHolaMundo.P1 = P1;
 })(AppHolaMundo || (AppHolaMundo = {}));
+var _app = new AppHolaMundo.P1();
