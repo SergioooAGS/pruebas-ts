@@ -1,31 +1,31 @@
-
-
 namespace AppHolaMundo {
     export interface CirculoDt {
         id: number;
         color: string;
+        
+    }
+
+    export interface Circulo {
+        id: number;
+        color: string;
+        
     }
 
     export class P2 {
         svgContenedor: d3.Selection<SVGSVGElement, any, any, any>;
         newCircle: d3.Selection<SVGCircleElement, any, any, any>;
+        newColor: d3.Selection<SVGAElement, any, any, any>;
         offsetX = 0;
         offsetY = 0;
         circulos: CirculoDt[] = [];
+       mapa: Map<number, Circulo >;
+        idCircle = 0;
         
         
 
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
-            this.newCircle = this.svgContenedor.append("circle")
-                // .attr("fill", "blue")
-                // .attr("r", 10)
-                .call(d3.drag()
-                    .on("start", (event) => this.dragStart(event))
-                    .on("drag", (event) => this.dragging(event))
-                    .on("end", () => this.dragEnd())
-                );
-
+            this.mapa = new Map();
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
@@ -57,54 +57,58 @@ namespace AppHolaMundo {
 
 
 
-                const mapaSi = new Map();
-                mapaSi.set('01', {nombre: 'circulo', color: "red"});
-                mapaSi.set('02', {nombre: 'Limon', color: "green"});
-                mapaSi.set('03', {nombre: 'Estambre', color: "blue"});
-                mapaSi.set('04', {nombre: 'Luna', color: "yellow"});
-                mapaSi.set('05', {nombre: 'Queso', color: "white"});
-
-                console.log(mapaSi.get("03"))
-                console.log(mapaSi.get("02"))
-        }
-
         
-        mapacircle(data: CirculoDt[]) {
+        }
+                                               
+        mapacircle(data: CirculoDt[]) 
+        {
+            let aaa: String= "sero";
+            var mapaa: Array<Circulo>= Array.from(this.mapa.values());
             const svg = this.svgContenedor;
+            const colors = d3.interpolate("blue", "Red");
+            const newColor = colors(Math.random());
             const cx = 500;
             const cy = 300;
             const circles = svg.selectAll("circle")
-
-                .data(data, d => 2)
+                .data(mapaa, d => 1)
                 .join(
              enter => enter.append("circle")
-                .attr("fill", d => d.color)
+                .attr("id", d => "circle" + d.id)
+                .attr("fill", newColor)
                 .attr("r", 50)
                 .attr("cx", cx)
                 .attr("cy", cy)
-                .attr("cursor", "grab"),
+                .attr("cursor", "grab")
 
+                .call(d3.drag()
+                .on("start", this.dragStart.bind(this)) 
+                .on("drag", this.dragging.bind(this))   
+                .on("end", this.dragEnd.bind(this))),
+//recuerda agregar el mouseout
+//stroke 
             update => update
+                .style('fill', 'blue')
             ,
 
-             exit => {
-                 return exit.remove();
-             }
-        
-                );
+             exit => exit 
+                .style('fill', 'red')
+                  .remove()
+             );           
     }
 
         createCircle() {
             const nuevoCirculo = {
-                id: Math.random(),
+                id: this.idCircle,
                 color: "red"
             };
-
+     this.mapa.set(nuevoCirculo.id,nuevoCirculo);
             this.circulos.push(nuevoCirculo);
             this.mapacircle(this.circulos);
+            this.idCircle++;
         }
 
         dragStart(event: any) {
+            this.newCircle = d3.select("circle");
             this.offsetX = event.x - +this.newCircle.attr("cx") || 0;
             this.offsetY = event.y - +this.newCircle.attr("cy") || 0;
         }
