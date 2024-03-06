@@ -92,6 +92,7 @@ var AppHolaMundo;
                 .style('font-size', '50px')
                 .style('border', '10px')
                 .style('color', 'black')
+                .style('pointer-events', 'none')
                 .append("text")
                 .attr('y', '65px')
                 .attr('x', '800px')
