@@ -11,7 +11,7 @@ namespace AppHolaMundo {
         constructor() {
             this._menu = false;
             const body = d3.select("body");
-            
+
             this.svgleft = body.append('svg')
                 .attr('id', 'miSVG2')
                 .attr('width', '300px')
@@ -33,26 +33,26 @@ namespace AppHolaMundo {
                 .on('click', () => {
                     this._menu = !this._menu;
                     this.svgleft.transition()
-                        .duration(900) 
+                        .duration(900)
                         .attr("transform", !this._menu ? "translate(-200, 0)" : "translate(0, 0)")
-                        .on('end', () =>{
-                                    if (this._menu){ 
-                                            this._img
-                                            .attr("transform","rotate(180 245 40)");
-                                    }else{
-                                            this._img
-                                            .attr("transform","rotate(0 0 0)");
-                                        }
-                          });                
+                        .on('end', () => {
+                            if (this._menu) {
+                                this._img
+                                    .attr("transform", "rotate(180 245 40)");
+                            } else {
+                                this._img
+                                    .attr("transform", "rotate(0 0 0)");
+                            }
+                        });
                     this.svgContenedor.transition()
                         .duration(900)
                         .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(200, 0)');
-                    });
+                });
 
             var g1 = this.svgleft.append("g")
-            .on("click", () => {
-                this._figuras = new AppHolaMundo.P1();
-            });
+                .on("click", () => {
+                    this._figuras = new AppHolaMundo.P1();
+                });
 
             g1.append("rect")
                 .style('x', '50px')
@@ -64,7 +64,7 @@ namespace AppHolaMundo {
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
-               
+
 
             g1.append("text") //titulo
                 .attr('y', '20px')
@@ -75,10 +75,10 @@ namespace AppHolaMundo {
 
 
             var g2 = this.svgleft.append("g")
-            .on('click', () => {
-                this._clientes = new AppHolaMundo.P3();
-                console.log("Ejemplo")
-            });
+                .on('click', () => {
+                    this._clientes = new AppHolaMundo.P3();
+                    console.log("Ejemplo")
+                });
 
             g2.append("rect")
                 .style('x', '50px')
@@ -121,12 +121,11 @@ namespace AppHolaMundo {
                 .style('display', 'block')
                 .attr('width', '1800')
                 .attr('height', '795')
-                .style('background-color', "black")
+                .style('background-color', "white")
                 .style('position', "absolute")
                 .style('left', "100px")
                 .style('top', "100px");
-            }
         }
     }
-    var _app = new AppHolaMundo.P1();
-   
+}
+var _app = new AppHolaMundo.P1();

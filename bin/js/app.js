@@ -103,7 +103,7 @@ var AppHolaMundo;
                 .style('display', 'block')
                 .attr('width', '1800')
                 .attr('height', '795')
-                .style('background-color', "black")
+                .style('background-color', "white")
                 .style('position', "absolute")
                 .style('left', "100px")
                 .style('top', "100px");
