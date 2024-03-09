@@ -3,13 +3,14 @@ namespace AppHolaMundo {
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
         svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgleft: d3.Selection<SVGElement, any, any, any>;
-        _figuras: P1;
+        _figuras: P2;
         _clientes: P3;
         _img: d3.Selection<SVGImageElement, any, any, any>;
         _menu: boolean;
 
         constructor() {
             this._menu = false;
+
             const body = d3.select("body");
 
             this.svgleft = body.append('svg')
@@ -51,7 +52,7 @@ namespace AppHolaMundo {
 
             var g1 = this.svgleft.append("g")
                 .on("click", () => {
-                    this._figuras = new AppHolaMundo.P1();
+                    this._figuras = new AppHolaMundo.P2();
                 });
 
             g1.append("rect")
@@ -96,7 +97,7 @@ namespace AppHolaMundo {
                 .attr('x', '70px')
                 .attr('fill', 'white')
                 .style('pointer-events', 'none')
-                .text('Ejemplo 2');
+                .text('Empresas');
 
             this.svgHeader = body.append('svg')
                 .attr('id', 'svgHeader')
@@ -128,4 +129,3 @@ namespace AppHolaMundo {
         }
     }
 }
-var _app = new AppHolaMundo.P1();

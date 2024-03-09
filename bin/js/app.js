@@ -42,7 +42,7 @@ var AppHolaMundo;
             });
             var g1 = this.svgleft.append("g")
                 .on("click", () => {
-                this._figuras = new AppHolaMundo.P1();
+                this._figuras = new AppHolaMundo.P2();
             });
             g1.append("rect")
                 .style('x', '50px')
@@ -80,7 +80,7 @@ var AppHolaMundo;
                 .attr('x', '70px')
                 .attr('fill', 'white')
                 .style('pointer-events', 'none')
-                .text('Ejemplo 2');
+                .text('Empresas');
             this.svgHeader = body.append('svg')
                 .attr('id', 'svgHeader')
                 .attr('width', '1900px')
@@ -111,4 +111,3 @@ var AppHolaMundo;
     }
     AppHolaMundo.P1 = P1;
 })(AppHolaMundo || (AppHolaMundo = {}));
-var _app = new AppHolaMundo.P1();
