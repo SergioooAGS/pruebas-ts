@@ -1,22 +1,27 @@
 var AppHolaMundo;
 (function (AppHolaMundo) {
+    // export interface CirculoMap {
+    //     id: number;
+    //     color: any;
+    // }
     class P2 {
         constructor() {
             this.offsetX = 0;
             this.offsetY = 0;
+            // mapa: Map<number, CirculoMap>;
             this.id = 0;
             this.circleArr = [];
-            this.dragStart = (event) => {
-                this.newCircle = d3.select("circle");
-                this.offsetX = event.x - +this.newCircle.attr("cx") || 0;
-                this.offsetY = event.y - +this.newCircle.attr("cy") || 0;
+            this.dragStart = (event, d) => {
+                this.newCircle = d3.select(event.sourceEvent.target);
+                //console.log(this.newCircle)
             };
-            this.dragging = (event) => {
+            this.dragging = (event, d) => {
                 const newX = Math.max(50, Math.min(event.x - this.offsetX, 1700));
                 const newY = Math.max(50, Math.min(event.y - this.offsetY, 700));
-                this.newCircle.attr("cx", newX).attr("cy", newY);
+                //console.log(event)
+                this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
             };
-            this.dragEnd = (event) => {
+            this.dragEnd = (event, d) => {
                 const circleX = +this.newCircle.attr("cx") || 0;
                 const circleY = +this.newCircle.attr("cy") || 0;
                 const image = d3.select("image");
@@ -30,13 +35,13 @@ var AppHolaMundo;
                     circleY <= imageY + imageHeight) {
                     this.newCircle.transition()
                         .duration(500)
-                        .attr("r", 10)
-                        .attr("fill", "red")
+                        .attr("r", 50)
+                        .attr("fill", "orange")
                         .remove();
                 }
             };
             this.svgContenedor = d3.select("#svgContenedor");
-            this.mapa = new Map();
+            // this.mapa = new Map();
             this.circleArr = new Array();
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
@@ -92,14 +97,13 @@ var AppHolaMundo;
                 tRadio = this.id * 10;
             }
             let tCirculo;
-            tCirculo = { id: this.id, color: newColor, radio: tRadio };
+            tCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300, y: 300 };
             this.circleArr.push(tCirculo);
             console.log(tCirculo.color);
             this.dibujaCirculos();
             this.id++;
         }
         dibujaCirculos() {
-            // const svg = this.svgContenedor;
             this.circleArr.values();
             const circle = this.svgContenedor.selectAll("circle")
                 .data(this.circleArr, d => this.id)
@@ -111,8 +115,13 @@ var AppHolaMundo;
                 .attr("cy", 300)
                 .attr("cursor", "grab")
                 .call(d3.drag()
-                .on("start", this.dragStart.bind(this))
-                .on("drag", this.dragging.bind(this))
+                .on("start", (event, d) => {
+                this.dragStart(event, d);
+                console.log(event);
+            })
+                .on("drag", (event, d) => {
+                this.dragging(event, d);
+            })
                 .on("end", this.dragEnd.bind(this)))
                 .on("stroke", this.dragEnd)
                 .on("mouseenter", function () {
@@ -123,11 +132,33 @@ var AppHolaMundo;
                 .on("mouseleave", function () {
                 d3.select(this)
                     .attr("stroke", "none");
-            }), update => update
-                .on("click", () => {
-                update;
-                console.log("Se hizo clic en el botón");
-            }), exit => exit
+            }), update => {
+                update
+                    .call(d3.drag()
+                    .on("start", (event, d) => {
+                    this.dragStart(event, d);
+                    //console.log(event);
+                })
+                    .on("drag", (event, d) => {
+                    this.dragging(event, d);
+                })
+                    .on("end", this.dragEnd.bind(this)))
+                    .on("stroke", this.dragEnd)
+                    .on("mouseenter", function () {
+                    d3.select(this)
+                        .attr("stroke", "black")
+                        .attr("stroke-width", "4px");
+                })
+                    .on("mouseleave", function () {
+                    d3.select(this)
+                        .attr("stroke", "none");
+                });
+                return update;
+            }, exit => exit
+                .transition()
+                .duration(500)
+                .attr("r", 0)
+                .attr("fill", "blue")
                 .remove());
         }
     }
