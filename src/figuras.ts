@@ -100,8 +100,6 @@ namespace AppHolaMundo {
             tCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300, y: 300 };
             this.circleArr.push(tCirculo);
 
-            console.log(tCirculo.color);
-
             this.dibujaCirculos();
 
             this.id++;
@@ -116,8 +114,8 @@ namespace AppHolaMundo {
                         .attr("id", d => d.id)
                         .attr("fill", d => d.color)
                         .attr("r", d => d.radio)
-                        .attr("cx", 300)
-                        .attr("cy", 300)
+                        .attr("cx", d => d.x)
+                        .attr("cy", d => d.y)
                         .attr("cursor", "grab")
                         .call(d3.drag()
                             .on("start", (event: any, d: iCirculo) => {
@@ -140,6 +138,7 @@ namespace AppHolaMundo {
                         }),
                     update => {
                         update
+
                             .call(<any>d3.drag()
                                 .on("start", (event: any, d: iCirculo) => {
                                     this.dragStart(event, d)
@@ -177,7 +176,6 @@ namespace AppHolaMundo {
         dragging = (event: any, d: iCirculo) => {
             const newX = Math.max(50, Math.min(event.x - this.offsetX, 1700));
             const newY = Math.max(50, Math.min(event.y - this.offsetY, 700));
-            //console.log(event)
             this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
         }
 
