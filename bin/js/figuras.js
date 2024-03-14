@@ -15,21 +15,29 @@ var AppHolaMundo;
                 this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
             };
             this.dragEnd = (event, d) => {
+                const imageBas = d3.select("#imageB");
                 const circleId = d.id;
-                const index = this.circleArr.findIndex(circle => circle.id === circleId);
-                if (index !== -1) {
-                    this.circleArr.splice(index, 1);
+                if (this.entradaC = true) {
+                    const index = this.circleArr.findIndex(circle => circle.id === circleId);
+                    if (index !== -1) {
+                        this.circleArr.splice(index, 1);
+                    }
+                    this.dibujaCirculos();
                 }
-                console.log("se elimino el ", circleId);
-                this.dibujaCirculos();
             };
             this.svgContenedor = d3.select("#svgContenedor");
             // this.mapa = new Map();
             this.circleArr = new Array();
+            this.entradaC = false;
             this.svgContenedor.append("image")
+                .attr("id", "imageB")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
-                .attr('height', '100');
+                .attr('height', '100')
+                .on("mouseover", () => {
+            })
+                .on("mouseout", () => {
+            });
             var g = this.svgContenedor.append("g")
                 .on('click', () => {
                 this.createCircle();
@@ -101,7 +109,9 @@ var AppHolaMundo;
                 .on("drag", (event, d) => {
                 this.dragging(event, d);
             })
-                .on("end", this.dragEnd.bind(this)))
+                .on("end", (event, d) => {
+                this.dragEnd(event, d);
+            }))
                 .on("stroke", this.dragEnd)
                 .on("mouseenter", function () {
                 d3.select(this)
@@ -120,7 +130,9 @@ var AppHolaMundo;
                     .on("drag", (event, d) => {
                     this.dragging(event, d);
                 })
-                    .on("end", this.dragEnd.bind(this)))
+                    .on("end", (event, d) => {
+                    this.dragEnd(event, d);
+                }))
                     .on("stroke", this.dragEnd)
                     .on("mouseenter", function () {
                     d3.select(this)
@@ -133,6 +145,9 @@ var AppHolaMundo;
                 });
                 return update;
             }, exit => exit
+                .transition()
+                .duration(1000)
+                .attr("fill", "black")
                 .remove());
         }
     }
