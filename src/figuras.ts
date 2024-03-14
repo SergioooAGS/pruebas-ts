@@ -1,4 +1,3 @@
-
 namespace AppHolaMundo {
     export interface iCirculo {
         id: number;
@@ -17,18 +16,14 @@ namespace AppHolaMundo {
     export class P2 {
         svgContenedor: d3.Selection<SVGSVGElement, any, any, any>;
         newCircle: d3.Selection<SVGCircleElement, any, any, any>;
-        offsetX = 0;
-        offsetY = 0;
-        _figuras: P2;
         // mapa: Map<number, CirculoMap>;
         id = 0;
-        circleArr: iCirculo[] = [];
+        circleArr: iCirculo[];
 
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
             // this.mapa = new Map();
             this.circleArr = new Array();
-
 
             this.svgContenedor.append("image")
                 .attr('href', 'images/traash.svg')
@@ -41,7 +36,6 @@ namespace AppHolaMundo {
                 });
 
             g.append("rect")
-
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
                 .style('x', '150')
@@ -63,7 +57,6 @@ namespace AppHolaMundo {
 
             var g9 = this.svgContenedor.append("g")
 
-
             g9.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
@@ -83,11 +76,9 @@ namespace AppHolaMundo {
                 .attr('fill', 'white')
                 .style('pointer-events', 'none')
                 .text('Update');
-
         }
 
         createCircle() {
-
             const colors = d3.interpolate("blue", "red");
             const newColor = colors(Math.random());
 
@@ -95,18 +86,13 @@ namespace AppHolaMundo {
             if (this.id > 0) {
                 tRadio = this.id * 10;
             }
-
-            let tCirculo: iCirculo;
-            tCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300, y: 300 };
+            let tCirculo: iCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300 + (tRadio * 2), y: 300 };
             this.circleArr.push(tCirculo);
-
             this.dibujaCirculos();
-
             this.id++;
         }
 
         dibujaCirculos() {
-            this.circleArr.values();
             const circle = this.svgContenedor.selectAll("circle")
                 .data(this.circleArr, d => this.id)
                 .join(
@@ -120,7 +106,6 @@ namespace AppHolaMundo {
                         .call(d3.drag()
                             .on("start", (event: any, d: iCirculo) => {
                                 this.dragStart(event, d)
-                                console.log(event);
                             })
                             .on("drag", (event: any, d: iCirculo) => {
                                 this.dragging(event, d)
@@ -138,11 +123,9 @@ namespace AppHolaMundo {
                         }),
                     update => {
                         update
-
                             .call(<any>d3.drag()
                                 .on("start", (event: any, d: iCirculo) => {
                                     this.dragStart(event, d)
-                                    //console.log(event);
                                 })
                                 .on("drag", (event: any, d: iCirculo) => {
                                     this.dragging(event, d)
@@ -161,44 +144,23 @@ namespace AppHolaMundo {
                         return update;
                     },
                     exit => exit
-                        .transition()
-                        .duration(500)
-                        .attr("r", 0)
-                        .attr("fill", "blue")
                         .remove()
                 );
         }
         dragStart = (event: any, d: any) => {
             this.newCircle = d3.select(event.sourceEvent.target);
-            //console.log(this.newCircle)
         }
-
         dragging = (event: any, d: iCirculo) => {
-            const newX = Math.max(50, Math.min(event.x - this.offsetX, 1700));
-            const newY = Math.max(50, Math.min(event.y - this.offsetY, 700));
             this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
         }
-
         dragEnd = (event: any, d: any) => {
-            const circleX = +this.newCircle.attr("cx") || 0;
-            const circleY = +this.newCircle.attr("cy") || 0;
-            const image = d3.select("image");
-            const imageX = +image.attr("x") || 0;
-            const imageY = +image.attr("y") || 0;
-            const imageWidth = +image.attr("width") || 0;
-            const imageHeight = +image.attr("height") || 0;
-            if (
-                circleX >= imageX &&
-                circleX <= imageX + imageWidth &&
-                circleY >= imageY &&
-                circleY <= imageY + imageHeight
-            ) {
-                this.newCircle.transition()
-                    .duration(500)
-                    .attr("r", 50)
-                    .attr("fill", "orange")
-                    .remove();
+            const circleId = d.id;
+            const index = this.circleArr.findIndex(circle => circle.id === circleId);
+            if (index !== -1) {
+                this.circleArr.splice(index, 1);
             }
+            console.log("se elimino el ", circleId);
+            this.dibujaCirculos();
 
         }
     }
