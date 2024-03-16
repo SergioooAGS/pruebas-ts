@@ -1,9 +1,5 @@
 var AppHolaMundo;
 (function (AppHolaMundo) {
-    // export interface CirculoMap {
-    //     id: number;
-    //     color: any;
-    // }
     class P2 {
         constructor() {
             // mapa: Map<number, CirculoMap>;
@@ -15,20 +11,21 @@ var AppHolaMundo;
                 this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
             };
             this.dragEnd = (event, d) => {
-                const imageBas = d3.select("#imageB");
                 const circleId = d.id;
-                if (this.entradaC = true) {
+                if (this.entradaCircle = true) {
                     const index = this.circleArr.findIndex(circle => circle.id === circleId);
                     if (index !== -1) {
                         this.circleArr.splice(index, 1);
                     }
-                    this.dibujaCirculos();
+                    else if (this.entradaCircle = !false) {
+                    }
                 }
             };
             this.svgContenedor = d3.select("#svgContenedor");
             // this.mapa = new Map();
             this.circleArr = new Array();
-            this.entradaC = false;
+            this.boteBasura = d3.select("#imageB");
+            this.entradaCircle = false;
             this.svgContenedor.append("image")
                 .attr("id", "imageB")
                 .attr('href', 'images/traash.svg')
