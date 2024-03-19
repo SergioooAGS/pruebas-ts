@@ -19,18 +19,19 @@ namespace AppHolaMundo {
             this.svgContenedor = d3.select("#svgContenedor");
             // this.mapa = new Map();
             this.circleArr = new Array();
-            this.boteBasura = d3.select("#imageB")
+            //this.boteBasura = d3.select("#imageB")
             this.entradaCircle = false;
             this.svgContenedor.append("image")
                 .attr("id", "imageB")
+                .attr("class", "imgBasura")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
                 .attr('height', '100')
                 .on("mouseover", () => {
-
+                    this.entradaCircle = true;
                 })
                 .on("mouseout", () => {
-
+                    this.entradaCircle = false;
                 });
 
             var g = this.svgContenedor.append("g")
@@ -53,8 +54,9 @@ namespace AppHolaMundo {
 
             g.append("text")
                 .attr('y', '55px')
-                .attr('x', '175px')
+                .attr('x', '170px')
                 .attr('fill', 'white')
+                .attr("font-family", "cursive")
                 .style('pointer-events', 'none')
                 .text('Add Circle');
 
@@ -75,7 +77,8 @@ namespace AppHolaMundo {
 
             g9.append("text")
                 .attr('y', '55px')
-                .attr('x', '335px')
+                .attr('x', '330px')
+                .attr("font-family", "cursive")
                 .attr('fill', 'white')
                 .style('pointer-events', 'none')
                 .text('Update');
@@ -164,20 +167,20 @@ namespace AppHolaMundo {
             this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
         }
         dragEnd = (event: any, d: any) => {
+            console.log("drag activado ")
             const circleId = d.id;
-            if (this.entradaCircle = true) {
+
+            if (this.entradaCircle) {
+                console.log("si entro al bote")
                 const index = this.circleArr.findIndex(circle => circle.id === circleId);
                 if (index !== -1) {
-                    this.circleArr.splice(index, 1)
+                    this.circleArr.splice(index, 1);
+                    this.dibujaCirculos();
                 }
-                else if (this.entradaCircle = !false) {
-
-                }
-
             }
         }
 
     }
 }
-const app = new AppHolaMundo.P1();
+
 

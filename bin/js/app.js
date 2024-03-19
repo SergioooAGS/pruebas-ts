@@ -5,16 +5,18 @@ var AppHolaMundo;
             this._menu = false;
             const body = d3.select("body");
             this.svgleft = body.append('svg')
+                .attr("class", "svgLeft")
                 .attr('id', 'miSVG2')
                 .attr('width', '300px')
-                .attr('height', '795px')
-                .style('background-color', "grey")
+                .attr('height', '809px')
+                .style('background-color', "#4A4A4A")
                 .style('position', "absolute")
                 .style('left', "0px")
                 .style('top', "100px")
                 .attr('transform', 'translate(-200, 0)')
                 .attr('id', 'svgleft');
             this._img = this.svgleft.append("image")
+                .attr("class", "img-arrow")
                 .attr('href', 'images/icono_flecha_derecha.svg')
                 .attr('width', '50px')
                 .attr('height', '50px')
@@ -45,11 +47,12 @@ var AppHolaMundo;
                 this._figuras = new AppHolaMundo.P2();
             });
             g1.append("rect")
+                .attr("class", "botonDrag")
                 .style('x', '50px')
                 .style('y', '0')
                 .style('rx', '20')
                 .style('ry', '20')
-                .style('fill', 'black')
+                .style('fill', 'white')
                 .style('position', 'absolute')
                 .style('width', '100px')
                 .style('height', '30px')
@@ -57,7 +60,8 @@ var AppHolaMundo;
             g1.append("text") //titulo
                 .attr('y', '20px')
                 .attr('x', '80px')
-                .attr('fill', 'white')
+                .attr("font-family", "cursive")
+                .attr('fill', 'black')
                 .style('pointer-events', 'none')
                 .text('Drag');
             var g2 = this.svgleft.append("g")
@@ -70,22 +74,24 @@ var AppHolaMundo;
                 .style('y', '40')
                 .style('rx', '20')
                 .style('ry', '20')
-                .style('fill', 'black')
+                .style('fill', 'white')
                 .style('position', 'absolute')
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
             g2.append("text")
                 .attr('y', '60px')
-                .attr('x', '70px')
-                .attr('fill', 'white')
+                .attr('x', '65px')
+                .attr('fill', 'black')
+                .attr("font-family", "cursive")
                 .style('pointer-events', 'none')
                 .text('Empresas');
             this.svgHeader = body.append('svg')
+                .attr("class", "heider")
                 .attr('id', 'svgHeader')
-                .attr('width', '1900px')
+                .attr('width', '1919px')
                 .attr('height', '100px')
-                .style('background-color', "Grey")
+                //background color 
                 .style('position', "absolute")
                 .style('left', "0px")
                 .style('top', "0px")
@@ -111,3 +117,4 @@ var AppHolaMundo;
     }
     AppHolaMundo.P1 = P1;
 })(AppHolaMundo || (AppHolaMundo = {}));
+const app = new AppHolaMundo.P1();

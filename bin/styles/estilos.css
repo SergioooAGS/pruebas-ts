@@ -1,11 +1,26 @@
-*{
+:root {
+    --fancy-color: linear-gradient(to bottom, #884ced, #ec1cce);
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.manija{
+.manija {
     display: block;
     width: 30%;
-    margin: 60px auto;    
+    margin: 60px auto;
+}
+
+.heider {
+    font-family: cursive;
+    text-shadow: 5px 5px 5px black;
+    background-color: #4A4A4A;
+    border-bottom-right-radius: 100px;
+}
+
+.svgLeft {
+    border-bottom-right-radius: 100px;
 }
