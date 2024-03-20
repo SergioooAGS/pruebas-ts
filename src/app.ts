@@ -1,6 +1,7 @@
 namespace AppHolaMundo {
     export class P1 {
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
+        contenedorCliente: d3.Selection<SVGElement, any, any, any>;
         svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgleft: d3.Selection<SVGElement, any, any, any>;
         _figuras: P2;
@@ -10,9 +11,7 @@ namespace AppHolaMundo {
 
         constructor() {
             this._menu = false;
-
             const body = d3.select("body");
-
 
             this.svgleft = body.append('svg')
                 .attr("class", "svgLeft")
@@ -134,7 +133,18 @@ namespace AppHolaMundo {
                 .style('position', "absolute")
                 .style('left', "100px")
                 .style('top', "100px");
+
+            // this.contenedorCliente = body.append("svg")
+            //     .attr("id", "#Contenedorcliente")
+            //     .style('display', 'block')
+            //     .attr('width', '1800')
+            //     .attr('height', '795')
+            //     .style('background-color', "red")
+            //     .style('position', "absolute")
+            //     .style('left', "100px")
+            //     .style('top', "100px");
         }
+
     }
 }
 const app = new AppHolaMundo.P1();

@@ -113,6 +113,15 @@ var AppHolaMundo;
                 .style('position', "absolute")
                 .style('left', "100px")
                 .style('top', "100px");
+            // this.contenedorCliente = body.append("svg")
+            //     .attr("id", "#Contenedorcliente")
+            //     .style('display', 'block')
+            //     .attr('width', '1800')
+            //     .attr('height', '795')
+            //     .style('background-color', "red")
+            //     .style('position', "absolute")
+            //     .style('left', "100px")
+            //     .style('top', "100px");
         }
     }
     AppHolaMundo.P1 = P1;

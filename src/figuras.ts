@@ -9,30 +9,22 @@ namespace AppHolaMundo {
     export class P2 {
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
         newCircle: d3.Selection<SVGCircleElement, any, any, any>;
-        boteBasura: d3.Selection<SVGElement, any, any, any>;
         // mapa: Map<number, CirculoMap>;
         id = 0;
-        entradaCircle: boolean;
         circleArr: iCirculo[];
 
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
             // this.mapa = new Map();
             this.circleArr = new Array();
-            //this.boteBasura = d3.select("#imageB")
-            this.entradaCircle = false;
             this.svgContenedor.append("image")
                 .attr("id", "imageB")
                 .attr("class", "imgBasura")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
                 .attr('height', '100')
-                .on("mouseover", () => {
-                    this.entradaCircle = true;
-                })
-                .on("mouseout", () => {
-                    this.entradaCircle = false;
-                });
+                .attr("z-index", 25)
+
 
             var g = this.svgContenedor.append("g")
                 .on('click', () => {
@@ -141,22 +133,13 @@ namespace AppHolaMundo {
                                 .on("end", (event: any, d: iCirculo) => {
                                     this.dragEnd(event, d)
                                 }))
-                            .on("stroke", this.dragEnd)
-                            .on("mouseenter", function () {
-                                d3.select(this)
-                                    .attr("stroke", "black")
-                                    .attr("stroke-width", "4px");
-                            })
-                            .on("mouseleave", function () {
-                                d3.select(this)
-                                    .attr("stroke", "none")
-                            })
+
                         return update;
                     },
                     exit => exit
                         .transition()
                         .duration(1000)
-                        .attr("fill", "black")
+                        .attr("fill", "red")
                         .remove()
                 );
         }
@@ -165,13 +148,23 @@ namespace AppHolaMundo {
         }
         dragging = (event: any, d: iCirculo) => {
             this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
+
         }
         dragEnd = (event: any, d: any) => {
-            console.log("drag activado ")
-            const circleId = d.id;
-
-            if (this.entradaCircle) {
-                console.log("si entro al bote")
+            const circleX = +this.newCircle.attr("cx") || 0;
+            const circleY = +this.newCircle.attr("cy") || 0;
+            const imgBasura = d3.select("#imageB");
+            const imageX = +imgBasura.attr("x") || 0;
+            const imageY = +imgBasura.attr("y") || 0;
+            const imageWidth = +imgBasura.attr("width") || 0;
+            const imageHeight = +imgBasura.attr("height") || 0;
+            if (
+                circleX >= imageX &&
+                circleX <= imageX + imageWidth &&
+                circleY >= imageY &&
+                circleY <= imageY + imageHeight
+            ) {
+                const circleId = d.id;
                 const index = this.circleArr.findIndex(circle => circle.id === circleId);
                 if (index !== -1) {
                     this.circleArr.splice(index, 1);
@@ -179,8 +172,5 @@ namespace AppHolaMundo {
                 }
             }
         }
-
     }
 }
-
-
