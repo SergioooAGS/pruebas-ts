@@ -4,42 +4,15 @@ var AppHolaMundo;
         constructor() {
             // mapa: Map<number, CirculoMap>;
             this.id = 0;
-            this.dragStart = (event, d) => {
-                this.newCircle = d3.select(event.sourceEvent.target);
-            };
-            this.dragging = (event, d) => {
-                this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
-            };
-            this.dragEnd = (event, d) => {
-                const circleX = +this.newCircle.attr("cx") || 0;
-                const circleY = +this.newCircle.attr("cy") || 0;
-                const imgBasura = d3.select("#imageB");
-                const imageX = +imgBasura.attr("x") || 0;
-                const imageY = +imgBasura.attr("y") || 0;
-                const imageWidth = +imgBasura.attr("width") || 0;
-                const imageHeight = +imgBasura.attr("height") || 0;
-                if (circleX >= imageX &&
-                    circleX <= imageX + imageWidth &&
-                    circleY >= imageY &&
-                    circleY <= imageY + imageHeight) {
-                    const circleId = d.id;
-                    const index = this.circleArr.findIndex(circle => circle.id === circleId);
-                    if (index !== -1) {
-                        this.circleArr.splice(index, 1);
-                        this.dibujaCirculos();
-                    }
-                }
-            };
             this.svgContenedor = d3.select("#svgContenedor");
-            // this.mapa = new Map();
             this.circleArr = new Array();
+            this.id = 0;
             this.svgContenedor.append("image")
                 .attr("id", "imageB")
                 .attr("class", "imgBasura")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
-                .attr('height', '100')
-                .attr("z-index", 25);
+                .attr('height', '100');
             var g = this.svgContenedor.append("g")
                 .on('click', () => {
                 this.createCircle();
@@ -95,11 +68,12 @@ var AppHolaMundo;
             this.circleArr.push(tCirculo);
             this.dibujaCirculos();
             this.id++;
+            console.log(this.id);
         }
         dibujaCirculos() {
-            const circle = this.svgContenedor.selectAll("circle")
-                .data(this.circleArr, d => this.id)
-                .join(enter => enter.append("circle")
+            let circle = this.svgContenedor.selectAll("circle")
+                .data(this.circleArr, d => this.id);
+            circle.join((enter) => enter.append("circle")
                 .attr("id", d => d.id)
                 .attr("fill", d => d.color)
                 .attr("r", d => d.radio)
@@ -125,8 +99,14 @@ var AppHolaMundo;
                 .on("mouseleave", function () {
                 d3.select(this)
                     .attr("stroke", "none");
-            }), update => {
+            }), (update) => {
                 update
+                    .attr("id", d => d.id)
+                    .attr("fill", d => d.color)
+                    .attr("r", d => d.radio)
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y)
+                    .attr("cursor", "grab")
                     .call(d3.drag()
                     .on("start", (event, d) => {
                     this.dragStart(event, d);
@@ -138,11 +118,38 @@ var AppHolaMundo;
                     this.dragEnd(event, d);
                 }));
                 return update;
-            }, exit => exit
-                .transition()
-                .duration(1000)
-                .attr("fill", "red")
-                .remove());
+            }, (exit) => {
+                exit
+                    .remove();
+                return exit;
+            });
+        }
+        dragStart(event, d) {
+            this.newCircle = d3.select(event.sourceEvent.target);
+        }
+        dragging(event, d) {
+            this.newCircle.attr("cx", d.x = event.x).attr("cy", d.y = event.y);
+        }
+        dragEnd(event, d) {
+            let circleX = +this.newCircle.attr("cx") || 0;
+            let circleY = +this.newCircle.attr("cy") || 0;
+            let imgBasura = d3.select("#imageB");
+            let imageX = +imgBasura.attr("x") || 0;
+            let imageY = +imgBasura.attr("y") || 0;
+            let imageWidth = +imgBasura.attr("width") || 0;
+            let imageHeight = +imgBasura.attr("height") || 0;
+            if (circleX >= imageX &&
+                circleX <= imageX + imageWidth &&
+                circleY >= imageY &&
+                circleY <= imageY + imageHeight) {
+                let circleId = d.id;
+                let index = this.circleArr.findIndex(circle => circle.id === circleId);
+                if (index !== -1) {
+                    this.circleArr.splice(index, 1);
+                    console.log(circleId);
+                    this.dibujaCirculos();
+                }
+            }
         }
     }
     AppHolaMundo.P2 = P2;
