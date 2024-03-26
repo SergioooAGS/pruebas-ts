@@ -17,7 +17,6 @@ namespace AppHolaMundo {
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
             this.mapaUsuarios = new Map<number, tbUser>();
-            this.datosUsuarios = [];
             this.loadUser();
             this.tableUsers();
         }

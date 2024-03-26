@@ -1,12 +1,13 @@
 var AppHolaMundo;
 (function (AppHolaMundo) {
     class P2 {
+        // circleArr: iCirculo[];
         constructor() {
-            // mapa: Map<number, CirculoMap>; 
             this.id = 0;
             //app._figuras.svgContenedor
             this.svgContenedor = d3.select("#svgContenedor");
-            this.circleArr = new Array();
+            //this.circleArr = new Array();
+            this.mapa = new Map[];
             this.id = 0;
             this.svgContenedor.append("image")
                 .attr("id", "imageB")
@@ -66,14 +67,15 @@ var AppHolaMundo;
                 tRadio = this.id * 10;
             }
             let tCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300 + (tRadio * 2), y: 300 };
-            this.circleArr.push(tCirculo);
+            //this.circleArr.push(tCirculo);
+            this.mapa.set(0, tCirculo);
             this.dibujaCirculos();
             this.id++;
             console.log(this.id);
         }
         dibujaCirculos() {
             this.svgContenedor.selectAll(".cir")
-                .data(this.circleArr, (d) => d.id)
+                .data(this.mapa, (d) => d.id)
                 .join((enter) => enter.append("circle")
                 .attr("id", d => d.id)
                 .attr("fill", d => d.color)
@@ -139,9 +141,9 @@ var AppHolaMundo;
                 circleY >= imageY &&
                 circleY <= imageY + imageHeight) {
                 let circleId = d.id;
-                let index = this.circleArr.findIndex(circle => circle.id === circleId);
+                let index = this.mapa.(circle => circle.id === circleId);
                 if (index !== -1) {
-                    this.circleArr.splice(index, 1);
+                    this.mapa.delete(index);
                     console.log(circleId);
                     this.dibujaCirculos();
                 }

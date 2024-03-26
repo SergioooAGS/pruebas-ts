@@ -4,7 +4,6 @@ var AppHolaMundo;
         constructor() {
             this.svgContenedor = d3.select("#svgContenedor");
             this.mapaUsuarios = new Map();
-            this.datosUsuarios = [];
             this.loadUser();
             this.tableUsers();
         }

@@ -9,14 +9,15 @@ namespace AppHolaMundo {
     export class P2 {
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
         newCircle: d3.Selection<SVGCircleElement, any, any, any>;
-        // mapa: Map<number, CirculoMap>; 
+        mapa: Map<number, iCirculo>;
         id = 0;
-        circleArr: iCirculo[];
+        // circleArr: iCirculo[];
 
         constructor() {
             //app._figuras.svgContenedor
             this.svgContenedor = d3.select("#svgContenedor");
-            this.circleArr = new Array();
+            //this.circleArr = new Array();
+            this.mapa = new Map[]
             this.id = 0;
             this.svgContenedor.append("image")
                 .attr("id", "imageB")
@@ -81,14 +82,15 @@ namespace AppHolaMundo {
                 tRadio = this.id * 10;
             }
             let tCirculo: iCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300 + (tRadio * 2), y: 300 };
-            this.circleArr.push(tCirculo);
+            //this.circleArr.push(tCirculo);
+            this.mapa.set(0, tCirculo);
             this.dibujaCirculos();
             this.id++;
             console.log(this.id);
         }
         public dibujaCirculos() {
             this.svgContenedor.selectAll(".cir")
-                .data(this.circleArr, (d: iCirculo) => d.id)
+                .data(this.mapa, (d: iCirculo) => d.id)
                 .join(
                     (enter) => enter.append("circle")
                         .attr("id", d => d.id)
@@ -159,9 +161,9 @@ namespace AppHolaMundo {
                 circleY <= imageY + imageHeight
             ) {
                 let circleId = d.id;
-                let index = this.circleArr.findIndex(circle => circle.id === circleId);
+                let index = this.mapa.(circle => circle.id === circleId);
                 if (index !== -1) {
-                    this.circleArr.splice(index, 1);
+                    this.mapa.delete(index);
                     console.log(circleId);
                     this.dibujaCirculos();
                 }
