@@ -20,7 +20,7 @@ namespace AppHolaMundo {
             this.loadUser();
             this.tableUsers();
         }
-
+//A VER SI SE PUDO
         public loadUser() {
             this.mapaUsuarios.set(0, { nombre: "Sergio", apellido: "Garcia", telefono: "7711737058", correo: "sergio@uthh.com" });
             this.mapaUsuarios.set(1, { nombre: "Alex", apellido: "Salazar", telefono: "7711737059", correo: "alex@uthh.edu" });
