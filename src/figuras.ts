@@ -9,11 +9,12 @@ namespace AppHolaMundo {
     export class P2 {
         svgContenedor: d3.Selection<SVGElement, any, any, any>;
         newCircle: d3.Selection<SVGCircleElement, any, any, any>;
-        // mapa: Map<number, CirculoMap>;
+        // mapa: Map<number, CirculoMap>; 
         id = 0;
         circleArr: iCirculo[];
 
         constructor() {
+            //app._figuras.svgContenedor
             this.svgContenedor = d3.select("#svgContenedor");
             this.circleArr = new Array();
             this.id = 0;
@@ -23,13 +24,10 @@ namespace AppHolaMundo {
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
                 .attr('height', '100')
-
-
             var g = this.svgContenedor.append("g")
                 .on('click', () => {
                     this.createCircle();
                 });
-
             g.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
@@ -74,7 +72,7 @@ namespace AppHolaMundo {
                 .style('pointer-events', 'none')
                 .text('Update');
         }
-        createCircle() {
+        private createCircle() {
             const colors = d3.interpolate("blue", "red");
             const newColor = colors(Math.random());
 
@@ -88,46 +86,19 @@ namespace AppHolaMundo {
             this.id++;
             console.log(this.id);
         }
-        dibujaCirculos() {
-            let circle = this.svgContenedor.selectAll("circle")
-                .data(this.circleArr, d => this.id)
-            circle.join(
-                (enter) => enter.append("circle")
-                    .attr("id", d => d.id)
-                    .attr("fill", d => d.color)
-                    .attr("r", d => d.radio)
-                    .attr("cx", d => d.x)
-                    .attr("cy", d => d.y)
-                    .attr("cursor", "grab")
-                    .call(d3.drag()
-                        .on("start", (event: any, d: iCirculo) => {
-                            this.dragStart(event, d)
-                        })
-                        .on("drag", (event: any, d: iCirculo) => {
-                            this.dragging(event, d)
-                        })
-                        .on("end", (event: any, d: iCirculo) => {
-                            this.dragEnd(event, d)
-                        }))
-                    .on("stroke", this.dragEnd)
-                    .on("mouseenter", function () {
-                        d3.select(this)
-                            .attr("stroke", "black")
-                            .attr("stroke-width", "4px");
-                    })
-                    .on("mouseleave", function () {
-                        d3.select(this)
-                            .attr("stroke", "none")
-                    }),
-                (update) => {
-                    update
+        public dibujaCirculos() {
+            this.svgContenedor.selectAll(".cir")
+                .data(this.circleArr, (d: iCirculo) => d.id)
+                .join(
+                    (enter) => enter.append("circle")
                         .attr("id", d => d.id)
                         .attr("fill", d => d.color)
                         .attr("r", d => d.radio)
                         .attr("cx", d => d.x)
                         .attr("cy", d => d.y)
                         .attr("cursor", "grab")
-                        .call(<any>d3.drag()
+                        .classed("cir", true)
+                        .call(d3.drag()
                             .on("start", (event: any, d: iCirculo) => {
                                 this.dragStart(event, d)
                             })
@@ -136,14 +107,36 @@ namespace AppHolaMundo {
                             })
                             .on("end", (event: any, d: iCirculo) => {
                                 this.dragEnd(event, d)
-                            }));
-                    return update;
-                },
-                (exit) => {
-                    exit
-                        .remove()
-                    return exit;
-                });
+                            }))
+                        .on("stroke", this.dragEnd)
+                        .on("mouseenter", function () {
+                            d3.select(this)
+                                .attr("stroke", "black")
+                                .attr("stroke-width", "4px");
+                        })
+                        .on("mouseleave", function () {
+                            d3.select(this)
+                                .attr("stroke", "none")
+                        }),
+                    (update) => {
+                        update
+                            .call(<any>d3.drag()
+                                .on("start", (event: any, d: iCirculo) => {
+                                    this.dragStart(event, d)
+                                })
+                                .on("drag", (event: any, d: iCirculo) => {
+                                    this.dragging(event, d)
+                                })
+                                .on("end", (event: any, d: iCirculo) => {
+                                    this.dragEnd(event, d)
+                                }));
+                        return update;
+                    },
+                    (exit) => {
+                        exit
+                            .remove()
+                        return exit;
+                    });
         }
         private dragStart(event: any, d: any): void {
             this.newCircle = d3.select(event.sourceEvent.target);
@@ -171,7 +164,6 @@ namespace AppHolaMundo {
                     this.circleArr.splice(index, 1);
                     console.log(circleId);
                     this.dibujaCirculos();
-
                 }
             }
         }

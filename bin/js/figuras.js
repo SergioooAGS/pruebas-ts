@@ -2,8 +2,9 @@ var AppHolaMundo;
 (function (AppHolaMundo) {
     class P2 {
         constructor() {
-            // mapa: Map<number, CirculoMap>;
+            // mapa: Map<number, CirculoMap>; 
             this.id = 0;
+            //app._figuras.svgContenedor
             this.svgContenedor = d3.select("#svgContenedor");
             this.circleArr = new Array();
             this.id = 0;
@@ -71,15 +72,16 @@ var AppHolaMundo;
             console.log(this.id);
         }
         dibujaCirculos() {
-            let circle = this.svgContenedor.selectAll("circle")
-                .data(this.circleArr, d => this.id);
-            circle.join((enter) => enter.append("circle")
+            this.svgContenedor.selectAll(".cir")
+                .data(this.circleArr, (d) => d.id)
+                .join((enter) => enter.append("circle")
                 .attr("id", d => d.id)
                 .attr("fill", d => d.color)
                 .attr("r", d => d.radio)
                 .attr("cx", d => d.x)
                 .attr("cy", d => d.y)
                 .attr("cursor", "grab")
+                .classed("cir", true)
                 .call(d3.drag()
                 .on("start", (event, d) => {
                 this.dragStart(event, d);
@@ -101,12 +103,6 @@ var AppHolaMundo;
                     .attr("stroke", "none");
             }), (update) => {
                 update
-                    .attr("id", d => d.id)
-                    .attr("fill", d => d.color)
-                    .attr("r", d => d.radio)
-                    .attr("cx", d => d.x)
-                    .attr("cy", d => d.y)
-                    .attr("cursor", "grab")
                     .call(d3.drag()
                     .on("start", (event, d) => {
                     this.dragStart(event, d);
