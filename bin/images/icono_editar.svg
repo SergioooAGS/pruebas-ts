@@ -1,0 +1,10 @@
+<svg width="181" height="178" viewBox="0 0 181 178" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="181" height="178" fill="#F5F5F5"/>
+<line id="Line 2" x1="5" y1="10" x2="5" y2="178" stroke="black" stroke-width="10"/>
+<line id="Line 3" y1="173" x2="174" y2="173" stroke="black" stroke-width="10"/>
+<line id="Line 4" x1="169" y1="178" x2="169" y2="86" stroke="black" stroke-width="10"/>
+<line id="Line 5" y1="5" x2="112" y2="5" stroke="black" stroke-width="10"/>
+<path id="Polygon 1" d="M87.7922 123.13L58.6227 131.369L66.072 101.988L87.7922 123.13Z" stroke="black" stroke-width="6"/>
+<rect id="Rectangle 2" x="152.659" y="10.2425" width="33.0592" height="118.775" transform="rotate(44.6125 152.659 10.2425)" stroke="black" stroke-width="6"/>
+<line id="Line 6" x1="33" y1="139" x2="139" y2="139" stroke="black" stroke-width="6"/>
+</svg>

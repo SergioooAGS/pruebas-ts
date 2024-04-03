@@ -1,17 +1,31 @@
-var AppHolaMundo;
-(function (AppHolaMundo) {
-    class P3 {
+namespace AppHolaMundo {
+    export interface iUsuario {
+        id: number;
+        nombre: string;
+        apellidoP: string;
+        apellidoM: string;
+        telefono: string;
+        correo: string;
+        usuario: string;
+    }
+
+    export class P3 {
+        public svgContenedor: d3.Selection<SVGElement, any, any, any>;
+        public svgRegistroUsuario: d3.Selection<HTMLDivElement, any, any, any>;
+        mapaUsuarios: Map<number, iUsuario>;
+        //datosUsuarios: iUsuario[];
+        private id = 0;
+
         constructor() {
-            //datosUsuarios: iUsuario[];
-            this.id = 0;
             const body = d3.select("body");
             this.svgContenedor = d3.select("#svgContenedor");
             this.svgRegistroUsuario = d3.select("#svgRegistroUsuario");
             this.id = 0;
-            this.mapaUsuarios = new Map();
+            this.mapaUsuarios = new Map<number, iUsuario>();
             //this.datosUsuarios();
             this.cargarUsuario();
-            var g5 = this.svgRegistroUsuario.append("g");
+
+            var g5 = this.svgRegistroUsuario.append("g")
             g5.append("text")
                 .attr('y', '20px')
                 .attr('x', '115px')
@@ -19,15 +33,17 @@ var AppHolaMundo;
                 .attr("font-family", "cursive")
                 .style('pointer-events', 'none')
                 .text('Usuarios');
+
             g5.append("text")
                 .attr("fill", "white")
                 .text("CHALE")
                 .attr('y', '60px')
-                .attr('x', '115px');
+                .attr('x', '115px')
+
             let g = this.svgContenedor.append("g")
                 .on('click', () => {
-                this.cargarUsuario();
-            });
+                    this.cargarUsuario();
+                });
             g.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
@@ -40,6 +56,7 @@ var AppHolaMundo;
                 .style("width", "80px")
                 .style("height", "40px")
                 .style("cursor", "pointer");
+
             g.append("text")
                 .attr("y", "48px")
                 .attr("x", "1260px")
@@ -47,10 +64,12 @@ var AppHolaMundo;
                 .attr("font-family", "cursive")
                 .style("pointer-events", "none")
                 .text("Agregar");
+
             let g8 = this.svgContenedor.append("g")
                 .on('click', () => {
-                this.NuevoUsuario();
-            });
+                    this.NuevoUsuario();
+                });
+
             g8.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
@@ -63,6 +82,7 @@ var AppHolaMundo;
                 .style('width', '120px')
                 .style('height', '40px')
                 .style('cursor', 'pointer');
+
             g8.append("text")
                 .attr("y", "45px")
                 .attr("x", "680px")
@@ -70,7 +90,9 @@ var AppHolaMundo;
                 .attr("font-family", "cursive")
                 .style('pointer-events', 'none')
                 .text("Nuevo");
-            let g9 = this.svgContenedor.append("g");
+
+            let g9 = this.svgContenedor.append("g")
+
             g9.append("foreignObject")
                 .attr("class", "buscarName")
                 .attr("type", "text")
@@ -82,7 +104,9 @@ var AppHolaMundo;
                 .style("top", "50px")
                 .style("left", "0")
                 .html('<input type="text" placeholder="Nombre" />');
-            let g10 = this.svgContenedor.append("g");
+
+            let g10 = this.svgContenedor.append("g")
+
             g10.append("foreignObject")
                 .attr("class", "buscarAp")
                 .attr("type", "text")
@@ -95,47 +119,58 @@ var AppHolaMundo;
                 .style("left", "0")
                 .html('<input type="text" placeholder="Buscar" />');
         }
-        NuevoUsuario() {
+
+        public NuevoUsuario() {
             let div = d3.select("body")
                 .append("div")
                 .attr("class", "nuevoUsuario")
                 .style("box-shadow", "5px 5px 5px black");
+
             div.append("img")
                 .attr("src", "images/icon-cerrar.svg")
                 .attr("alt", "Cerrar")
                 .on("click", () => {
-                div.remove();
-            })
+                    div.remove();
+                })
                 .attr("aling-items", "right")
                 .attr("width", "20")
                 .attr("height", "20")
                 .style("top", "5px")
                 .style("right", "5px")
                 .style("cursor", "pointer");
+
+
             div.append("h3")
                 .text("Registro Usuarios")
                 .style("text-aling", "center")
                 .style("fill", "red")
                 .style("padding", "5px")
                 .style("top", "10px");
+
             div.append("input")
                 .attr("type", "text")
                 .attr("placeholder", "Nombre");
+
             div.append("input")
                 .attr("type", "text")
                 .attr("placeholder", "Apellido paterno");
+
             div.append("input")
                 .attr("type", "text")
                 .attr("placeholder", "Apellido Materno");
+
             div.append("input")
                 .attr("type", "text")
                 .attr("placeholder", "Telefono");
+
             div.append("input")
                 .attr("type", "text")
                 .attr("placeholder", "Correo");
+
             div.append("input")
                 .attr("type", "text")
                 .attr("placeholder", "Usuario");
+
             div.style("position", "absolute")
                 .style("margin", "2px")
                 .style("top", "50%")
@@ -148,10 +183,13 @@ var AppHolaMundo;
                 .style("height", "350px")
                 .style("z-index", 20)
                 .style("text-aling", "center");
+
+
             let btnSave = div.append("g")
                 .on('click', () => {
-                //this.NuevoUsuario();
-            });
+                    //this.NuevoUsuario();
+                });
+
             btnSave.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
@@ -163,7 +201,8 @@ var AppHolaMundo;
                 .style('position', 'absolute')
                 .style('width', '90px')
                 .style('height', '40px')
-                .style('cursor', 'pointer');
+                .style('cursor', 'pointer')
+
             btnSave.append("text")
                 .attr('x', '775')
                 .attr('y', '585')
@@ -171,9 +210,11 @@ var AppHolaMundo;
                 .attr("font-family", "cursive")
                 .style("cursor", "pointer")
                 .text("Guardar");
+
             let btnCancel = div.append("g")
                 .on('click', () => {
-            });
+                });
+
             btnCancel.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
@@ -185,7 +226,8 @@ var AppHolaMundo;
                 .style('position', 'absolute')
                 .style('width', '90px')
                 .style('height', '40px')
-                .style('cursor', 'pointer');
+                .style('cursor', 'pointer')
+
             btnCancel.append("text")
                 .attr('x', '870')
                 .attr('y', '585')
@@ -193,17 +235,23 @@ var AppHolaMundo;
                 .attr("font-family", "cursive")
                 .style('pointer-events', 'none')
                 .text("Cancelar");
-            let divHeader = d3.select("body").append("div");
+
+            let divHeader = d3.select("body").append("div")
+
             divHeader.style("position", "absolute")
                 .attr("class", "headerDiv")
                 .style("top", "50%")
                 .style("left", "50%")
                 .style("background-color", "Green")
                 .style("width", "200")
-                .style("height", "30");
+                .style("height", "30")
+
+
         }
-        cargarUsuario() {
-            let tUsuario = { id: this.id, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" };
+
+
+        public cargarUsuario() {
+            let tUsuario: iUsuario = { id: this.id, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" }
             this.mapaUsuarios.set(this.id, tUsuario);
             this.tablaUsuarios(); //watch
             this.id++;
@@ -213,50 +261,17 @@ var AppHolaMundo;
             // this.mapaUsuarios.set(2, { nombre: "Enrique", apellido: "ss", telefono: "7711737059", correo: "alex@uthh.edu" });
             // this.datosUsuarios = Array.from(this.mapaUsuarios.values());
         }
-        dibujaTabla() {
+
+        public dibujaTabla() {
             let fila = d3.select("tbody").selectAll("tr")
-                .data(this.mapaUsuarios.values(), (d) => d.id);
-            fila.join((enter) => {
-                let row = enter.append("tr")
-                    .attr("class", "rows");
-                row.append("td")
-                    .text((d) => d.id);
-                row.append("td")
-                    .append("img")
-                    .attr("src", "images/traash.svg")
-                    .attr("width", "70")
-                    .attr("height", "70")
-                    .attr("x", "60")
-                    .attr("y", "50")
-                    .style("cursor", "pointer");
-                row.append("td")
-                    .append("img")
-                    .attr("src", "images/icono_editar.svg")
-                    .attr("width", "60")
-                    .attr("height", "60")
-                    .attr("x", "80")
-                    .attr("y", "50")
-                    .style("cursor", "pointer");
-                row.append("td")
-                    .text((d) => d.nombre);
-                row.append("td")
-                    .text((d) => d.apellidoP);
-                row.append("td")
-                    .text((d) => d.apellidoM);
-                row.append("td")
-                    .text((d) => d.telefono);
-                row.append("td")
-                    .text((d) => d.correo);
-                row.append("td")
-                    .text((d) => d.usuario);
-                return row;
-            }),
-                (update) => {
-                    (update);
-                    let row = update.append("tr")
+                .data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
+            fila.join(
+                (enter) => {
+                    let row = enter.append("tr")
                         .attr("class", "rows");
                     row.append("td")
-                        .text((d) => d.id);
+                        .text((d) => d.id)
+
                     row.append("td")
                         .append("img")
                         .attr("src", "images/traash.svg")
@@ -264,7 +279,8 @@ var AppHolaMundo;
                         .attr("height", "70")
                         .attr("x", "60")
                         .attr("y", "50")
-                        .style("cursor", "pointer");
+                        .style("cursor", "pointer")
+
                     row.append("td")
                         .append("img")
                         .attr("src", "images/icono_editar.svg")
@@ -272,30 +288,75 @@ var AppHolaMundo;
                         .attr("height", "60")
                         .attr("x", "80")
                         .attr("y", "50")
-                        .style("cursor", "pointer");
+                        .style("cursor", "pointer")
+
                     row.append("td")
-                        .text((d) => d.nombre);
+                        .text((d) => d.nombre)
                     row.append("td")
-                        .text((d) => d.apellidoP);
+                        .text((d) => d.apellidoP)
                     row.append("td")
-                        .text((d) => d.apellidoM);
+                        .text((d) => d.apellidoM)
                     row.append("td")
-                        .text((d) => d.telefono);
+                        .text((d) => d.telefono)
                     row.append("td")
-                        .text((d) => d.correo);
+                        .text((d) => d.correo)
                     row.append("td")
-                        .text((d) => d.usuario);
+                        .text((d) => d.usuario)
+
+                    return row
+                }
+            ),
+                (update) => {
+                    (update)
+                    let row = update.append("tr")
+                        .attr("class", "rows");
+                    row.append("td")
+                        .text((d: iUsuario) => d.id)
+
+                    row.append("td")
+                        .append("img")
+                        .attr("src", "images/traash.svg")
+                        .attr("width", "70")
+                        .attr("height", "70")
+                        .attr("x", "60")
+                        .attr("y", "50")
+                        .style("cursor", "pointer")
+
+                    row.append("td")
+                        .append("img")
+                        .attr("src", "images/icono_editar.svg")
+                        .attr("width", "60")
+                        .attr("height", "60")
+                        .attr("x", "80")
+                        .attr("y", "50")
+                        .style("cursor", "pointer")
+
+                    row.append("td")
+                        .text((d: iUsuario) => d.nombre)
+                    row.append("td")
+                        .text((d: iUsuario) => d.apellidoP)
+                    row.append("td")
+                        .text((d: iUsuario) => d.apellidoM)
+                    row.append("td")
+                        .text((d: iUsuario) => d.telefono)
+                    row.append("td")
+                        .text((d: iUsuario) => d.correo)
+                    row.append("td")
+                        .text((d: iUsuario) => d.usuario)
                     return update;
                 },
                 (exit) => {
                     exit
-                        .remove();
+                        .remove()
                     return exit;
-                };
+                }
         }
-        tablaUsuarios() {
+
+        public tablaUsuarios() {
+
             const tablaGroup = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
+
             let tabla = tablaGroup.append("foreignObject")
                 .attr("class", "tabla")
                 .attr("width", 1500)
@@ -304,30 +365,38 @@ var AppHolaMundo;
                 .attr("border", 1)
                 .style("background-color", "#cdcdcd")
                 .style("border", "1px solid #grey");
+
             tabla.append("thead")
                 .append("tr")
                 .selectAll("th")
                 .data(["Id", "Editar", "Eliminar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"])
                 .enter()
                 .append("th")
-                .text((d) => d)
+                .text((d: string) => d)
                 .attr("font-family", "cursive")
                 .attr("fill", "white")
                 .attr("class", "tHead");
-            let filas = tabla.selectAll("tr.usuario");
+
+
+
+
+
+
+            let filas = tabla.selectAll("tr.usuario")
             //let Users: iUsuario[] = Array.from(this.mapaUsuarios.values());
-            this.svgContenedor.selectAll("text");
+            this.svgContenedor.selectAll("text")
             filas.enter()
                 //.append("tr")
                 .attr("class", "usuario")
                 .selectAll("td")
-                .data((d) => Object.values(d))
+                .data((d: iUsuario) => Object.values(d))
                 .enter()
                 .append("td")
-                .text((d) => d);
+                .text((d: string) => d);
+
             filas.selectAll("td")
-                .data((d) => Object.values(d))
-                .text((d) => d);
+                .data((d: iUsuario) => Object.values(d))
+                .text((d: string) => d);
             filas.exit()
                 .remove();
             tabla.selectAll("tr")
@@ -339,5 +408,4 @@ var AppHolaMundo;
             //tabla.append("tfoot")
         }
     }
-    AppHolaMundo.P3 = P3;
-})(AppHolaMundo || (AppHolaMundo = {}));
+}

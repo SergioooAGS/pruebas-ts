@@ -7,17 +7,16 @@ namespace AppHolaMundo {
         y: number;
     }
     export class P2 {
-        svgContenedor: d3.Selection<SVGElement, any, any, any>;
-        newCircle: d3.Selection<SVGCircleElement, any, any, any>;
-        mapa: Map<number, iCirculo>;
-        id = 0;
+        public svgContenedor: d3.Selection<SVGElement, any, any, any>;
+        private newCircle: d3.Selection<SVGCircleElement, any, any, any>;
+        private mapa: Map<number, iCirculo>;
+        private id = 0;
         // circleArr: iCirculo[];
-
         constructor() {
             //app._figuras.svgContenedor
             this.svgContenedor = d3.select("#svgContenedor");
             //this.circleArr = new Array();
-            this.mapa = new Map[]
+            this.mapa = new Map();
             this.id = 0;
             this.svgContenedor.append("image")
                 .attr("id", "imageB")
@@ -49,29 +48,6 @@ namespace AppHolaMundo {
                 .attr("font-family", "cursive")
                 .style('pointer-events', 'none')
                 .text('Add Circle');
-
-            var g9 = this.svgContenedor.append("g")
-
-            g9.append("rect")
-                .attr("stroke", "black")
-                .attr("stroke-width", "2px")
-                .style('x', '300')
-                .style('y', '30')
-                .style('rx', '20')
-                .style('ry', '20')
-                .style('fill', 'orange')
-                .style('position', 'absolute')
-                .style('width', '120px')
-                .style('height', '40px')
-                .style('cursor', 'pointer');
-
-            g9.append("text")
-                .attr('y', '55px')
-                .attr('x', '330px')
-                .attr("font-family", "cursive")
-                .attr('fill', 'white')
-                .style('pointer-events', 'none')
-                .text('Update');
         }
         private createCircle() {
             const colors = d3.interpolate("blue", "red");
@@ -83,14 +59,15 @@ namespace AppHolaMundo {
             }
             let tCirculo: iCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300 + (tRadio * 2), y: 300 };
             //this.circleArr.push(tCirculo);
-            this.mapa.set(0, tCirculo);
+            this.mapa.set(this.id, tCirculo);
             this.dibujaCirculos();
             this.id++;
             console.log(this.id);
         }
         public dibujaCirculos() {
+            let arr1: iCirculo[] = Array.from(this.mapa.values());
             this.svgContenedor.selectAll(".cir")
-                .data(this.mapa, (d: iCirculo) => d.id)
+                .data(arr1, (d: iCirculo) => d.id)
                 .join(
                     (enter) => enter.append("circle")
                         .attr("id", d => d.id)
@@ -148,6 +125,7 @@ namespace AppHolaMundo {
         }
         public dragEnd(event: any, d: iCirculo): void {
             let circleX = +this.newCircle.attr("cx") || 0;
+
             let circleY = +this.newCircle.attr("cy") || 0;
             let imgBasura = d3.select("#imageB");
             let imageX = +imgBasura.attr("x") || 0;
@@ -160,13 +138,21 @@ namespace AppHolaMundo {
                 circleY >= imageY &&
                 circleY <= imageY + imageHeight
             ) {
-                let circleId = d.id;
-                let index = this.mapa.(circle => circle.id === circleId);
-                if (index !== -1) {
-                    this.mapa.delete(index);
-                    console.log(circleId);
+                //let circleId = d.id;
+
+                if (this.mapa.has(d.id)) {
+                    this.mapa.delete(d.id);
                     this.dibujaCirculos();
                 }
+
+                // let index = this.circleArr.findIndex(circle => circle.id === circleId);
+                // if (index !== -1) {
+                //     this.circleArr.splice(index, 1);
+                //     console.log(circleId);
+                //     this.dibujaCirculos();
+                // }
+
+
             }
         }
     }

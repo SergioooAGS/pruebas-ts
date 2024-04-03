@@ -1,7 +1,7 @@
 namespace AppHolaMundo {
     export class P1 {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
-        contenedorCliente: d3.Selection<SVGElement, any, any, any>;
+        public svgRegistroUsuario: d3.Selection<SVGElement, any, any, any>;
         public svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgleft: d3.Selection<SVGElement, any, any, any>;
         _figuras: P2;
@@ -125,7 +125,7 @@ namespace AppHolaMundo {
 
             var g4 = this.svgleft.append("g")
                 .on('click', () => {
-                    //this._clientes = new AppHolaMundo.P3();
+                    close();
                     console.log("SingOut")
                 });
             g4.append("rect")
@@ -183,7 +183,8 @@ namespace AppHolaMundo {
         }
         public ventanaUsuarios() {
             this.svgContenedor.selectAll("*").remove();
-            this._usuarios = new P3();
+            this._usuarios = new P3()
+            //this.svgRegistroUsuario = new P3();
         }
     }
 }

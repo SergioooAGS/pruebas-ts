@@ -111,7 +111,7 @@ var AppHolaMundo;
                 .text('Usuarios');
             var g4 = this.svgleft.append("g")
                 .on('click', () => {
-                //this._clientes = new AppHolaMundo.P3();
+                close();
                 console.log("SingOut");
             });
             g4.append("rect")
@@ -166,6 +166,7 @@ var AppHolaMundo;
         ventanaUsuarios() {
             this.svgContenedor.selectAll("*").remove();
             this._usuarios = new AppHolaMundo.P3();
+            //this.svgRegistroUsuario = new P3();
         }
     }
     AppHolaMundo.P1 = P1;
