@@ -52,10 +52,9 @@
 }
 
 .nuevoUsuario {
-    align-items: end;
-    color: #fafafa;
     font-family: cursive;
     text-align: center;
+    color: white;
 }
 
 .buscarName {
@@ -63,4 +62,36 @@
     width: 200;
     height: 35;
 
+}
+
+.btn-save {
+    color: #006b05;
+}
+
+.btn-cancel {
+    color: #ff0000;
+}
+
+.headerDiv {
+    width: 278px;
+    height: 30px;
+}
+
+.text {
+    width: 180px;
+    height: 30px;
+    font-family: cursive;
+    font-size: 15px;
+}
+
+.text2 {
+    width: 180px;
+    height: 30px;
+    font-family: cursive;
+    font-size: 15px;
+}
+
+.imgDiv {
+    top: 0px;
+    right: 0px;
 }
