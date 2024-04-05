@@ -151,8 +151,6 @@ namespace AppHolaMundo {
                 //     console.log(circleId);
                 //     this.dibujaCirculos();
                 // }
-
-
             }
         }
     }

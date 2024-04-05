@@ -2,14 +2,12 @@ var AppHolaMundo;
 (function (AppHolaMundo) {
     class P3 {
         constructor() {
-            //datosUsuarios: iUsuario[];
             this.id = 0;
             const body = d3.select("body");
             this.svgContenedor = d3.select("#svgContenedor");
             this.svgRegistroUsuario = d3.select("#svgRegistroUsuario");
             this.id = 0;
             this.mapaUsuarios = new Map();
-            //this.datosUsuarios();
             this.nuevoUsuario = false;
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
@@ -59,8 +57,21 @@ var AppHolaMundo;
                 .style("top", "50px")
                 .style("left", "0")
                 .html('<input class="text2" type="text" placeholder="Buscar" />');
+            let tituloUsuario = this.svgContenedor.append("g");
+            tituloUsuario.append("foreignObject")
+                .text("Usuarios")
+                .style("width", "220px")
+                .style("height", "30px")
+                .style("x", "50")
+                .style("y", "20")
+                .style("position", "absolute")
+                .style("font-size", "27px")
+                .style("font-family", "cursive")
+                .style("top", "50px")
+                .style("left", "0");
+            this.dibujaHead();
             this.NuevoUsuario();
-            this.cargarUsuario();
+            //this.cargarUsuario();
         }
         NuevoUsuario() {
             this.div = d3.select("body")
@@ -92,70 +103,61 @@ var AppHolaMundo;
                 .style("left", "50%")
                 .style("transform", "translate(-50%, -50%)")
                 .style("background-color", "#cdcdcd")
-                .style("padding", "30px")
+                .style("padding", "45px")
                 .style("border", "1px solid black")
                 .style("width", "280px")
                 .style("height", "350px")
                 .style("z-index", 20)
                 .style("text-aling", "center");
-            let btnSave = this.div.append("g")
-                .attr("class", "btn-save")
-                .on('click', () => {
-                //hacer lo mismo
-                this.cargarUsuario();
-            });
-            btnSave.append("rect")
-                .attr("stroke", "black")
-                .attr("stroke-width", "2px")
-                .style('x', '760')
-                .style("y", "560")
-                .style('rx', '20')
-                .style('ry', '20')
-                .style("fill", "Green")
-                .style('position', 'absolute')
-                .style('width', '90px')
-                .style('height', '40px')
-                .style('cursor', 'pointer');
-            btnSave.append("text")
-                .attr('x', '775')
-                .attr('y', '585')
-                .attr('fill', 'white')
-                .attr("font-family", "cursive")
-                .style("cursor", "pointer")
-                .text("Guardar");
-            let btnCancel = this.div.append("g")
-                .attr("class", "btn-cancel")
-                .on('click', () => {
-                this.div.remove();
-            });
-            // btnCancel.append("rect")
-            //     .attr("stroke", "black")
-            //     .attr("stroke-width", "2px")
-            //     .style('x', '860')
-            //     .style("y", "560")
-            //     .style('rx', '20')
-            //     .style('ry', '20')
-            //     .style("fill", "red")
-            //     .style('position', 'absolute')
-            //     .style('width', '90px')
-            //     .style('height', '40px')
-            //     .style('cursor', 'pointer')
-            btnCancel.append("text")
-                .attr('x', '870')
-                .attr('y', '585')
-                .attr('fill', 'white')
-                .attr("font-family", "cursive")
-                .style('pointer-events', 'none')
-                .text("Cancelar");
             let divHeader = this.div.append("div")
-                .attr("class", "headerDiv");
+                .attr("class", "headerDiv")
+                .style("pointer-events", "none");
             divHeader.style("position", "absolute")
                 .style("top", "0%")
                 .style("left", "0%")
-                .style("background-color", "#616161");
+                .style("background-color", "#4A4A4A");
             divHeader.append("h3")
                 .text("Registro Usuarios")
                 .style("fill", "white");
+            let botonGuardar = this.div.append("div")
+                .on("click", () => {
+                this.cargarUsuario();
+                //aki el cargaruser no jala entonces hay q ver q pedo para editar esa madre
+            });
+            botonGuardar.style("position", "absolute")
+                .style("top", "55%")
+                .style("left", "24%")
+                .style("background-color", "green")
+                .style("padding", "4px")
+                .style("border-radius", "10px");
+            botonGuardar.append("text")
+                .style("stroke", "black")
+                .style("stroke-width", "2px")
+                .attr('x', '775')
+                .attr('y', '585')
+                .attr("font-family", "cursive")
+                .style("cursor", "pointer")
+                .text("Guardar");
+            let botonCancelar = this.div.append("div")
+                .on('click', () => {
+                this.nuevoUsuario = !this.nuevoUsuario;
+                this.div.style("display", !this.nuevoUsuario ? "none" : "block");
+            });
+            botonCancelar.style("position", "absolute")
+                .style("top", "55%")
+                .style("left", "51%")
+                .style("background-color", "red")
+                .style("padding", "4px")
+                .style("border-radius", "10px");
+            botonCancelar.append("text")
+                .style("stroke", "black")
+                .style("stroke-width", "2px")
+                .attr('x', '775')
+                .attr('y', '585')
+                .style('fill', 'red')
+                .attr("font-family", "cursive")
+                .style("cursor", "pointer")
+                .text("Cancelar");
             let divimg = this.div.append("div")
                 .attr("class", "imgDiv")
                 .style("position", "absolute")
@@ -170,22 +172,24 @@ var AppHolaMundo;
                 .style("x", "200px")
                 .style("y", "10px")
                 .attr("src", "images/icon-cerrar.svg")
-                .on("click", () => {
-                this.div.remove();
+                .on('click', () => {
+                this.nuevoUsuario = !this.nuevoUsuario;
+                this.div.style("display", !this.nuevoUsuario ? "none" : "block");
             });
         }
         cargarUsuario() {
             let tUsuario = { id: this.id, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" };
             this.mapaUsuarios.set(this.id, tUsuario);
-            this.tablaUsuarios(); //watch
             this.id++;
+            this.dibujaFila(); //en vz d head la fila
         }
-        dibujaTabla() {
+        dibujaFila() {
             let fila = d3.select("tbody").selectAll("tr")
                 .data(this.mapaUsuarios.values(), (d) => d.id);
             fila.join((enter) => {
                 let row = enter.append("tr")
-                    .attr("class", "rows");
+                    .attr("class", "rows")
+                    .attr("fill", "white");
                 row.append("td")
                     .text((d) => d.id);
                 row.append("td")
@@ -195,7 +199,9 @@ var AppHolaMundo;
                     .attr("height", "70")
                     .attr("x", "60")
                     .attr("y", "50")
-                    .style("cursor", "pointer");
+                    .style("cursor", "pointer")
+                    .on("click", () => {
+                });
                 row.append("td")
                     .append("img")
                     .attr("src", "images/icono_editar.svg")
@@ -260,50 +266,32 @@ var AppHolaMundo;
                     return exit;
                 };
         }
-        tablaUsuarios() {
-            const tablaGroup = this.svgContenedor.append("g")
+        dibujaHead() {
+            let tablaGrupo = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
-            let tabla = tablaGroup.append("foreignObject")
+            let head = tablaGrupo.append("foreignObject")
                 .attr("class", "tabla")
-                .attr("width", 1500)
-                .attr("height", 900)
+                .style("overflow", "auto")
+                .style("background-color", "#cacaca")
+                .style("width", 1500)
+                .style("height", 900)
                 .append("xhtml:table")
+                .style("color", "white")
                 .attr("border", 1)
                 .style("background-color", "#cdcdcd")
-                .style("border", "1px solid #grey");
-            tabla.append("thead")
-                .append("tr")
-                .selectAll("th")
-                .data(["Id", "Editar", "Eliminar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"])
-                .enter()
-                .append("th")
-                .text((d) => d)
-                .attr("font-family", "cursive")
-                .attr("fill", "white")
-                .attr("class", "tHead");
-            let filas = tabla.selectAll("tr.usuario");
-            //let Users: iUsuario[] = Array.from(this.mapaUsuarios.values());
-            this.svgContenedor.selectAll("text");
-            filas.enter()
-                //.append("tr")
-                .attr("class", "usuario");
-            // .selectAll("td")
-            // .data((d: iUsuario) => Object.values(d))
-            // .enter()
-            // .append("td")
-            // .text((d: string) => d);
-            filas.selectAll("td");
-            // .data((d: iUsuario) => Object.values(d))
-            // .text((d: string) => d);
-            filas.exit()
-                .remove();
-            tabla.selectAll("tr")
-                .selectAll("td");
-            // .style("border", "1px solid #black")
-            // .style("padding", "1px");
-            tabla.append("tbody");
-            this.dibujaTabla();
-            //tabla.append("tfoot")
+                .style("border", "1px #black");
+            let thead = head.append("thead");
+            let tr = thead.append("tr");
+            ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"].forEach(encabezado => {
+                tr.append("th")
+                    .style("font-family", "cursive")
+                    .style("font-size", "20px")
+                    .style("width", "1500px")
+                    .style("background-color", "#4A4A4A")
+                    .text(encabezado);
+            });
+            head.append("tbody");
+            this.dibujaFila();
         }
     }
     AppHolaMundo.P3 = P3;

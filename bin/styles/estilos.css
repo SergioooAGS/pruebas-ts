@@ -40,15 +40,11 @@
 }
 
 .rows {
-    color: rgb(0, 0, 0);
+
     text-align: center;
     font-size: 20px;
     font-family: cursive;
 
-}
-
-.tabla {
-    border-color: #ec1cce;
 }
 
 .nuevoUsuario {
@@ -68,9 +64,9 @@
     color: #006b05;
 }
 
-.btn-cancel {
+/* .btn-cancel {
     color: #ff0000;
-}
+} */
 
 .headerDiv {
     width: 278px;
