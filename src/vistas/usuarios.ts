@@ -12,10 +12,11 @@ namespace AppHolaMundo {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
         public svgRegistroUsuario: d3.Selection<HTMLDivElement, any, any, any>;
         public div: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-        mapaUsuarios: Map<number, iUsuario>;
+        public divDelete: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+        public mapaUsuarios: Map<number, iUsuario>;
         private id = 0;
-        nuevoUsuario: boolean;
-
+        private nuevoUsuario: boolean;
+        private eliminarUser: boolean;
         constructor() {
             const body = d3.select("body");
             this.svgContenedor = d3.select("#svgContenedor");
@@ -23,6 +24,7 @@ namespace AppHolaMundo {
             this.id = 0;
             this.mapaUsuarios = new Map<number, iUsuario>();
             this.nuevoUsuario = false;
+            this.eliminarUser = false;
 
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
@@ -97,6 +99,7 @@ namespace AppHolaMundo {
 
             this.dibujaHead();
             this.NuevoUsuario();
+            this.eliminarUsuario();
             //this.cargarUsuario();
         }
 
@@ -109,26 +112,32 @@ namespace AppHolaMundo {
                 .style("display", "none");
 
             this.div.append("input")
+                .classed("name", true)
                 .attr("type", "text")
                 .attr("placeholder", "Nombre");
 
             this.div.append("input")
+                .classed("apellidoP", true)
                 .attr("type", "text")
                 .attr("placeholder", "Apellido paterno");
 
             this.div.append("input")
+                .classed("apellidoM", true)
                 .attr("type", "text")
                 .attr("placeholder", "Apellido Materno");
 
             this.div.append("input")
+                .classed("phone", true)
                 .attr("type", "text")
                 .attr("placeholder", "Telefono");
 
             this.div.append("input")
+                .classed("email", true)
                 .attr("type", "text")
                 .attr("placeholder", "Correo");
 
             this.div.append("input")
+                .classed("user", true)
                 .attr("type", "text")
                 .attr("placeholder", "Usuario");
 
@@ -160,16 +169,17 @@ namespace AppHolaMundo {
 
             let botonGuardar = this.div.append("div")
                 .on("click", () => {
-                    this.cargarUsuario();
-
-                    //aki el cargaruser no jala entonces hay q ver q pedo para editar esa madre
+                    this.datosUsuarios();
+                    this.dibujaFila();
+                    this.nuevoUsuario = !this.nuevoUsuario;
+                    this.div.style("display", !this.nuevoUsuario ? "none" : "block")
                 });
             botonGuardar.style("position", "absolute")
                 .style("top", "55%")
                 .style("left", "24%")
                 .style("background-color", "green")
                 .style("padding", "4px")
-                .style("border-radius", "10px");
+                 .style("border-radius", "10px");
 
             botonGuardar.append("text")
                 .style("stroke", "black")
@@ -223,13 +233,40 @@ namespace AppHolaMundo {
                 });
         }
 
-        public cargarUsuario() {
+        public eliminarUsuario() {
+            this.divDelete = d3.select("body")
+                .append("div")
+                .attr("class", "eliminarUsuario")
+                .style("box-shadow", "5px 5px 5px black")
+                .style("display", "none");
 
+            this.divDelete.style("position", "absolute")
+                .style("margin", "2px")
+                .style("top", "50%")
+                .style("left", "50%")
+                .style("transform", "translate(-30%, -50%)")
+                .style("background-color", "#cdcdcd")
+                .style("padding", "45px")
+                .style("border", "1px solid black")
+                .style("width", "120px")
+                .style("height", "160px")
+                .style("z-index", 20)
+                .style("text-aling", "center");
 
-            let tUsuario: iUsuario = { id: this.id, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" }
+        }
+
+        public datosUsuarios() {
+            let name = d3.select(".nuevoUsuario").select(".name").property("value");
+            let apellidoP = d3.select(".nuevoUsuario").select(".apellidoP").property("value");
+            let apellidoM = d3.select(".nuevoUsuario").select(".apellidoM").property("value");
+            let phone = d3.select(".nuevoUsuario").select(".phone").property("value");
+            let email = d3.select(".nuevoUsuario").select(".email").property("value");
+            let user = d3.select(".nuevoUsuario").select(".user").property("value");
+
+            let tUsuario = { id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
             this.mapaUsuarios.set(this.id, tUsuario);
             this.id++;
-            this.dibujaFila(); //en vz d head la fila
+            this.div.selectAll("input").property("value", "");
         }
 
         public dibujaFila() {
@@ -252,6 +289,11 @@ namespace AppHolaMundo {
                         .attr("y", "50")
                         .style("cursor", "pointer")
                         .on("click", () => {
+                            this.eliminarUsuario();
+                            // if (this.mapaUsuarios.has(d.id)) {
+                            //     this.mapaUsuarios.delete(d.id);
+                            //     this.dibujaFila();
+                            // }
                         });
 
                     row.append("td")
@@ -279,42 +321,8 @@ namespace AppHolaMundo {
                     return row
                 }),
                 (update) => {
-                    (update)
-                    let row = update.append("tr")
-                        .attr("class", "rows");
-                    row.append("td")
-                        .text((d: iUsuario) => d.id)
-
-                    row.append("td")
-                        .append("img")
-                        .attr("src", "images/traash.svg")
-                        .attr("width", "70")
-                        .attr("height", "70")
-                        .attr("x", "60")
-                        .attr("y", "50")
-                        .style("cursor", "pointer")
-
-                    row.append("td")
-                        .append("img")
-                        .attr("src", "images/icono_editar.svg")
-                        .attr("width", "60")
-                        .attr("height", "60")
-                        .attr("x", "80")
-                        .attr("y", "50")
-                        .style("cursor", "pointer")
-
-                    row.append("td")
-                        .text((d: iUsuario) => d.nombre)
-                    row.append("td")
-                        .text((d: iUsuario) => d.apellidoP)
-                    row.append("td")
-                        .text((d: iUsuario) => d.apellidoM)
-                    row.append("td")
-                        .text((d: iUsuario) => d.telefono)
-                    row.append("td")
-                        .text((d: iUsuario) => d.correo)
-                    row.append("td")
-                        .text((d: iUsuario) => d.usuario)
+                    (update).select("td")
+                        .text((d) => d.id);
                     return update;
                 },
                 (exit) => {

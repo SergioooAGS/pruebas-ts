@@ -9,6 +9,7 @@ var AppHolaMundo;
             this.id = 0;
             this.mapaUsuarios = new Map();
             this.nuevoUsuario = false;
+            this.eliminarUser = false;
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
                 this.nuevoUsuario = !this.nuevoUsuario;
@@ -71,6 +72,7 @@ var AppHolaMundo;
                 .style("left", "0");
             this.dibujaHead();
             this.NuevoUsuario();
+            this.eliminarUsuario();
             //this.cargarUsuario();
         }
         NuevoUsuario() {
@@ -80,21 +82,27 @@ var AppHolaMundo;
                 .style("box-shadow", "5px 5px 5px black")
                 .style("display", "none");
             this.div.append("input")
+                .classed("name", true)
                 .attr("type", "text")
                 .attr("placeholder", "Nombre");
             this.div.append("input")
+                .classed("apellidoP", true)
                 .attr("type", "text")
                 .attr("placeholder", "Apellido paterno");
             this.div.append("input")
+                .classed("apellidoM", true)
                 .attr("type", "text")
                 .attr("placeholder", "Apellido Materno");
             this.div.append("input")
+                .classed("phone", true)
                 .attr("type", "text")
                 .attr("placeholder", "Telefono");
             this.div.append("input")
+                .classed("email", true)
                 .attr("type", "text")
                 .attr("placeholder", "Correo");
             this.div.append("input")
+                .classed("user", true)
                 .attr("type", "text")
                 .attr("placeholder", "Usuario");
             this.div.style("position", "absolute")
@@ -121,8 +129,10 @@ var AppHolaMundo;
                 .style("fill", "white");
             let botonGuardar = this.div.append("div")
                 .on("click", () => {
-                this.cargarUsuario();
-                //aki el cargaruser no jala entonces hay q ver q pedo para editar esa madre
+                this.datosUsuarios();
+                this.dibujaFila();
+                this.nuevoUsuario = !this.nuevoUsuario;
+                this.div.style("display", !this.nuevoUsuario ? "none" : "block");
             });
             botonGuardar.style("position", "absolute")
                 .style("top", "55%")
@@ -177,11 +187,36 @@ var AppHolaMundo;
                 this.div.style("display", !this.nuevoUsuario ? "none" : "block");
             });
         }
-        cargarUsuario() {
-            let tUsuario = { id: this.id, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" };
+        eliminarUsuario() {
+            this.divDelete = d3.select("body")
+                .append("div")
+                .attr("class", "eliminarUsuario")
+                .style("box-shadow", "5px 5px 5px black")
+                .style("display", "none");
+            this.divDelete.style("position", "absolute")
+                .style("margin", "2px")
+                .style("top", "50%")
+                .style("left", "50%")
+                .style("transform", "translate(-30%, -50%)")
+                .style("background-color", "#cdcdcd")
+                .style("padding", "45px")
+                .style("border", "1px solid black")
+                .style("width", "120px")
+                .style("height", "160px")
+                .style("z-index", 20)
+                .style("text-aling", "center");
+        }
+        datosUsuarios() {
+            let name = d3.select(".nuevoUsuario").select(".name").property("value");
+            let apellidoP = d3.select(".nuevoUsuario").select(".apellidoP").property("value");
+            let apellidoM = d3.select(".nuevoUsuario").select(".apellidoM").property("value");
+            let phone = d3.select(".nuevoUsuario").select(".phone").property("value");
+            let email = d3.select(".nuevoUsuario").select(".email").property("value");
+            let user = d3.select(".nuevoUsuario").select(".user").property("value");
+            let tUsuario = { id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
             this.mapaUsuarios.set(this.id, tUsuario);
             this.id++;
-            this.dibujaFila(); //en vz d head la fila
+            this.div.selectAll("input").property("value", "");
         }
         dibujaFila() {
             let fila = d3.select("tbody").selectAll("tr")
@@ -201,6 +236,11 @@ var AppHolaMundo;
                     .attr("y", "50")
                     .style("cursor", "pointer")
                     .on("click", () => {
+                    this.eliminarUsuario();
+                    // if (this.mapaUsuarios.has(d.id)) {
+                    //     this.mapaUsuarios.delete(d.id);
+                    //     this.dibujaFila();
+                    // }
                 });
                 row.append("td")
                     .append("img")
@@ -225,39 +265,8 @@ var AppHolaMundo;
                 return row;
             }),
                 (update) => {
-                    (update);
-                    let row = update.append("tr")
-                        .attr("class", "rows");
-                    row.append("td")
+                    (update).select("td")
                         .text((d) => d.id);
-                    row.append("td")
-                        .append("img")
-                        .attr("src", "images/traash.svg")
-                        .attr("width", "70")
-                        .attr("height", "70")
-                        .attr("x", "60")
-                        .attr("y", "50")
-                        .style("cursor", "pointer");
-                    row.append("td")
-                        .append("img")
-                        .attr("src", "images/icono_editar.svg")
-                        .attr("width", "60")
-                        .attr("height", "60")
-                        .attr("x", "80")
-                        .attr("y", "50")
-                        .style("cursor", "pointer");
-                    row.append("td")
-                        .text((d) => d.nombre);
-                    row.append("td")
-                        .text((d) => d.apellidoP);
-                    row.append("td")
-                        .text((d) => d.apellidoM);
-                    row.append("td")
-                        .text((d) => d.telefono);
-                    row.append("td")
-                        .text((d) => d.correo);
-                    row.append("td")
-                        .text((d) => d.usuario);
                     return update;
                 },
                 (exit) => {
