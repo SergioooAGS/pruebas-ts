@@ -12,13 +12,14 @@ var AppHolaMundo;
             this.usuarioEliminar = false;
             let apagarVentana = this.svgContenedor.append("g")
                 .on("click", () => {
-                this.usuarioEliminar = !this.usuarioEliminar;
-                this.divDelete.style("display", !this.usuarioEliminar ? "none" : "block");
+                this.divDelete.style("display", "none");
+                //si se va a abrir o a cerrar segun su funcion
             });
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
-                this.nuevoUsuario = !this.nuevoUsuario;
-                this.div.style("display", !this.nuevoUsuario ? "none" : "block");
+                // this.nuevoUsuario = !this.nuevoUsuario;
+                //                   this.div.style("display", !this.nuevoUsuario ? "none" : "block")
+                this.div.style("display", "block");
             });
             offnewUser.append("rect")
                 .attr("stroke", "black")
@@ -89,7 +90,8 @@ var AppHolaMundo;
                 .attr("class", "nuevoUsuario")
                 .style("box-shadow", "5px 5px 5px black")
                 .style("display", "none");
-            this.div.append("input")
+            //acuerdate llenar estos campos para que funcionen
+            this.ipName = this.div.append("input")
                 .classed("name", true)
                 .attr("type", "text")
                 .attr("placeholder", "Nombre");
@@ -265,21 +267,14 @@ var AppHolaMundo;
                 .text("Cancelar");
         }
         datosUsuarios() {
-            let name = d3.select(".nuevoUsuario").select(".name").property("value");
+            //rellenar estos datos para que funcionen
+            let name = this.ipName.property("value");
             let apellidoP = d3.select(".nuevoUsuario").select(".apellidoP").property("value");
             let apellidoM = d3.select(".nuevoUsuario").select(".apellidoM").property("value");
             let phone = d3.select(".nuevoUsuario").select(".phone").property("value");
             let email = d3.select(".nuevoUsuario").select(".email").property("value");
             let user = d3.select(".nuevoUsuario").select(".user").property("value");
             if (name && apellidoP && apellidoM && apellidoM && phone && email && user) {
-                let registrar = {
-                    name: name,
-                    apellidoP: apellidoP,
-                    apellidoM: apellidoM,
-                    phone: phone,
-                    email: email,
-                    user: user
-                };
                 let tUsuario = { id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
                 this.mapaUsuarios.set(this.id, tUsuario);
                 this.id++;
@@ -308,8 +303,7 @@ var AppHolaMundo;
                     .attr("y", "50")
                     .style("cursor", "pointer")
                     .on("click", () => {
-                    this.usuarioEliminar = !this.usuarioEliminar;
-                    this.divDelete.style("display", !this.usuarioEliminar ? "none" : "block");
+                    this.divDelete.style("display", "block");
                 });
                 row.append("td")
                     .append("img")
@@ -319,7 +313,9 @@ var AppHolaMundo;
                     .attr("x", "80")
                     .attr("y", "50")
                     .style("cursor", "pointer")
-                    .on("click", () => {
+                    .on("click", (e, d) => {
+                    this.div.style("display", "block");
+                    this.ipName.property("value", "aaaaaa");
                 });
                 row.append("td")
                     .classed("nombreUsuario", true)

@@ -13,6 +13,8 @@ namespace AppHolaMundo {
         public svgRegistroUsuario: d3.Selection<HTMLDivElement, any, any, any>;
         public div: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divDelete: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+        public ipName: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        //recuerda agregar todos los campos a obtener de usuario
         public mapaUsuarios: Map<number, iUsuario>;
         private id = 0;
         private nuevoUsuario: boolean;
@@ -29,15 +31,17 @@ namespace AppHolaMundo {
 
             let apagarVentana = this.svgContenedor.append("g")
                 .on("click", () => {
-                    this.usuarioEliminar = !this.usuarioEliminar
-                    this.divDelete.style("display", !this.usuarioEliminar ? "none" : "block")
+                    this.divDelete.style("display", "none")
+                    //si se va a abrir o a cerrar segun su funcion
                 });
 
 
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
-                    this.nuevoUsuario = !this.nuevoUsuario;
-                    this.div.style("display", !this.nuevoUsuario ? "none" : "block")
+                    // this.nuevoUsuario = !this.nuevoUsuario;
+                    //                   this.div.style("display", !this.nuevoUsuario ? "none" : "block")
+
+                    this.div.style("display", "block")
                 });
             offnewUser.append("rect")
                 .attr("stroke", "black")
@@ -123,8 +127,8 @@ namespace AppHolaMundo {
                 .attr("class", "nuevoUsuario")
                 .style("box-shadow", "5px 5px 5px black")
                 .style("display", "none");
-
-            this.div.append("input")
+            //acuerdate llenar estos campos para que funcionen
+            this.ipName = this.div.append("input")
                 .classed("name", true)
                 .attr("type", "text")
                 .attr("placeholder", "Nombre");
@@ -329,7 +333,8 @@ namespace AppHolaMundo {
         }
 
         public datosUsuarios() {
-            let name = d3.select(".nuevoUsuario").select(".name").property("value");
+            //rellenar estos datos para que funcionen
+            let name = this.ipName.property("value");
             let apellidoP = d3.select(".nuevoUsuario").select(".apellidoP").property("value");
             let apellidoM = d3.select(".nuevoUsuario").select(".apellidoM").property("value");
             let phone = d3.select(".nuevoUsuario").select(".phone").property("value");
@@ -337,14 +342,7 @@ namespace AppHolaMundo {
             let user = d3.select(".nuevoUsuario").select(".user").property("value");
 
             if (name && apellidoP && apellidoM && apellidoM && phone && email && user) {
-                let registrar = {
-                    name: name,
-                    apellidoP: apellidoP,
-                    apellidoM: apellidoM,
-                    phone: phone,
-                    email: email,
-                    user: user
-                };
+
                 let tUsuario = { id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
                 this.mapaUsuarios.set(this.id, tUsuario);
                 this.id++;
@@ -364,7 +362,7 @@ namespace AppHolaMundo {
                         .attr("class", "rows")
                         .attr("fill", "white");
                     row.append("td")
-                        .text((d) => d.id)
+                        .text((d) => d.id);
 
                     row.append("td")
                         .classed("deleteUser", true)
@@ -376,8 +374,7 @@ namespace AppHolaMundo {
                         .attr("y", "50")
                         .style("cursor", "pointer")
                         .on("click", () => {
-                            this.usuarioEliminar = !this.usuarioEliminar
-                            this.divDelete.style("display", !this.usuarioEliminar ? "none" : "block")
+                            this.divDelete.style("display", "block")
                         });
 
                     row.append("td")
@@ -388,7 +385,9 @@ namespace AppHolaMundo {
                         .attr("x", "80")
                         .attr("y", "50")
                         .style("cursor", "pointer")
-                        .on("click", () => {
+                        .on("click", (e, d: iUsuario) => {
+                            this.div.style("display", "block")
+                            this.ipName.property("value", "aaaaaa");
 
                         });
 
