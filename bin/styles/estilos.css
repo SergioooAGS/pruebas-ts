@@ -47,11 +47,12 @@
 
 }
 
+/* 
 .nuevoUsuario {
     font-family: cursive;
     text-align: center;
     color: white;
-}
+} */
 
 .buscarName {
     color: blue;
@@ -63,10 +64,6 @@
 .btn-save {
     color: #006b05;
 }
-
-/* .btn-cancel {
-    color: #ff0000;
-} */
 
 .headerDiv {
     width: 278px;

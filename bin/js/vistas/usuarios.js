@@ -1,6 +1,6 @@
 var AppHolaMundo;
 (function (AppHolaMundo) {
-    class P3 {
+    class Usuarios {
         constructor() {
             this.id = 0;
             const body = d3.select("body");
@@ -8,18 +8,11 @@ var AppHolaMundo;
             //this.svgRegistroUsuario = d3.select("#svgRegistroUsuario");
             this.id = 0;
             this.mapaUsuarios = new Map();
-            this.nuevoUsuario = false;
-            this.usuarioEliminar = false;
-            let apagarVentana = this.svgContenedor.append("g")
-                .on("click", () => {
-                this.divDelete.style("display", "none");
-                //si se va a abrir o a cerrar segun su funcion
-            });
+            this.eliminarMap = -1;
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
-                // this.nuevoUsuario = !this.nuevoUsuario;
-                //                   this.div.style("display", !this.nuevoUsuario ? "none" : "block")
-                this.div.style("display", "block");
+                this.abrirVentanaRegistro(null);
+                this.divFondo.style("display", "block");
             });
             offnewUser.append("rect")
                 .attr("stroke", "black")
@@ -40,6 +33,7 @@ var AppHolaMundo;
                 .attr("font-family", "cursive")
                 .style("pointer-events", "none")
                 .text("Agregar");
+            //ediatr
             let selek = this.svgContenedor.append("select")
                 .style("select", "Option1")
                 .text("Hola1")
@@ -88,33 +82,59 @@ var AppHolaMundo;
             this.div = d3.select("body")
                 .append("div")
                 .attr("class", "nuevoUsuario")
+                .style("font-family", "cursive")
+                .style("text-align", "center")
+                .style("color", "white")
                 .style("box-shadow", "5px 5px 5px black")
                 .style("display", "none");
-            //acuerdate llenar estos campos para que funcionen
+            this.div.append("text")
+                .text("Nombre")
+                .style("color", "black");
             this.ipName = this.div.append("input")
                 .classed("name", true)
                 .attr("type", "text")
-                .attr("placeholder", "Nombre");
-            this.div.append("input")
+                .attr("placeholder", "")
+                .style("border-color", "black");
+            this.div.append("text")
+                .text("Apellido Paterno")
+                .style("color", "black");
+            this.ipApellidop = this.div.append("input")
                 .classed("apellidoP", true)
                 .attr("type", "text")
-                .attr("placeholder", "Apellido paterno");
-            this.div.append("input")
+                .attr("placeholder", "")
+                .style("border-color", "black");
+            this.div.append("text")
+                .text("Apellido Materno")
+                .style("color", "black");
+            this.ipApellidoM = this.div.append("input")
                 .classed("apellidoM", true)
                 .attr("type", "text")
-                .attr("placeholder", "Apellido Materno");
-            this.div.append("input")
+                .attr("placeholder", "")
+                .style("border-color", "black");
+            this.div.append("text")
+                .text("Telefono")
+                .style("color", "black");
+            this.ipPhone = this.div.append("input")
                 .classed("phone", true)
                 .attr("type", "text")
-                .attr("placeholder", "Telefono");
-            this.div.append("input")
+                .attr("placeholder", "")
+                .style("border-color", "black");
+            this.div.append("text")
+                .text("Correo")
+                .style("color", "black");
+            this.ipEmail = this.div.append("input")
                 .classed("email", true)
                 .attr("type", "text")
-                .attr("placeholder", "Correo");
-            this.div.append("input")
+                .attr("placeholder", "")
+                .style("border-color", "black");
+            this.div.append("text")
+                .text("Usuario")
+                .style("color", "black");
+            this.ipUser = this.div.append("input")
                 .classed("user", true)
                 .attr("type", "text")
-                .attr("placeholder", "Usuario");
+                .attr("placeholder", "")
+                .style("border-color", "black");
             this.div.style("position", "absolute")
                 .style("margin", "2px")
                 .style("top", "50%")
@@ -124,7 +144,7 @@ var AppHolaMundo;
                 .style("padding", "45px")
                 .style("border", "1px solid black")
                 .style("width", "280px")
-                .style("height", "350px")
+                .style("height", "400px")
                 .style("z-index", 20)
                 .style("text-aling", "center");
             let divHeader = this.div.append("div")
@@ -134,18 +154,17 @@ var AppHolaMundo;
                 .style("top", "0%")
                 .style("left", "0%")
                 .style("background-color", "#4A4A4A");
-            divHeader.append("h3")
+            this.tituloVentanaRegistro = divHeader.append("h3")
                 .text("Registro Usuarios")
                 .style("fill", "white");
             let botonGuardar = this.div.append("div")
                 .on("click", () => {
                 this.datosUsuarios();
                 this.dibujaFila();
-                this.nuevoUsuario = !this.nuevoUsuario;
-                this.div.style("display", !this.nuevoUsuario ? "none" : "block");
+                this.div.style("display", "none");
             });
             botonGuardar.style("position", "absolute")
-                .style("top", "55%")
+                .style("top", "83%")
                 .style("left", "24%")
                 .style("background-color", "green")
                 .style("padding", "4px")
@@ -160,11 +179,10 @@ var AppHolaMundo;
                 .text("Guardar");
             let botonCancelar = this.div.append("div")
                 .on('click', () => {
-                this.nuevoUsuario = !this.nuevoUsuario;
-                this.div.style("display", !this.nuevoUsuario ? "none" : "block");
+                this.div.style("display", "none");
             });
             botonCancelar.style("position", "absolute")
-                .style("top", "55%")
+                .style("top", "83%")
                 .style("left", "51%")
                 .style("background-color", "red")
                 .style("padding", "4px")
@@ -193,8 +211,7 @@ var AppHolaMundo;
                 .style("y", "10px")
                 .attr("src", "images/icon-cerrar.svg")
                 .on('click', () => {
-                this.nuevoUsuario = !this.nuevoUsuario;
-                this.div.style("display", !this.nuevoUsuario ? "none" : "block");
+                this.div.style("display", "none");
             });
         }
         eliminarUsuario() {
@@ -228,7 +245,13 @@ var AppHolaMundo;
             titleeliminar
                 .text("¿Deseas eliminar este usuario?");
             let botonEliminar = this.divDelete.append("div")
-                .on("click", () => {
+                .on("click", (e, d) => {
+                if (this.mapaUsuarios.has(this.eliminarMap)) {
+                    this.mapaUsuarios.delete(this.eliminarMap);
+                    this.dibujaFila();
+                }
+                this.eliminarMap = -1;
+                this.divDelete.style("display", "none");
             });
             botonEliminar.style("position", "absolute")
                 .style("top", "55%")
@@ -246,9 +269,8 @@ var AppHolaMundo;
                 .style("cursor", "pointer")
                 .text("Eliminar");
             let botonCancel = this.divDelete.append("div")
-                .on('click', () => {
-                this.usuarioEliminar = !this.usuarioEliminar;
-                this.divDelete.style("display", !this.usuarioEliminar ? "none" : "block");
+                .on("click", () => {
+                this.divDelete.style("display", "none");
             });
             botonCancel.style("position", "absolute")
                 .style("top", "55%")
@@ -267,22 +289,21 @@ var AppHolaMundo;
                 .text("Cancelar");
         }
         datosUsuarios() {
-            //rellenar estos datos para que funcionen
             let name = this.ipName.property("value");
-            let apellidoP = d3.select(".nuevoUsuario").select(".apellidoP").property("value");
-            let apellidoM = d3.select(".nuevoUsuario").select(".apellidoM").property("value");
-            let phone = d3.select(".nuevoUsuario").select(".phone").property("value");
-            let email = d3.select(".nuevoUsuario").select(".email").property("value");
-            let user = d3.select(".nuevoUsuario").select(".user").property("value");
+            let apellidoP = this.ipApellidop.property("value");
+            let apellidoM = this.ipApellidoM.property("value");
+            let phone = this.ipPhone.property("value");
+            let email = this.ipEmail.property("value");
+            let user = this.ipUser.property("value");
             if (name && apellidoP && apellidoM && apellidoM && phone && email && user) {
                 let tUsuario = { id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
+                this.dibujaFila();
                 this.mapaUsuarios.set(this.id, tUsuario);
                 this.id++;
             }
             else {
                 alert("No puedes agregar campos vacios");
             }
-            this.div.selectAll("input").property("value", "");
         }
         dibujaFila() {
             let fila = d3.select("tbody").selectAll("tr")
@@ -302,20 +323,20 @@ var AppHolaMundo;
                     .attr("x", "60")
                     .attr("y", "50")
                     .style("cursor", "pointer")
-                    .on("click", () => {
+                    .on("click", (e, d) => {
                     this.divDelete.style("display", "block");
+                    this.eliminarMap = d.id;
                 });
                 row.append("td")
                     .append("img")
-                    .attr("src", "images/icono_editar.svg")
+                    .attr("src", "images/editar-d.svg")
                     .attr("width", "60")
                     .attr("height", "60")
                     .attr("x", "80")
                     .attr("y", "50")
                     .style("cursor", "pointer")
                     .on("click", (e, d) => {
-                    this.div.style("display", "block");
-                    this.ipName.property("value", "aaaaaa");
+                    this.abrirVentanaRegistro(d);
                 });
                 row.append("td")
                     .classed("nombreUsuario", true)
@@ -362,9 +383,10 @@ var AppHolaMundo;
                 .style("height", 900)
                 .append("xhtml:table")
                 .style("color", "white")
-                .attr("border", 1)
+                //.attr("border", 1)
                 .style("background-color", "#cdcdcd")
                 .style("border", "1px #black");
+            this.construirVentana();
             let thead = head.append("thead");
             let tr = thead.append("tr");
             ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"].forEach(encabezado => {
@@ -378,6 +400,40 @@ var AppHolaMundo;
             head.append("tbody");
             this.dibujaFila();
         }
+        abrirVentanaRegistro(usuario) {
+            this.limpiarVenatana();
+            this.div.style("display", "block");
+            this.tituloVentanaRegistro.text(usuario ? "Editar usuario" : "Registro Usuario");
+            if (usuario) {
+                this.id = usuario.id;
+                this.ipName.property("value", usuario.nombre);
+                this.ipApellidop.property("value", usuario.apellidoP);
+                this.ipApellidoM.property("value", usuario.apellidoM);
+                this.ipPhone.property("value", usuario.telefono);
+                this.ipEmail.property("value", usuario.correo);
+                this.ipUser.property("value", usuario.usuario);
+            }
+        }
+        limpiarVenatana() {
+            this.ipName.property("value", "");
+            this.ipApellidop.property("value", "");
+            this.ipApellidoM.property("value", "");
+            this.ipPhone.property("value", "");
+            this.ipEmail.property("value", "");
+            this.ipUser.property("value", "");
+        }
+        construirVentana() {
+            let divFondo = d3.select("body").append("div");
+            divFondo.style("background", "white")
+                .style("left", "100%")
+                .style("padding", "100px")
+                .style("width", "1900px")
+                .style("height", "900px")
+                .style("opacity", "0.7")
+                .style("display", "none");
+        }
+        alertaValidar() {
+        }
     }
-    AppHolaMundo.P3 = P3;
+    AppHolaMundo.Usuarios = Usuarios;
 })(AppHolaMundo || (AppHolaMundo = {}));

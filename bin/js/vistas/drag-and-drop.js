@@ -1,6 +1,6 @@
 var AppHolaMundo;
 (function (AppHolaMundo) {
-    class P2 {
+    class dragAndDrop {
         // circleArr: iCirculo[];
         constructor() {
             this.id = 0;
@@ -135,5 +135,5 @@ var AppHolaMundo;
             }
         }
     }
-    AppHolaMundo.P2 = P2;
+    AppHolaMundo.dragAndDrop = dragAndDrop;
 })(AppHolaMundo || (AppHolaMundo = {}));

@@ -48,7 +48,6 @@ var AppHolaMundo;
                 console.log(this._figuras);
             });
             g1.append("rect")
-                .attr("class", "botonDrag")
                 .style('x', '50px')
                 .style('y', '80')
                 .style('rx', '20')
@@ -161,11 +160,11 @@ var AppHolaMundo;
         }
         ventanaDrag() {
             this.svgContenedor.selectAll("*").remove();
-            this._figuras = new AppHolaMundo.P2();
+            this._figuras = new AppHolaMundo.dragAndDrop();
         }
         ventanaUsuarios() {
             this.svgContenedor.selectAll("*").remove();
-            this._usuarios = new AppHolaMundo.P3();
+            this._usuarios = new AppHolaMundo.Usuarios();
             //this.svgRegistroUsuario = new P3();
         }
     }

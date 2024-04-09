@@ -4,8 +4,9 @@ namespace AppHolaMundo {
         public svgRegistroUsuario: d3.Selection<SVGElement, any, any, any>;
         public svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgleft: d3.Selection<SVGElement, any, any, any>;
-        _figuras: P2;
-        _usuarios: P3;
+        _figuras: dragAndDrop;
+        _usuarios: Usuarios;
+        //_empresas: Empresas;
         _img: d3.Selection<SVGImageElement, any, any, any>;
         _menu: boolean;
 
@@ -58,7 +59,6 @@ namespace AppHolaMundo {
                     console.log(this._figuras);
                 });
             g1.append("rect")
-                .attr("class", "botonDrag")
                 .style('x', '50px')
                 .style('y', '80')
                 .style('rx', '20')
@@ -179,11 +179,11 @@ namespace AppHolaMundo {
 
         public ventanaDrag() {
             this.svgContenedor.selectAll("*").remove();
-            this._figuras = new P2();
+            this._figuras = new dragAndDrop();
         }
         public ventanaUsuarios() {
             this.svgContenedor.selectAll("*").remove();
-            this._usuarios = new P3()
+            this._usuarios = new Usuarios()
             //this.svgRegistroUsuario = new P3();
         }
     }

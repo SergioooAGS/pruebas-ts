@@ -1,0 +1,11 @@
+<svg width="221" height="203" viewBox="0 0 221 203" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="221" height="203" fill="#F5F5F5"/>
+<rect id="Rectangle 1" width="221" height="203" rx="11" fill="#5F5F5F" fill-opacity="0.53"/>
+<line id="Line 2" x1="27" y1="19" x2="27" y2="187" stroke="#0034BB" stroke-width="10"/>
+<line id="Line 3" x1="22" y1="182" x2="196" y2="182" stroke="#0034BB" stroke-width="10"/>
+<line id="Line 4" x1="191" y1="187" x2="191" y2="95" stroke="#0034BB" stroke-width="10"/>
+<line id="Line 5" x1="22" y1="14" x2="134" y2="14" stroke="#0034BB" stroke-width="10"/>
+<path id="Polygon 1" d="M109.792 132.13L80.6227 140.369L88.072 110.988L109.792 132.13Z" stroke="#0034BB" stroke-width="6"/>
+<rect id="Rectangle 2" x="174.659" y="19.2425" width="33.0592" height="118.775" transform="rotate(44.6125 174.659 19.2425)" stroke="#0034BB" stroke-width="6"/>
+<line id="Line 6" x1="55" y1="148" x2="161" y2="148" stroke="#0034BB" stroke-width="6"/>
+</svg>

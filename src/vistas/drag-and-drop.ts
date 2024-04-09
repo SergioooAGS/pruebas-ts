@@ -6,7 +6,7 @@ namespace AppHolaMundo {
         x: number;
         y: number;
     }
-    export class P2 {
+    export class dragAndDrop {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
         private newCircle: d3.Selection<SVGCircleElement, any, any, any>;
         private mapa: Map<number, iCirculo>;
