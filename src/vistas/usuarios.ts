@@ -15,15 +15,17 @@ namespace AppHolaMundo {
         public divEditar: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divDelete: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divFondo: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+        public divAlerta: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public ipName: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         public ipApellidop: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         public ipApellidoM: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         public ipPhone: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         public ipEmail: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         public ipUser: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        public eliminarMap: number;
+        public filtro: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         private tituloVentanaRegistro: d3.Selection<HTMLElement, any, any, any>;
         public mapaUsuarios: Map<number, iUsuario>;
+        public eliminarMap: number;
         private id = 0;
 
         constructor() {
@@ -36,7 +38,7 @@ namespace AppHolaMundo {
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
                     this.abrirVentanaRegistro(null);
-                    this.divFondo.style("display", "block");
+                    //this.divFondo.style("display", "block");
                 });
             offnewUser.append("rect")
                 .attr("stroke", "black")
@@ -64,9 +66,9 @@ namespace AppHolaMundo {
                 .text("Hola1")
                 .style("select", "Option2")
 
-            let g9 = this.svgContenedor.append("g")
+            let inputNombre = this.svgContenedor.append("g")
 
-            g9.append("foreignObject")
+            inputNombre.append("foreignObject")
                 .attr("class", "buscarName")
                 .attr("type", "text")
                 .style("width", "220px")
@@ -79,9 +81,9 @@ namespace AppHolaMundo {
                 .html('<input class="text" type="text" placeholder="Nombre" />')
 
 
-            let g10 = this.svgContenedor.append("g")
+            let inputBuscar = this.svgContenedor.append("g")
 
-            g10.append("foreignObject")
+            inputBuscar.append("foreignObject")
                 .attr("class", "buscarAp")
                 .attr("type", "text")
                 .style("width", "220px")
@@ -107,11 +109,10 @@ namespace AppHolaMundo {
                 .style("top", "50px")
                 .style("left", "0");
 
-
-
             this.dibujaHead();
             this.NuevoUsuario();
             this.eliminarUsuario();
+            this.alertaValidar();
         }
 
         public NuevoUsuario() {
@@ -371,11 +372,13 @@ namespace AppHolaMundo {
 
             if (name && apellidoP && apellidoM && apellidoM && phone && email && user) {
                 let tUsuario = <iUsuario>{ id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
-                this.dibujaFila();
                 this.mapaUsuarios.set(this.id, tUsuario);
+                this.dibujaFila();
                 this.id++;
+
+
             } else {
-                alert("No puedes agregar campos vacios");
+                this.divAlerta.style("display", "block");
             }
         }
 
@@ -385,8 +388,11 @@ namespace AppHolaMundo {
             fila.join(
                 (enter) => {
                     let row = enter.append("tr")
-                        .attr("class", "rows")
-                        .attr("fill", "white");
+                        .style("text-align", "center")
+                        .style("font-family", "cursive")
+                        .style("font-size", "20px")
+                        .style("background-color", (e, i) => i % 2 === 0 ? "silver" : "#cacaca");
+
                     row.append("td")
                         .text((d) => d.id);
 
@@ -443,6 +449,7 @@ namespace AppHolaMundo {
                     return row
                 }, (update) => {
                     update
+                        .style("background-color", (e, i) => i % 2 === 0 ? "silver" : "#cacaca")
                         .select(".nombreUsuario").text((d) => d.nombre)
                         .select(".apellidoP-usuario").text((d) => d.apellidoP)
                         .select(".apellidoM-usuario").text((d) => d.apellidoM)
@@ -457,6 +464,19 @@ namespace AppHolaMundo {
                 });
         }
 
+        public filtrarDatos() {
+            let datosMapa = Array.from(this.mapaUsuarios.values());
+            let nombresFiltrados = this.ipName.property("value");
+            let resultadosFiltro = datosMapa.filter(function (value: iUsuario) {
+                console.log(value);
+
+                return value === nombresFiltrados;
+            });
+
+            console.log(this.ipName);
+
+        }
+
         public dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
@@ -464,15 +484,14 @@ namespace AppHolaMundo {
             let head = tablaGrupo.append("foreignObject")
                 .attr("class", "tabla")
                 .style("overflow", "auto")
-                .style("background-color", "#cacaca")
+                .style("background-color", "#cacaca ")
                 .style("width", 1500)
                 .style("height", 900)
                 .append("xhtml:table")
                 .style("color", "white")
-                //.attr("border", 1)
                 .style("background-color", "#cdcdcd")
                 .style("border", "1px #black");
-            this.construirVentana();
+            this.fondoProteccion();
 
             let thead = head.append("thead");
             let tr = thead.append("tr");
@@ -510,7 +529,7 @@ namespace AppHolaMundo {
             this.ipUser.property("value", "");
         }
 
-        public construirVentana() {
+        public fondoProteccion() {
             let divFondo = d3.select("body").append("div");
 
             divFondo.style("background", "white")
@@ -523,6 +542,50 @@ namespace AppHolaMundo {
         }
 
         public alertaValidar() {
+            this.divAlerta = d3.select("body").append("div")
+                .style("class", "validarFormulario");
+            this.divAlerta.style("background", "white")
+
+                .style("transform", "translate(-30%, -50%)")
+                .style("width", "220px")
+                .style("height", "120px")
+                .style("position", "absolute")
+                .style("top", "25%")
+                .style("left", "48%")
+                .style("display", "none")
+                .style("border", "1px solid black");
+
+            let tituloValidar = this.divAlerta.append("h1")
+                .style("text-align", "center")
+                .style("font-family", "cursive")
+                .style("padding", "5%")
+                .style("font-size", "19px");
+
+            tituloValidar.text("¡No puedes agregar campos vacios!");
+
+            let botonCancel = this.divAlerta.append("div")
+                .on("click", () => {
+                    this.divAlerta.style("display", "none")
+                });
+
+            botonCancel.style("position", "absolute")
+                .style("top", "65%")
+                .style("left", "35%")
+                .style("background-color", "green")
+                .style("padding", "4px")
+                .style("border-radius", "10px");
+
+            botonCancel.append("text")
+                .style("stroke", "black")
+                .style("stroke-width", "2px")
+                .style("x", "775")
+                .style("y", "585")
+                .style("color", "white")
+                .style("font-family", "cursive")
+                .style("cursor", "pointer")
+                .text("Aceptar");
+
+
 
         }
     }

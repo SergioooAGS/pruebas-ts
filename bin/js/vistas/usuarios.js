@@ -12,7 +12,7 @@ var AppHolaMundo;
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
                 this.abrirVentanaRegistro(null);
-                this.divFondo.style("display", "block");
+                //this.divFondo.style("display", "block");
             });
             offnewUser.append("rect")
                 .attr("stroke", "black")
@@ -38,8 +38,8 @@ var AppHolaMundo;
                 .style("select", "Option1")
                 .text("Hola1")
                 .style("select", "Option2");
-            let g9 = this.svgContenedor.append("g");
-            g9.append("foreignObject")
+            let inputNombre = this.svgContenedor.append("g");
+            inputNombre.append("foreignObject")
                 .attr("class", "buscarName")
                 .attr("type", "text")
                 .style("width", "220px")
@@ -50,8 +50,8 @@ var AppHolaMundo;
                 .style("top", "50px")
                 .style("left", "0")
                 .html('<input class="text" type="text" placeholder="Nombre" />');
-            let g10 = this.svgContenedor.append("g");
-            g10.append("foreignObject")
+            let inputBuscar = this.svgContenedor.append("g");
+            inputBuscar.append("foreignObject")
                 .attr("class", "buscarAp")
                 .attr("type", "text")
                 .style("width", "220px")
@@ -77,6 +77,7 @@ var AppHolaMundo;
             this.dibujaHead();
             this.NuevoUsuario();
             this.eliminarUsuario();
+            this.alertaValidar();
         }
         NuevoUsuario() {
             this.div = d3.select("body")
@@ -297,12 +298,12 @@ var AppHolaMundo;
             let user = this.ipUser.property("value");
             if (name && apellidoP && apellidoM && apellidoM && phone && email && user) {
                 let tUsuario = { id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
-                this.dibujaFila();
                 this.mapaUsuarios.set(this.id, tUsuario);
+                this.dibujaFila();
                 this.id++;
             }
             else {
-                alert("No puedes agregar campos vacios");
+                this.divAlerta.style("display", "block");
             }
         }
         dibujaFila() {
@@ -310,8 +311,10 @@ var AppHolaMundo;
                 .data(this.mapaUsuarios.values(), (d) => d.id);
             fila.join((enter) => {
                 let row = enter.append("tr")
-                    .attr("class", "rows")
-                    .attr("fill", "white");
+                    .style("text-align", "center")
+                    .style("font-family", "cursive")
+                    .style("font-size", "20px")
+                    .style("background-color", (e, i) => i % 2 === 0 ? "silver" : "#cacaca");
                 row.append("td")
                     .text((d) => d.id);
                 row.append("td")
@@ -359,6 +362,7 @@ var AppHolaMundo;
                 return row;
             }, (update) => {
                 update
+                    .style("background-color", (e, i) => i % 2 === 0 ? "silver" : "#cacaca")
                     .select(".nombreUsuario").text((d) => d.nombre)
                     .select(".apellidoP-usuario").text((d) => d.apellidoP)
                     .select(".apellidoM-usuario").text((d) => d.apellidoM)
@@ -372,21 +376,29 @@ var AppHolaMundo;
                 return exit;
             });
         }
+        filtrarDatos() {
+            let datosMapa = Array.from(this.mapaUsuarios.values());
+            let nombresFiltrados = this.ipName.property("value");
+            let resultadosFiltro = datosMapa.filter(function (value) {
+                console.log(value);
+                return value === nombresFiltrados;
+            });
+            console.log(this.ipName);
+        }
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
             let head = tablaGrupo.append("foreignObject")
                 .attr("class", "tabla")
                 .style("overflow", "auto")
-                .style("background-color", "#cacaca")
+                .style("background-color", "#cacaca ")
                 .style("width", 1500)
                 .style("height", 900)
                 .append("xhtml:table")
                 .style("color", "white")
-                //.attr("border", 1)
                 .style("background-color", "#cdcdcd")
                 .style("border", "1px #black");
-            this.construirVentana();
+            this.fondoProteccion();
             let thead = head.append("thead");
             let tr = thead.append("tr");
             ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"].forEach(encabezado => {
@@ -422,7 +434,7 @@ var AppHolaMundo;
             this.ipEmail.property("value", "");
             this.ipUser.property("value", "");
         }
-        construirVentana() {
+        fondoProteccion() {
             let divFondo = d3.select("body").append("div");
             divFondo.style("background", "white")
                 .style("left", "100%")
@@ -433,6 +445,42 @@ var AppHolaMundo;
                 .style("display", "none");
         }
         alertaValidar() {
+            this.divAlerta = d3.select("body").append("div")
+                .style("class", "validarFormulario");
+            this.divAlerta.style("background", "white")
+                .style("transform", "translate(-30%, -50%)")
+                .style("width", "220px")
+                .style("height", "120px")
+                .style("position", "absolute")
+                .style("top", "25%")
+                .style("left", "48%")
+                .style("display", "none")
+                .style("border", "1px solid black");
+            let tituloValidar = this.divAlerta.append("h1")
+                .style("text-align", "center")
+                .style("font-family", "cursive")
+                .style("padding", "5%")
+                .style("font-size", "19px");
+            tituloValidar.text("¡No puedes agregar campos vacios!");
+            let botonCancel = this.divAlerta.append("div")
+                .on("click", () => {
+                this.divAlerta.style("display", "none");
+            });
+            botonCancel.style("position", "absolute")
+                .style("top", "65%")
+                .style("left", "35%")
+                .style("background-color", "green")
+                .style("padding", "4px")
+                .style("border-radius", "10px");
+            botonCancel.append("text")
+                .style("stroke", "black")
+                .style("stroke-width", "2px")
+                .style("x", "775")
+                .style("y", "585")
+                .style("color", "white")
+                .style("font-family", "cursive")
+                .style("cursor", "pointer")
+                .text("Aceptar");
         }
     }
     AppHolaMundo.Usuarios = Usuarios;
