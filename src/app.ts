@@ -1,13 +1,13 @@
 namespace AppHolaMundo {
     export class P1 {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
-        public svgRegistroUsuario: d3.Selection<SVGElement, any, any, any>;
+        public moduloUsuarios: d3.Selection<SVGElement, any, any, any>;
         public svgHeader: d3.Selection<SVGElement, any, any, any>;
         svgleft: d3.Selection<SVGElement, any, any, any>;
         _figuras: dragAndDrop;
         _usuarios: Usuarios;
         //_empresas: Empresas;
-        _img: d3.Selection<SVGImageElement, any, any, any>;
+        _imgFlecha: d3.Selection<SVGImageElement, any, any, any>;
         _menu: boolean;
 
         constructor() {
@@ -23,10 +23,11 @@ namespace AppHolaMundo {
                 .style('position', "absolute")
                 .style('left', "0px")
                 .style('top', "100px")
+                .style("border-bottom-right-radius", "100px")
                 .attr('transform', 'translate(-200, 0)')
                 .attr('id', 'svgleft');
 
-            this._img = this.svgleft.append("image")
+            this._imgFlecha = this.svgleft.append("image")
                 .attr("class", "img-arrow")
                 .attr('href', 'images/icono_flecha_derecha.svg')
                 .attr('width', '50px')
@@ -41,10 +42,10 @@ namespace AppHolaMundo {
                         .attr("transform", !this._menu ? "translate(-200, 0)" : "translate(0, 0)")
                         .on('end', () => {
                             if (this._menu) {
-                                this._img
+                                this._imgFlecha
                                     .attr("transform", "rotate(180 245 40)");
                             } else {
-                                this._img
+                                this._imgFlecha
                                     .attr("transform", "rotate(0 0 0)");
                             }
                         });
@@ -53,12 +54,12 @@ namespace AppHolaMundo {
                         .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(200, 0)');
                 });
 
-            var g1 = this.svgleft.append("g")
+            var botonDragandDrop = this.svgleft.append("g")
                 .on("click", () => {
                     this.ventanaDrag();
                     console.log(this._figuras);
                 });
-            g1.append("rect")
+            botonDragandDrop.append("rect")
                 .style('x', '50px')
                 .style('y', '80')
                 .style('rx', '20')
@@ -68,7 +69,7 @@ namespace AppHolaMundo {
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
-            g1.append("text") //titulo
+            botonDragandDrop.append("text") //titulo
                 .attr('y', '100px')
                 .attr('x', '80px')
                 .attr("font-family", "cursive")
@@ -77,12 +78,10 @@ namespace AppHolaMundo {
                 .text('Drag');
 
 
-            var g2 = this.svgleft.append("g")
+            var botonEmpresas = this.svgleft.append("g")
                 .on('click', () => {
-                    // this._clientes = new AppHolaMundo.P3();
-                    console.log("empresas")
                 });
-            g2.append("rect")
+            botonEmpresas.append("rect")
                 .style('x', '50px')
                 .style('y', '40')
                 .style('rx', '20')
@@ -92,7 +91,7 @@ namespace AppHolaMundo {
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
-            g2.append("text")
+            botonEmpresas.append("text")
                 .attr('y', '60px')
                 .attr('x', '65px')
                 .attr('fill', 'black')
@@ -100,12 +99,12 @@ namespace AppHolaMundo {
                 .style('pointer-events', 'none')
                 .text('Empresas');
 
-            var g3 = this.svgleft.append("g")
+            var botonUsuarios = this.svgleft.append("g")
                 .on("click", () => {
                     this.ventanaUsuarios();
                     console.log(this._usuarios);
                 });
-            g3.append("rect")
+            botonUsuarios.append("rect")
                 .style('x', '50px')
                 .style('y', '0')
                 .style('rx', '20')
@@ -115,7 +114,7 @@ namespace AppHolaMundo {
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
-            g3.append("text")
+            botonUsuarios.append("text")
                 .attr('y', '20px')
                 .attr('x', '70px')
                 .attr('fill', 'black')
@@ -123,12 +122,12 @@ namespace AppHolaMundo {
                 .style('pointer-events', 'none')
                 .text('Usuarios');
 
-            var g4 = this.svgleft.append("g")
+            var botonSalir = this.svgleft.append("g")
                 .on('click', () => {
                     close();
                     console.log("SingOut")
                 });
-            g4.append("rect")
+            botonSalir.append("rect")
                 .style('x', '50px')
                 .style('y', '120')
                 .style('rx', '20')
@@ -138,7 +137,7 @@ namespace AppHolaMundo {
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
-            g4.append("text")
+            botonSalir.append("text")
                 .attr('y', '140px')
                 .attr('x', '65px')
                 .attr('fill', 'black')
@@ -153,6 +152,10 @@ namespace AppHolaMundo {
                 .attr('width', '1919px')
                 .attr('height', '100px')
                 //background color 
+                .style("text-shadow", "5px 5px 5px black")
+                .style("border-bottom-right-radius", "100px")
+                .style("background-color", "#4A4A4A")
+                .style("font-family", "cursive")
                 .style('position', "absolute")
                 .style('left', "0px")
                 .style('top', "0px")
@@ -175,6 +178,16 @@ namespace AppHolaMundo {
                 .style('position', "absolute")
                 .style('left', "100px")
                 .style('top', "100px");
+
+            // this.moduloUsuarios = body.append("svg")
+            //     .attr("id", "moduloUsuarios")
+            //     .style('display', 'block')
+            //     .attr('width', '1800')
+            //     .attr('height', '795')
+            //     .style('background-color', "white")
+            //     .style('position', "absolute")
+            //     .style('left', "100px")
+            //     .style('top', "100px");
         }
 
         public ventanaDrag() {

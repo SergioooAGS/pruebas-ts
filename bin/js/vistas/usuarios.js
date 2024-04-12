@@ -34,34 +34,50 @@ var AppHolaMundo;
                 .style("pointer-events", "none")
                 .text("Agregar");
             //ediatr
-            let selek = this.svgContenedor.append("select")
-                .style("select", "Option1")
-                .text("Hola1")
-                .style("select", "Option2");
+            // let selection = this.svgContenedor.append("g")
+            // selection.append()
+            //     .style("x", "1100")
+            //     .style("y", "30")
+            //     .style("width", "180px")
+            //     .style("height", "30px")
+            //     .style("position", "absolute")
+            //     .style("top", "50px")
+            //     .style("left", "0")
+            // let opciones = ["opcion 1", "opcion2"];
             let inputNombre = this.svgContenedor.append("g");
-            inputNombre.append("foreignObject")
-                .attr("class", "buscarName")
-                .attr("type", "text")
-                .style("width", "220px")
+            let text = inputNombre.append("foreignObject")
+                .style("width", "180px")
                 .style("height", "30px")
-                .style("x", "820")
+                .style("x", "800px")
                 .style("y", "30")
                 .style("position", "absolute")
                 .style("top", "50px")
-                .style("left", "0")
-                .html('<input class="text" type="text" placeholder="Nombre" />');
+                .append("xhtml:input")
+                .style("class", "text")
+                .attr("type", "text")
+                .attr("placeholder", "texto")
+                .style("font-size", "15px")
+                .style("font-family", "cursive")
+                .style("width", "180px")
+                .style("height", "30px")
+                .style("font-family", "cursive")
+                .style("border-color", "black")
+                .on("keydown", function () {
+                console.log();
+            });
+            // .html('<input class="text" type="text" placeholder="este si" />')
             let inputBuscar = this.svgContenedor.append("g");
             inputBuscar.append("foreignObject")
                 .attr("class", "buscarAp")
                 .attr("type", "text")
-                .style("width", "220px")
+                .style("width", "180px")
                 .style("height", "30px")
                 .style("x", "1030")
                 .style("y", "30")
                 .style("position", "absolute")
                 .style("top", "50px")
                 .style("left", "0")
-                .html('<input class="text2" type="text" placeholder="Buscar" />');
+                .html('<input class="text2" type="text" placeholder="Este NO" />');
             let tituloUsuario = this.svgContenedor.append("g");
             tituloUsuario.append("foreignObject")
                 .text("Usuarios")
@@ -150,7 +166,9 @@ var AppHolaMundo;
                 .style("text-aling", "center");
             let divHeader = this.div.append("div")
                 .attr("class", "headerDiv")
-                .style("pointer-events", "none");
+                .style("pointer-events", "none")
+                .style("width", "278px")
+                .style("height", "30px");
             divHeader.style("position", "absolute")
                 .style("top", "0%")
                 .style("left", "0%")
@@ -200,6 +218,8 @@ var AppHolaMundo;
             let divimg = this.div.append("div")
                 .attr("class", "imgDiv")
                 .style("position", "absolute")
+                .style("top", "0%")
+                .style("right", "0%")
                 .attr("width", "32")
                 .attr("height", "30");
             divimg.append("img")
@@ -376,14 +396,15 @@ var AppHolaMundo;
                 return exit;
             });
         }
-        filtrarDatos() {
+        //recuerrda hacer el minimo 
+        filtrarDatos(text) {
             let datosMapa = Array.from(this.mapaUsuarios.values());
             let nombresFiltrados = this.ipName.property("value");
             let resultadosFiltro = datosMapa.filter(function (value) {
                 console.log(value);
                 return value === nombresFiltrados;
             });
-            console.log(this.ipName);
+            console.log(resultadosFiltro);
         }
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")

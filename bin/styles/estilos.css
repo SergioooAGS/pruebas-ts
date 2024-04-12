@@ -8,68 +8,6 @@
     box-sizing: border-box;
 }
 
-.manija {
-    display: block;
-    width: 30%;
-    margin: 60px auto;
-}
-
-.registroVentana {
-    border-color: #4A4A4A;
-    background-color: rgb(83, 83, 83);
-    color: white;
-    align-items: center;
-}
-
-.heider {
-    font-family: cursive;
-    text-shadow: 5px 5px 5px black;
-    background-color: #4A4A4A;
-    border-bottom-right-radius: 100px;
-}
-
-.svgLeft {
-    border-bottom-right-radius: 100px;
-}
-
-.tHead {
-    color: rgb(0, 0, 0);
-    font-family: cursive;
-    font-size: 25px;
-    padding: 15px;
-}
-
-/* .rows {
-
-    text-align: center;
-    font-size: 20px;
-    font-family: cursive;
-
-} */
-
-/* 
-.nuevoUsuario {
-    font-family: cursive;
-    text-align: center;
-    color: white;
-} */
-
-.buscarName {
-    color: blue;
-    width: 200;
-    height: 35;
-
-}
-
-.btn-save {
-    color: #006b05;
-}
-
-.headerDiv {
-    width: 278px;
-    height: 30px;
-}
-
 .text {
     width: 180px;
     height: 30px;
@@ -82,9 +20,4 @@
     height: 30px;
     font-family: cursive;
     font-size: 15px;
-}
-
-.imgDiv {
-    top: 0px;
-    right: 0px;
 }
