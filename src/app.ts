@@ -1,4 +1,4 @@
-namespace AppHolaMundo {
+namespace bootCamp {
     export class P1 {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
         public moduloUsuarios: d3.Selection<SVGElement, any, any, any>;
@@ -69,7 +69,7 @@ namespace AppHolaMundo {
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
-            botonDragandDrop.append("text") //titulo
+            botonDragandDrop.append("text")
                 .attr('y', '100px')
                 .attr('x', '80px')
                 .attr("font-family", "cursive")
@@ -151,7 +151,6 @@ namespace AppHolaMundo {
                 .attr('id', 'svgHeader')
                 .attr('width', '1919px')
                 .attr('height', '100px')
-                //background color 
                 .style("text-shadow", "5px 5px 5px black")
                 .style("border-bottom-right-radius", "100px")
                 .style("background-color", "#4A4A4A")
@@ -201,4 +200,4 @@ namespace AppHolaMundo {
         }
     }
 }
-const app = new AppHolaMundo.P1();
+const app = new bootCamp.P1();

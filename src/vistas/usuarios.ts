@@ -1,4 +1,4 @@
-namespace AppHolaMundo {
+namespace bootCamp {
     export interface iUsuario {
         id: number;
         nombre: string;
@@ -14,17 +14,17 @@ namespace AppHolaMundo {
         public div: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divEditar: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divDelete: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-        public divFondo: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
+        public divProtect: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divAlerta: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
-        public ipName: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        public ipApellidop: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        public ipApellidoM: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        public ipPhone: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        public ipEmail: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        public ipUser: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        public filtro: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        private ipName: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        private ipApellidop: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        private ipApellidoM: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        private ipPhone: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        private ipEmail: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        private ipUser: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
+        //private filtro: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         private tituloVentanaRegistro: d3.Selection<HTMLElement, any, any, any>;
-        private textoName: d3.Selection<SVGGElement, any, any, any>;
+        public inputbuscar: d3.Selection<any, unknown, HTMLElement, any>;
         public mapaUsuarios: Map<number, iUsuario>;
         public eliminarMap: number;
         private id = 0;
@@ -40,7 +40,7 @@ namespace AppHolaMundo {
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
                     this.abrirVentanaRegistro(null);
-                    //this.divFondo.style("display", "block");
+                    this.divProtect.style("display", "block");
                 });
             offnewUser.append("rect")
                 .attr("stroke", "black")
@@ -62,32 +62,10 @@ namespace AppHolaMundo {
                 .attr("font-family", "cursive")
                 .style("pointer-events", "none")
                 .text("Agregar");
-            //ediatr
 
-            // let selection = this.svgContenedor.append("g")
-
-            // selection.append()
-            //     .style("x", "1100")
-            //     .style("y", "30")
-            //     .style("width", "180px")
-            //     .style("height", "30px")
-            //     .style("position", "absolute")
-            //     .style("top", "50px")
-            //     .style("left", "0")
-
-            // let opciones = ["opcion 1", "opcion2"];
-
-
+            let _This = this;
             let inputNombre = this.svgContenedor.append("g")
-
-
-
-
-
-
-
-
-            let text = inputNombre.append("foreignObject")
+                .append("foreignObject")
                 .style("width", "180px")
                 .style("height", "30px")
                 .style("x", "800px")
@@ -97,7 +75,30 @@ namespace AppHolaMundo {
                 .append("xhtml:input")
                 .style("class", "text")
                 .attr("type", "text")
-                .attr("placeholder", "texto")
+                .attr("placeholder", "Nombre")
+                .style("font-size", "15px")
+                .style("font-family", "cursive")
+                .style("width", "180px")
+                .style("height", "30px")
+                .style("font-family", "cursive")
+                .style("border-color", "black")
+                .on("keyup", function () {
+                    _This.filtrarDatos();
+                });
+            this.inputbuscar = inputNombre;
+
+            let inputTelefono = this.svgContenedor.append("g");
+            inputTelefono.append("foreignObject")
+                .style("width", "180px")
+                .style("height", "30px")
+                .style("x", "1030px")
+                .style("y", "30")
+                .style("position", "absolute")
+                .style("top", "50px")
+                .append("xhtml:input")
+                .style("class", "text")
+                .attr("type", "text")
+                .attr("placeholder", "Telefono")
                 .style("font-size", "15px")
                 .style("font-family", "cursive")
                 .style("width", "180px")
@@ -106,29 +107,9 @@ namespace AppHolaMundo {
                 .style("border-color", "black")
                 .on("keydown", function () {
                     console.log();
-
                 });
 
-            // .html('<input class="text" type="text" placeholder="este si" />')
-
-
-
-            let inputBuscar = this.svgContenedor.append("g")
-
-            inputBuscar.append("foreignObject")
-                .attr("class", "buscarAp")
-                .attr("type", "text")
-                .style("width", "180px")
-                .style("height", "30px")
-                .style("x", "1030")
-                .style("y", "30")
-                .style("position", "absolute")
-                .style("top", "50px")
-                .style("left", "0")
-                .html('<input class="text2" type="text" placeholder="Este NO" />');
-
-
-            let tituloUsuario = this.svgContenedor.append("g")
+            let tituloUsuario = this.svgContenedor.append("g");
             tituloUsuario.append("foreignObject")
                 .text("Usuarios")
                 .style("width", "220px")
@@ -253,6 +234,7 @@ namespace AppHolaMundo {
                     this.datosUsuarios();
                     this.dibujaFila();
                     this.div.style("display", "none");
+                    this.divProtect.style("display", "none");
                 });
             botonGuardar.style("position", "absolute")
                 .style("top", "83%")
@@ -273,6 +255,7 @@ namespace AppHolaMundo {
             let botonCancelar = this.div.append("div")
                 .on('click', () => {
                     this.div.style("display", "none");
+                    this.divProtect.style("display", "none");
                 });
             botonCancelar.style("position", "absolute")
                 .style("top", "83%")
@@ -310,6 +293,7 @@ namespace AppHolaMundo {
                 .attr("src", "images/icon-cerrar.svg")
                 .on('click', () => {
                     this.div.style("display", "none");
+                    this.divProtect.style("display", "none");
                 });
         }
 
@@ -356,6 +340,7 @@ namespace AppHolaMundo {
                     }
                     this.eliminarMap = -1;
                     this.divDelete.style("display", "none")
+                    this.divProtect.style("display", "none");
                 });
 
             botonEliminar.style("position", "absolute")
@@ -378,6 +363,7 @@ namespace AppHolaMundo {
             let botonCancel = this.divDelete.append("div")
                 .on("click", () => {
                     this.divDelete.style("display", "none")
+                    this.divProtect.style("display", "none");
                 });
 
             botonCancel.style("position", "absolute")
@@ -406,22 +392,22 @@ namespace AppHolaMundo {
             let email = this.ipEmail.property("value");
             let user = this.ipUser.property("value");
 
-
             if (name && apellidoP && apellidoM && apellidoM && phone && email && user) {
                 let tUsuario = <iUsuario>{ id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
                 this.mapaUsuarios.set(this.id, tUsuario);
                 this.dibujaFila();
                 this.id++;
-
-
             } else {
                 this.divAlerta.style("display", "block");
             }
         }
 
+        //.data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
+
         public dibujaFila() {
+            let filasT: iUsuario[] = Array.from(this.mapaUsuarios.values());
             let fila = d3.select("tbody").selectAll("tr")
-                .data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
+                .data(filasT, (d: iUsuario) => d.id);
             fila.join(
                 (enter) => {
                     let row = enter.append("tr")
@@ -444,6 +430,7 @@ namespace AppHolaMundo {
                         .style("cursor", "pointer")
                         .on("click", (e, d: iUsuario) => {
                             this.divDelete.style("display", "block");
+                            this.divProtect.style("display", "block");
                             this.eliminarMap = d.id;
                         });
 
@@ -457,6 +444,7 @@ namespace AppHolaMundo {
                         .style("cursor", "pointer")
                         .on("click", (e, d: iUsuario) => {
                             this.abrirVentanaRegistro(d);
+                            this.divProtect.style("display", "block");
                         });
 
                     row.append("td")
@@ -493,6 +481,7 @@ namespace AppHolaMundo {
                         .select(".telefono-usuario").text((d) => d.telefono)
                         .select(".correo-usuario").text((d) => d.correo)
                         .select(".usuario-user").text((d) => d.usuario);
+
                     return update
                 }, (exit) => {
                     exit
@@ -500,16 +489,14 @@ namespace AppHolaMundo {
                     return exit;
                 });
         }
- //recuerrda hacer el minimo 
-        public filtrarDatos(text: string) {
-            let datosMapa = Array.from(this.mapaUsuarios.values());
-            let nombresFiltrados = this.ipName.property("value");
-            let resultadosFiltro = datosMapa.filter(function (value: iUsuario) {
-                console.log(value);
-                return value === nombresFiltrados;
-            });
 
-            console.log(resultadosFiltro);
+        public filtrarDatos() {
+            let datosMapa = Array.from(this.mapaUsuarios.values());
+            let nombresBuscador = this.inputbuscar.property("value");
+            datosMapa = datosMapa.filter(function (value: iUsuario) {
+                return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
+            });
+            console.log(datosMapa);
         }
 
         public dibujaHead() {
@@ -566,22 +553,23 @@ namespace AppHolaMundo {
         }
 
         public fondoProteccion() {
-            let divFondo = d3.select("body").append("div");
-
-            divFondo.style("background", "white")
-                .style("left", "100%")
-                .style("padding", "100px")
-                .style("width", "1900px")
-                .style("height", "900px")
-                .style("opacity", "0.7")
-                .style("display", "none");
+            this.divProtect = d3.select("body").append("div")
+                .style("class", "validarFormulario");
+            this.divProtect.style("background", "white")
+                .style("transform", "translate(-30%, -50%)")
+                .style("width", "1600px")
+                .style("height", "820px")
+                .style("position", "absolute")
+                .style("top", "57%")
+                .style("left", "47%")
+                .style("display", "none")
+                .style("border", "1px solid black")
+                .style("opacity", "0.7");
         }
 
         public alertaValidar() {
             this.divAlerta = d3.select("body").append("div")
-                .style("class", "validarFormulario");
-            this.divAlerta.style("background", "white")
-
+                .style("background", "white")
                 .style("transform", "translate(-30%, -50%)")
                 .style("width", "220px")
                 .style("height", "120px")
@@ -602,6 +590,7 @@ namespace AppHolaMundo {
             let botonCancel = this.divAlerta.append("div")
                 .on("click", () => {
                     this.divAlerta.style("display", "none")
+                    this.divProtect.style("display", "none");
                 });
 
             botonCancel.style("position", "absolute")

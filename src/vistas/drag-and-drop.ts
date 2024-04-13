@@ -1,4 +1,4 @@
-namespace AppHolaMundo {
+namespace bootCamp {
     export interface iCirculo {
         id: number;
         color: string;

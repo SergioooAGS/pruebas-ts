@@ -1,5 +1,5 @@
-var AppHolaMundo;
-(function (AppHolaMundo) {
+var bootCamp;
+(function (bootCamp) {
     class P1 {
         constructor() {
             this._menu = false;
@@ -58,7 +58,7 @@ var AppHolaMundo;
                 .style('width', '100px')
                 .style('height', '30px')
                 .style('cursor', 'pointer');
-            botonDragandDrop.append("text") //titulo
+            botonDragandDrop.append("text")
                 .attr('y', '100px')
                 .attr('x', '80px')
                 .attr("font-family", "cursive")
@@ -134,7 +134,6 @@ var AppHolaMundo;
                 .attr('id', 'svgHeader')
                 .attr('width', '1919px')
                 .attr('height', '100px')
-                //background color 
                 .style("text-shadow", "5px 5px 5px black")
                 .style("border-bottom-right-radius", "100px")
                 .style("background-color", "#4A4A4A")
@@ -172,14 +171,14 @@ var AppHolaMundo;
         }
         ventanaDrag() {
             this.svgContenedor.selectAll("*").remove();
-            this._figuras = new AppHolaMundo.dragAndDrop();
+            this._figuras = new bootCamp.dragAndDrop();
         }
         ventanaUsuarios() {
             this.svgContenedor.selectAll("*").remove();
-            this._usuarios = new AppHolaMundo.Usuarios();
+            this._usuarios = new bootCamp.Usuarios();
             //this.svgRegistroUsuario = new P3();
         }
     }
-    AppHolaMundo.P1 = P1;
-})(AppHolaMundo || (AppHolaMundo = {}));
-const app = new AppHolaMundo.P1();
+    bootCamp.P1 = P1;
+})(bootCamp || (bootCamp = {}));
+const app = new bootCamp.P1();

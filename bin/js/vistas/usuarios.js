@@ -1,5 +1,5 @@
-var AppHolaMundo;
-(function (AppHolaMundo) {
+var bootCamp;
+(function (bootCamp) {
     class Usuarios {
         constructor() {
             this.id = 0;
@@ -12,7 +12,7 @@ var AppHolaMundo;
             let offnewUser = this.svgContenedor.append("g")
                 .on('click', () => {
                 this.abrirVentanaRegistro(null);
-                //this.divFondo.style("display", "block");
+                this.divProtect.style("display", "block");
             });
             offnewUser.append("rect")
                 .attr("stroke", "black")
@@ -33,19 +33,9 @@ var AppHolaMundo;
                 .attr("font-family", "cursive")
                 .style("pointer-events", "none")
                 .text("Agregar");
-            //ediatr
-            // let selection = this.svgContenedor.append("g")
-            // selection.append()
-            //     .style("x", "1100")
-            //     .style("y", "30")
-            //     .style("width", "180px")
-            //     .style("height", "30px")
-            //     .style("position", "absolute")
-            //     .style("top", "50px")
-            //     .style("left", "0")
-            // let opciones = ["opcion 1", "opcion2"];
-            let inputNombre = this.svgContenedor.append("g");
-            let text = inputNombre.append("foreignObject")
+            let _This = this;
+            let inputNombre = this.svgContenedor.append("g")
+                .append("foreignObject")
                 .style("width", "180px")
                 .style("height", "30px")
                 .style("x", "800px")
@@ -55,7 +45,29 @@ var AppHolaMundo;
                 .append("xhtml:input")
                 .style("class", "text")
                 .attr("type", "text")
-                .attr("placeholder", "texto")
+                .attr("placeholder", "Nombre")
+                .style("font-size", "15px")
+                .style("font-family", "cursive")
+                .style("width", "180px")
+                .style("height", "30px")
+                .style("font-family", "cursive")
+                .style("border-color", "black")
+                .on("keyup", function () {
+                _This.filtrarDatos();
+            });
+            this.inputbuscar = inputNombre;
+            let inputTelefono = this.svgContenedor.append("g");
+            inputTelefono.append("foreignObject")
+                .style("width", "180px")
+                .style("height", "30px")
+                .style("x", "1030px")
+                .style("y", "30")
+                .style("position", "absolute")
+                .style("top", "50px")
+                .append("xhtml:input")
+                .style("class", "text")
+                .attr("type", "text")
+                .attr("placeholder", "Telefono")
                 .style("font-size", "15px")
                 .style("font-family", "cursive")
                 .style("width", "180px")
@@ -65,19 +77,6 @@ var AppHolaMundo;
                 .on("keydown", function () {
                 console.log();
             });
-            // .html('<input class="text" type="text" placeholder="este si" />')
-            let inputBuscar = this.svgContenedor.append("g");
-            inputBuscar.append("foreignObject")
-                .attr("class", "buscarAp")
-                .attr("type", "text")
-                .style("width", "180px")
-                .style("height", "30px")
-                .style("x", "1030")
-                .style("y", "30")
-                .style("position", "absolute")
-                .style("top", "50px")
-                .style("left", "0")
-                .html('<input class="text2" type="text" placeholder="Este NO" />');
             let tituloUsuario = this.svgContenedor.append("g");
             tituloUsuario.append("foreignObject")
                 .text("Usuarios")
@@ -181,6 +180,7 @@ var AppHolaMundo;
                 this.datosUsuarios();
                 this.dibujaFila();
                 this.div.style("display", "none");
+                this.divProtect.style("display", "none");
             });
             botonGuardar.style("position", "absolute")
                 .style("top", "83%")
@@ -199,6 +199,7 @@ var AppHolaMundo;
             let botonCancelar = this.div.append("div")
                 .on('click', () => {
                 this.div.style("display", "none");
+                this.divProtect.style("display", "none");
             });
             botonCancelar.style("position", "absolute")
                 .style("top", "83%")
@@ -233,6 +234,7 @@ var AppHolaMundo;
                 .attr("src", "images/icon-cerrar.svg")
                 .on('click', () => {
                 this.div.style("display", "none");
+                this.divProtect.style("display", "none");
             });
         }
         eliminarUsuario() {
@@ -273,6 +275,7 @@ var AppHolaMundo;
                 }
                 this.eliminarMap = -1;
                 this.divDelete.style("display", "none");
+                this.divProtect.style("display", "none");
             });
             botonEliminar.style("position", "absolute")
                 .style("top", "55%")
@@ -292,6 +295,7 @@ var AppHolaMundo;
             let botonCancel = this.divDelete.append("div")
                 .on("click", () => {
                 this.divDelete.style("display", "none");
+                this.divProtect.style("display", "none");
             });
             botonCancel.style("position", "absolute")
                 .style("top", "55%")
@@ -326,9 +330,11 @@ var AppHolaMundo;
                 this.divAlerta.style("display", "block");
             }
         }
+        //.data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
         dibujaFila() {
+            let filasT = Array.from(this.mapaUsuarios.values());
             let fila = d3.select("tbody").selectAll("tr")
-                .data(this.mapaUsuarios.values(), (d) => d.id);
+                .data(filasT, (d) => d.id);
             fila.join((enter) => {
                 let row = enter.append("tr")
                     .style("text-align", "center")
@@ -348,6 +354,7 @@ var AppHolaMundo;
                     .style("cursor", "pointer")
                     .on("click", (e, d) => {
                     this.divDelete.style("display", "block");
+                    this.divProtect.style("display", "block");
                     this.eliminarMap = d.id;
                 });
                 row.append("td")
@@ -360,6 +367,7 @@ var AppHolaMundo;
                     .style("cursor", "pointer")
                     .on("click", (e, d) => {
                     this.abrirVentanaRegistro(d);
+                    this.divProtect.style("display", "block");
                 });
                 row.append("td")
                     .classed("nombreUsuario", true)
@@ -396,15 +404,13 @@ var AppHolaMundo;
                 return exit;
             });
         }
-        //recuerrda hacer el minimo 
-        filtrarDatos(text) {
+        filtrarDatos() {
             let datosMapa = Array.from(this.mapaUsuarios.values());
-            let nombresFiltrados = this.ipName.property("value");
-            let resultadosFiltro = datosMapa.filter(function (value) {
-                console.log(value);
-                return value === nombresFiltrados;
+            let nombresBuscador = this.inputbuscar.property("value");
+            datosMapa = datosMapa.filter(function (value) {
+                return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
             });
-            console.log(resultadosFiltro);
+            console.log(datosMapa);
         }
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
@@ -456,19 +462,22 @@ var AppHolaMundo;
             this.ipUser.property("value", "");
         }
         fondoProteccion() {
-            let divFondo = d3.select("body").append("div");
-            divFondo.style("background", "white")
-                .style("left", "100%")
-                .style("padding", "100px")
-                .style("width", "1900px")
-                .style("height", "900px")
-                .style("opacity", "0.7")
-                .style("display", "none");
+            this.divProtect = d3.select("body").append("div")
+                .style("class", "validarFormulario");
+            this.divProtect.style("background", "white")
+                .style("transform", "translate(-30%, -50%)")
+                .style("width", "1600px")
+                .style("height", "820px")
+                .style("position", "absolute")
+                .style("top", "57%")
+                .style("left", "47%")
+                .style("display", "none")
+                .style("border", "1px solid black")
+                .style("opacity", "0.7");
         }
         alertaValidar() {
             this.divAlerta = d3.select("body").append("div")
-                .style("class", "validarFormulario");
-            this.divAlerta.style("background", "white")
+                .style("background", "white")
                 .style("transform", "translate(-30%, -50%)")
                 .style("width", "220px")
                 .style("height", "120px")
@@ -486,6 +495,7 @@ var AppHolaMundo;
             let botonCancel = this.divAlerta.append("div")
                 .on("click", () => {
                 this.divAlerta.style("display", "none");
+                this.divProtect.style("display", "none");
             });
             botonCancel.style("position", "absolute")
                 .style("top", "65%")
@@ -504,5 +514,5 @@ var AppHolaMundo;
                 .text("Aceptar");
         }
     }
-    AppHolaMundo.Usuarios = Usuarios;
-})(AppHolaMundo || (AppHolaMundo = {}));
+    bootCamp.Usuarios = Usuarios;
+})(bootCamp || (bootCamp = {}));

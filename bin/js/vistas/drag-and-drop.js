@@ -1,5 +1,5 @@
-var AppHolaMundo;
-(function (AppHolaMundo) {
+var bootCamp;
+(function (bootCamp) {
     class dragAndDrop {
         // circleArr: iCirculo[];
         constructor() {
@@ -135,5 +135,5 @@ var AppHolaMundo;
             }
         }
     }
-    AppHolaMundo.dragAndDrop = dragAndDrop;
-})(AppHolaMundo || (AppHolaMundo = {}));
+    bootCamp.dragAndDrop = dragAndDrop;
+})(bootCamp || (bootCamp = {}));
