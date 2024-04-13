@@ -497,6 +497,8 @@ namespace bootCamp {
                 return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
             });
             console.log(datosMapa);
+            console.log("cambiooo");
+
         }
 
         public dibujaHead() {

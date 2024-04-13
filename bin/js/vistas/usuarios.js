@@ -411,6 +411,7 @@ var bootCamp;
                 return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
             });
             console.log(datosMapa);
+            console.log("cambiooo");
         }
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
