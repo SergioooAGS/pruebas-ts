@@ -53,11 +53,12 @@ var bootCamp;
                 .style("font-family", "cursive")
                 .style("border-color", "black")
                 .on("keyup", function () {
-                _This.filtrarDatos();
+                _This.dibujaFila();
             });
             this.inputbuscar = inputNombre;
-            let inputTelefono = this.svgContenedor.append("g");
-            inputTelefono.append("foreignObject")
+            let _This1 = this;
+            let inputTelefono = this.svgContenedor.append("g")
+                .append("foreignObject")
                 .style("width", "180px")
                 .style("height", "30px")
                 .style("x", "1030px")
@@ -74,9 +75,10 @@ var bootCamp;
                 .style("height", "30px")
                 .style("font-family", "cursive")
                 .style("border-color", "black")
-                .on("keydown", function () {
-                console.log();
+                .on("keyup", function () {
+                _This1.dibujaFila();
             });
+            this.inputBuscaTelefono = inputTelefono;
             let tituloUsuario = this.svgContenedor.append("g");
             tituloUsuario.append("foreignObject")
                 .text("Usuarios")
@@ -332,7 +334,7 @@ var bootCamp;
         }
         //.data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
         dibujaFila() {
-            let filasT = Array.from(this.mapaUsuarios.values());
+            let filasT = this.filtrarDatosNombre();
             let fila = d3.select("tbody").selectAll("tr")
                 .data(filasT, (d) => d.id);
             fila.join((enter) => {
@@ -404,14 +406,24 @@ var bootCamp;
                 return exit;
             });
         }
-        filtrarDatos() {
+        filtrarDatosNombre() {
             let datosMapa = Array.from(this.mapaUsuarios.values());
             let nombresBuscador = this.inputbuscar.property("value");
-            datosMapa = datosMapa.filter(function (value) {
-                return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
-            });
-            console.log(datosMapa);
-            console.log("cambiooo");
+            let telefonoBuscador = this.inputBuscaTelefono.property("value");
+            if (this.inputbuscar) {
+                datosMapa = datosMapa.filter(function (value) {
+                    return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
+                });
+                if (this.inputBuscaTelefono) {
+                    datosMapa = datosMapa.filter(function (value) {
+                        return value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
+                    });
+                }
+            }
+            return datosMapa;
+        }
+        filtrarTelefono() {
+            //recuerda que aqui debes hacer lo mismo que hiciste con el nombre deben coincidir los dos apartados si nombre y telefono coincide aparece si no no
         }
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
@@ -466,12 +478,11 @@ var bootCamp;
             this.divProtect = d3.select("body").append("div")
                 .style("class", "validarFormulario");
             this.divProtect.style("background", "white")
-                .style("transform", "translate(-30%, -50%)")
-                .style("width", "1600px")
-                .style("height", "820px")
+                .style("width", "1900px")
+                .style("height", "1020px")
                 .style("position", "absolute")
-                .style("top", "57%")
-                .style("left", "47%")
+                .style("top", "0%")
+                .style("left", "0%")
                 .style("display", "none")
                 .style("border", "1px solid black")
                 .style("opacity", "0.7");

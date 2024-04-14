@@ -25,6 +25,7 @@ namespace bootCamp {
         //private filtro: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         private tituloVentanaRegistro: d3.Selection<HTMLElement, any, any, any>;
         public inputbuscar: d3.Selection<any, unknown, HTMLElement, any>;
+        public inputBuscaTelefono: d3.Selection<any, unknown, HTMLElement, any>;
         public mapaUsuarios: Map<number, iUsuario>;
         public eliminarMap: number;
         private id = 0;
@@ -83,12 +84,13 @@ namespace bootCamp {
                 .style("font-family", "cursive")
                 .style("border-color", "black")
                 .on("keyup", function () {
-                    _This.filtrarDatos();
+                    _This.dibujaFila();
                 });
             this.inputbuscar = inputNombre;
 
-            let inputTelefono = this.svgContenedor.append("g");
-            inputTelefono.append("foreignObject")
+            let _This1 = this;
+            let inputTelefono = this.svgContenedor.append("g")
+                .append("foreignObject")
                 .style("width", "180px")
                 .style("height", "30px")
                 .style("x", "1030px")
@@ -105,9 +107,11 @@ namespace bootCamp {
                 .style("height", "30px")
                 .style("font-family", "cursive")
                 .style("border-color", "black")
-                .on("keydown", function () {
-                    console.log();
+                .on("keyup", function () {
+                    _This1.dibujaFila();
                 });
+            this.inputBuscaTelefono = inputTelefono;
+
 
             let tituloUsuario = this.svgContenedor.append("g");
             tituloUsuario.append("foreignObject")
@@ -401,11 +405,10 @@ namespace bootCamp {
                 this.divAlerta.style("display", "block");
             }
         }
-
         //.data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
 
         public dibujaFila() {
-            let filasT: iUsuario[] = Array.from(this.mapaUsuarios.values());
+            let filasT: iUsuario[] = this.filtrarDatosNombre();
             let fila = d3.select("tbody").selectAll("tr")
                 .data(filasT, (d: iUsuario) => d.id);
             fila.join(
@@ -490,15 +493,25 @@ namespace bootCamp {
                 });
         }
 
-        public filtrarDatos() {
-            let datosMapa = Array.from(this.mapaUsuarios.values());
+        public filtrarDatosNombre(): iUsuario[] {
+            let datosMapa: iUsuario[] = Array.from(this.mapaUsuarios.values());
             let nombresBuscador = this.inputbuscar.property("value");
-            datosMapa = datosMapa.filter(function (value: iUsuario) {
-                return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
-            });
-            console.log(datosMapa);
-            console.log("cambiooo");
+            let telefonoBuscador = this.inputBuscaTelefono.property("value");
+            if (this.inputbuscar) {
+                datosMapa = datosMapa.filter(function (value: iUsuario) {
+                    return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
+                });
+                if (this.inputBuscaTelefono) {
+                    datosMapa = datosMapa.filter(function (value: iUsuario) {
+                        return value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
+                    });
+                }
+            }
+            return datosMapa;
+        }
 
+        public filtrarTelefono() {
+            //recuerda que aqui debes hacer lo mismo que hiciste con el nombre deben coincidir los dos apartados si nombre y telefono coincide aparece si no no
         }
 
         public dibujaHead() {
@@ -558,12 +571,11 @@ namespace bootCamp {
             this.divProtect = d3.select("body").append("div")
                 .style("class", "validarFormulario");
             this.divProtect.style("background", "white")
-                .style("transform", "translate(-30%, -50%)")
-                .style("width", "1600px")
-                .style("height", "820px")
+                .style("width", "1900px")
+                .style("height", "1020px")
                 .style("position", "absolute")
-                .style("top", "57%")
-                .style("left", "47%")
+                .style("top", "0%")
+                .style("left", "0%")
                 .style("display", "none")
                 .style("border", "1px solid black")
                 .style("opacity", "0.7");
