@@ -9,12 +9,13 @@ var bootCamp;
             this.id = 0;
             this.mapaUsuarios = new Map();
             this.eliminarMap = -1;
-            let offnewUser = this.svgContenedor.append("g")
+            this.ascendiente = true;
+            let AgregarUsuario = this.svgContenedor.append("g")
                 .on('click', () => {
                 this.abrirVentanaRegistro(null);
                 this.divProtect.style("display", "block");
             });
-            offnewUser.append("rect")
+            AgregarUsuario.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
                 .style("x", "1450")
@@ -26,7 +27,7 @@ var bootCamp;
                 .style("width", "80px")
                 .style("height", "40px")
                 .style("cursor", "pointer");
-            offnewUser.append("text")
+            AgregarUsuario.append("text")
                 .attr("y", "48px")
                 .attr("x", "1460px")
                 .attr("fill", "white")
@@ -332,11 +333,11 @@ var bootCamp;
                 this.divAlerta.style("display", "block");
             }
         }
-        //.data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
         dibujaFila() {
             let filasT = this.filtrarDatosNombre();
+            let ordenado = this.ordenarDatos(filasT);
             let fila = d3.select("tbody").selectAll("tr")
-                .data(filasT, (d) => d.id);
+                .data(ordenado, (d) => d.id);
             fila.join((enter) => {
                 let row = enter.append("tr")
                     .style("text-align", "center")
@@ -422,9 +423,6 @@ var bootCamp;
             }
             return datosMapa;
         }
-        filtrarTelefono() {
-            //recuerda que aqui debes hacer lo mismo que hiciste con el nombre deben coincidir los dos apartados si nombre y telefono coincide aparece si no no
-        }
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
@@ -441,15 +439,44 @@ var bootCamp;
             this.fondoProteccion();
             let thead = head.append("thead");
             let tr = thead.append("tr");
-            ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"].forEach(encabezado => {
-                tr.append("th")
-                    .style("font-family", "cursive")
-                    .style("font-size", "20px")
-                    .style("width", "1500px")
-                    .style("background-color", "#4A4A4A")
-                    .text(encabezado);
+            let headers = ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"];
+            headers.forEach(encabezado => {
+                if (encabezado === "Nombre") {
+                    tr.append("th")
+                        .style("font-family", "cursive")
+                        .style("font-size", "20px")
+                        .style("background-color", "#4A4A4A")
+                        .style("width", "1500px")
+                        .text("Nombre")
+                        .append("img")
+                        .attr("src", "images/flecha-abajo.svg")
+                        .style("width", "20px")
+                        .style("height", "20px")
+                        .style("align-items", "right")
+                        .style("cursor", "pointer")
+                        .on("click", () => {
+                        this.dibujaFila();
+                    });
+                }
+                else {
+                    tr.append("th")
+                        .style("font-family", "cursive")
+                        .style("font-size", "20px")
+                        .style("width", "1500px")
+                        .style("background-color", "#4A4A4A")
+                        .text(encabezado);
+                }
             });
             head.append("tbody");
+            let tUsuario = [
+                { id: 0, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" },
+                { id: 1, nombre: "Alejandro", apellidoP: "Salazar", apellidoM: "Salazar", telefono: "8832456743", correo: "ale@gmail.com", usuario: "aleS" },
+                { id: 2, nombre: "Zay", apellidoP: "Alvaro", apellidoM: "Salazar", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" }
+            ];
+            for (let u of tUsuario) {
+                console.log(u);
+                this.mapaUsuarios.set(u.id, u);
+            }
             this.dibujaFila();
         }
         abrirVentanaRegistro(usuario) {
@@ -504,18 +531,18 @@ var bootCamp;
                 .style("padding", "5%")
                 .style("font-size", "19px");
             tituloValidar.text("¡No puedes agregar campos vacios!");
-            let botonCancel = this.divAlerta.append("div")
+            let botonAcepta = this.divAlerta.append("div")
                 .on("click", () => {
                 this.divAlerta.style("display", "none");
                 this.divProtect.style("display", "none");
             });
-            botonCancel.style("position", "absolute")
+            botonAcepta.style("position", "absolute")
                 .style("top", "65%")
                 .style("left", "35%")
                 .style("background-color", "green")
                 .style("padding", "4px")
                 .style("border-radius", "10px");
-            botonCancel.append("text")
+            botonAcepta.append("text")
                 .style("stroke", "black")
                 .style("stroke-width", "2px")
                 .style("x", "775")
@@ -524,6 +551,16 @@ var bootCamp;
                 .style("font-family", "cursive")
                 .style("cursor", "pointer")
                 .text("Aceptar");
+        }
+        ordenarDatos(arrayMapa) {
+            this.ascendiente = !this.ascendiente;
+            if (this.ascendiente) {
+                arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
+            }
+            else {
+                arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            }
+            return arrayMapa;
         }
     }
     bootCamp.Usuarios = Usuarios;

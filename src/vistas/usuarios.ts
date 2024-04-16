@@ -28,6 +28,7 @@ namespace bootCamp {
         public inputBuscaTelefono: d3.Selection<any, unknown, HTMLElement, any>;
         public mapaUsuarios: Map<number, iUsuario>;
         public eliminarMap: number;
+        public ascendiente: boolean;
         private id = 0;
 
         constructor() {
@@ -37,13 +38,14 @@ namespace bootCamp {
             this.id = 0;
             this.mapaUsuarios = new Map<number, iUsuario>();
             this.eliminarMap = -1;
+            this.ascendiente = true;
 
-            let offnewUser = this.svgContenedor.append("g")
+            let AgregarUsuario = this.svgContenedor.append("g")
                 .on('click', () => {
                     this.abrirVentanaRegistro(null);
                     this.divProtect.style("display", "block");
                 });
-            offnewUser.append("rect")
+            AgregarUsuario.append("rect")
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px")
                 .style("x", "1450")
@@ -56,7 +58,7 @@ namespace bootCamp {
                 .style("height", "40px")
                 .style("cursor", "pointer");
 
-            offnewUser.append("text")
+            AgregarUsuario.append("text")
                 .attr("y", "48px")
                 .attr("x", "1460px")
                 .attr("fill", "white")
@@ -125,6 +127,9 @@ namespace bootCamp {
                 .style("font-family", "cursive")
                 .style("top", "50px")
                 .style("left", "0");
+
+
+
 
             this.dibujaHead();
             this.NuevoUsuario();
@@ -239,6 +244,7 @@ namespace bootCamp {
                     this.dibujaFila();
                     this.div.style("display", "none");
                     this.divProtect.style("display", "none");
+
                 });
             botonGuardar.style("position", "absolute")
                 .style("top", "83%")
@@ -405,12 +411,12 @@ namespace bootCamp {
                 this.divAlerta.style("display", "block");
             }
         }
-        //.data(this.mapaUsuarios.values(), (d: iUsuario) => d.id);
 
         public dibujaFila() {
             let filasT: iUsuario[] = this.filtrarDatosNombre();
+            let ordenado: iUsuario[] = this.ordenarDatos(filasT);
             let fila = d3.select("tbody").selectAll("tr")
-                .data(filasT, (d: iUsuario) => d.id);
+                .data(ordenado, (d: iUsuario) => d.id);
             fila.join(
                 (enter) => {
                     let row = enter.append("tr")
@@ -474,7 +480,7 @@ namespace bootCamp {
                         .classed("usuario-user", true)
                         .text((d) => d.usuario);
 
-                    return row
+                    return row;
                 }, (update) => {
                     update
                         .style("background-color", (e, i) => i % 2 === 0 ? "silver" : "#cacaca")
@@ -497,6 +503,7 @@ namespace bootCamp {
             let datosMapa: iUsuario[] = Array.from(this.mapaUsuarios.values());
             let nombresBuscador = this.inputbuscar.property("value");
             let telefonoBuscador = this.inputBuscaTelefono.property("value");
+
             if (this.inputbuscar) {
                 datosMapa = datosMapa.filter(function (value: iUsuario) {
                     return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
@@ -508,10 +515,6 @@ namespace bootCamp {
                 }
             }
             return datosMapa;
-        }
-
-        public filtrarTelefono() {
-            //recuerda que aqui debes hacer lo mismo que hiciste con el nombre deben coincidir los dos apartados si nombre y telefono coincide aparece si no no
         }
 
         public dibujaHead() {
@@ -532,18 +535,51 @@ namespace bootCamp {
 
             let thead = head.append("thead");
             let tr = thead.append("tr");
-            ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"].forEach(encabezado => {
-                tr.append("th")
-                    .style("font-family", "cursive")
-                    .style("font-size", "20px")
-                    .style("width", "1500px")
-                    .style("background-color", "#4A4A4A")
-                    .text(encabezado);
+            let headers = ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"];
+            headers.forEach(encabezado => {
+                if (encabezado === "Nombre") {
+                    tr.append("th")
+                        .style("font-family", "cursive")
+                        .style("font-size", "20px")
+                        .style("background-color", "#4A4A4A")
+                        .style("width", "1500px")
+                        .text("Nombre")
+                        .append("img")
+                        .attr("src", "images/flecha-abajo.svg")
+                        .style("width", "20px")
+                        .style("height", "20px")
+                        .style("align-items", "right")
+                        .style("cursor", "pointer")
+                        .on("click", () => {
+                            this.dibujaFila();
+                        });
+
+                } else {
+                    tr.append("th")
+                        .style("font-family", "cursive")
+                        .style("font-size", "20px")
+                        .style("width", "1500px")
+                        .style("background-color", "#4A4A4A")
+                        .text(encabezado);
+                }
             });
 
             head.append("tbody");
+
+            let tUsuario: iUsuario[] = [
+                { id: 0, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" },
+                { id: 1, nombre: "Alejandro", apellidoP: "Salazar", apellidoM: "Salazar", telefono: "8832456743", correo: "ale@gmail.com", usuario: "aleS" },
+                { id: 2, nombre: "Zay", apellidoP: "Alvaro", apellidoM: "Salazar", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" }
+            ];
+
+            for (let u of tUsuario) {
+                console.log(u)
+                this.mapaUsuarios.set(u.id, u);
+            }
+
             this.dibujaFila();
         }
+
         public abrirVentanaRegistro(usuario: iUsuario | null): void {
             this.limpiarVenatana();
             this.div.style("display", "block");
@@ -558,6 +594,7 @@ namespace bootCamp {
                 this.ipUser.property("value", usuario.usuario);
             }
         }
+
         public limpiarVenatana(): void {
             this.ipName.property("value", "");
             this.ipApellidop.property("value", "");
@@ -601,20 +638,20 @@ namespace bootCamp {
 
             tituloValidar.text("¡No puedes agregar campos vacios!");
 
-            let botonCancel = this.divAlerta.append("div")
+            let botonAcepta = this.divAlerta.append("div")
                 .on("click", () => {
-                    this.divAlerta.style("display", "none")
+                    this.divAlerta.style("display", "none");
                     this.divProtect.style("display", "none");
                 });
 
-            botonCancel.style("position", "absolute")
+            botonAcepta.style("position", "absolute")
                 .style("top", "65%")
                 .style("left", "35%")
                 .style("background-color", "green")
                 .style("padding", "4px")
                 .style("border-radius", "10px");
 
-            botonCancel.append("text")
+            botonAcepta.append("text")
                 .style("stroke", "black")
                 .style("stroke-width", "2px")
                 .style("x", "775")
@@ -623,9 +660,17 @@ namespace bootCamp {
                 .style("font-family", "cursive")
                 .style("cursor", "pointer")
                 .text("Aceptar");
+        }
 
+        public ordenarDatos(arrayMapa: iUsuario[]): iUsuario[] {
+            this.ascendiente = !this.ascendiente;
+            if (this.ascendiente) {
+                arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
 
-
+            } else {
+                arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            }
+            return arrayMapa;
         }
     }
-}
+} 
