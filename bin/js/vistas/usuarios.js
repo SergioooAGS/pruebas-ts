@@ -411,16 +411,15 @@ var bootCamp;
             let datosMapa = Array.from(this.mapaUsuarios.values());
             let nombresBuscador = this.inputbuscar.property("value");
             let telefonoBuscador = this.inputBuscaTelefono.property("value");
-            if (this.inputbuscar) {
+            if (nombresBuscador || telefonoBuscador) {
                 datosMapa = datosMapa.filter(function (value) {
                     return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
                 });
-                if (this.inputBuscaTelefono) {
-                    datosMapa = datosMapa.filter(function (value) {
-                        return value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
-                    });
-                }
+                datosMapa = datosMapa.filter(function (value) {
+                    return value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
+                });
             }
+            // && o ||
             return datosMapa;
         }
         dibujaHead() {
@@ -474,7 +473,7 @@ var bootCamp;
                 { id: 2, nombre: "Zay", apellidoP: "Alvaro", apellidoM: "Salazar", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" }
             ];
             for (let u of tUsuario) {
-                console.log(u);
+                //  console.log(u)
                 this.mapaUsuarios.set(u.id, u);
             }
             this.dibujaFila();

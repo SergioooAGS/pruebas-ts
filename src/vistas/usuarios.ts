@@ -504,16 +504,15 @@ namespace bootCamp {
             let nombresBuscador = this.inputbuscar.property("value");
             let telefonoBuscador = this.inputBuscaTelefono.property("value");
 
-            if (this.inputbuscar) {
+            if (nombresBuscador || telefonoBuscador) {
                 datosMapa = datosMapa.filter(function (value: iUsuario) {
                     return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
                 });
-                if (this.inputBuscaTelefono) {
-                    datosMapa = datosMapa.filter(function (value: iUsuario) {
-                        return value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
-                    });
-                }
-            }
+                datosMapa = datosMapa.filter(function (value: iUsuario) {
+                    return value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
+                });
+            } 
+            // && o ||
             return datosMapa;
         }
 
@@ -573,7 +572,7 @@ namespace bootCamp {
             ];
 
             for (let u of tUsuario) {
-                console.log(u)
+                //  console.log(u)
                 this.mapaUsuarios.set(u.id, u);
             }
 
@@ -666,7 +665,6 @@ namespace bootCamp {
             this.ascendiente = !this.ascendiente;
             if (this.ascendiente) {
                 arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
-
             } else {
                 arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));
             }
