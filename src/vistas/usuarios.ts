@@ -26,9 +26,11 @@ namespace bootCamp {
         private tituloVentanaRegistro: d3.Selection<HTMLElement, any, any, any>;
         public inputbuscar: d3.Selection<any, unknown, HTMLElement, any>;
         public inputBuscaTelefono: d3.Selection<any, unknown, HTMLElement, any>;
+        private imgFlecha: d3.Selection<SVGImageElement, any, any, any>;
         public mapaUsuarios: Map<number, iUsuario>;
         public eliminarMap: number;
         public ascendiente: boolean;
+        private flechaOrden: boolean;
         private id = 0;
 
         constructor() {
@@ -39,6 +41,7 @@ namespace bootCamp {
             this.mapaUsuarios = new Map<number, iUsuario>();
             this.eliminarMap = -1;
             this.ascendiente = true;
+            this.flechaOrden = false;
 
             let AgregarUsuario = this.svgContenedor.append("g")
                 .on('click', () => {
@@ -211,9 +214,8 @@ namespace bootCamp {
 
             this.div.style("position", "absolute")
                 .style("margin", "2px")
-                .style("top", "50%")
-                .style("left", "50%")
-                .style("transform", "translate(-50%, -50%)")
+                .style("top", "30%")
+                .style("left", "40%")
                 .style("background-color", "white")
                 .style("padding", "45px")
                 .style("border", "1px solid black")
@@ -318,9 +320,8 @@ namespace bootCamp {
 
             this.divDelete.style("position", "absolute")
                 .style("margin", "2px")
-                .style("top", "50%")
+                .style("top", "35%")
                 .style("left", "40%")
-                .style("transform", "translate(-30%, -50%)")
                 .style("background-color", "#red")
                 .style("padding", "45px")
                 .style("border", "1px solid black")
@@ -503,16 +504,13 @@ namespace bootCamp {
             let datosMapa: iUsuario[] = Array.from(this.mapaUsuarios.values());
             let nombresBuscador = this.inputbuscar.property("value");
             let telefonoBuscador = this.inputBuscaTelefono.property("value");
-
             if (nombresBuscador || telefonoBuscador) {
                 datosMapa = datosMapa.filter(function (value: iUsuario) {
-                    return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
+                    return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase())
+                        &&
+                        value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
                 });
-                datosMapa = datosMapa.filter(function (value: iUsuario) {
-                    return value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
-                });
-            } 
-            // && o ||
+            }
             return datosMapa;
         }
 
@@ -536,43 +534,53 @@ namespace bootCamp {
             let tr = thead.append("tr");
             let headers = ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"];
             headers.forEach(encabezado => {
-                if (encabezado === "Nombre") {
-                    tr.append("th")
-                        .style("font-family", "cursive")
-                        .style("font-size", "20px")
-                        .style("background-color", "#4A4A4A")
-                        .style("width", "1500px")
-                        .text("Nombre")
-                        .append("img")
-                        .attr("src", "images/flecha-abajo.svg")
-                        .style("width", "20px")
-                        .style("height", "20px")
-                        .style("align-items", "right")
-                        .style("cursor", "pointer")
-                        .on("click", () => {
-                            this.dibujaFila();
-                        });
-
-                } else {
+                if (encabezado === "Id" || encabezado === "Eliminar" || encabezado === "Editar") {
                     tr.append("th")
                         .style("font-family", "cursive")
                         .style("font-size", "20px")
                         .style("width", "1500px")
                         .style("background-color", "#4A4A4A")
                         .text(encabezado);
+
+                } else {
+                    console.log(encabezado);
+
+                    let flechaMovimiento = tr.append("th")
+                        .style("font-family", "cursive")
+                        .style("font-size", "20px")
+                        .style("background-color", "#4A4A4A")
+                        .style("width", "1500px")
+                        .text(encabezado)
+                        .append("img")
+                        .attr("src", "images/flecha-abajo.svg")
+                        .style("width", "20px")
+                        .style("height", "20px")
+                        .style("cursor", "pointer")
+                        .on("click", () => {
+                            this.dibujaFila();
+                            if (this.ascendiente) {
+                                flechaMovimiento.attr("src", "images/flecha-arriba.svg");
+                            } else {
+                                flechaMovimiento.attr("src", "images/flecha-abajo.svg");
+                            }
+
+                        });
+
                 }
             });
+
+
+
 
             head.append("tbody");
 
             let tUsuario: iUsuario[] = [
-                { id: 0, nombre: "Sergio", apellidoP: "Garcia", apellidoM: "Salazar", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" },
-                { id: 1, nombre: "Alejandro", apellidoP: "Salazar", apellidoM: "Salazar", telefono: "8832456743", correo: "ale@gmail.com", usuario: "aleS" },
-                { id: 2, nombre: "Zay", apellidoP: "Alvaro", apellidoM: "Salazar", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" }
+                { id: 0, nombre: "Aergio", apellidoP: "Garcia", apellidoM: "Autento", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" },
+                { id: 1, nombre: "Blejandro", apellidoP: "Salazar", apellidoM: "Xavier", telefono: "8832456743", correo: "ale@gmail.com", usuario: "aleS" },
+                { id: 2, nombre: "Cay", apellidoP: "Yaz", apellidoM: "Martinez", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" },
+                { id: 3, nombre: "Dar", apellidoP: "Alvaro", apellidoM: "Martinez", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" }
             ];
-
             for (let u of tUsuario) {
-                //  console.log(u)
                 this.mapaUsuarios.set(u.id, u);
             }
 
@@ -607,6 +615,26 @@ namespace bootCamp {
             this.divProtect = d3.select("body").append("div")
                 .style("class", "validarFormulario");
             this.divProtect.style("background", "white")
+                .style("width", "1950px")
+                .style("height", "950px")
+                .style("display", "none")
+                .style("border", "1px solid black")
+                .style("opacity", "0.7");
+        }
+
+        public alertaValidar() {
+            this.divAlerta = d3.select("body").append("div")
+                .style("background-color", "white")
+                .style("width", "220px")
+                .style("height", "120px")
+                .style("position", "absolute")
+                .style("top", "30%")
+                .style("left", "40%")
+                .style("display", "none")
+                .style("border", "1px solid black");
+
+            this.divAlerta.append("div")
+                .style("background", "white")
                 .style("width", "1900px")
                 .style("height", "1020px")
                 .style("position", "absolute")
@@ -615,19 +643,6 @@ namespace bootCamp {
                 .style("display", "none")
                 .style("border", "1px solid black")
                 .style("opacity", "0.7");
-        }
-
-        public alertaValidar() {
-            this.divAlerta = d3.select("body").append("div")
-                .style("background", "white")
-                .style("transform", "translate(-30%, -50%)")
-                .style("width", "220px")
-                .style("height", "120px")
-                .style("position", "absolute")
-                .style("top", "25%")
-                .style("left", "48%")
-                .style("display", "none")
-                .style("border", "1px solid black");
 
             let tituloValidar = this.divAlerta.append("h1")
                 .style("text-align", "center")
@@ -640,7 +655,8 @@ namespace bootCamp {
             let botonAcepta = this.divAlerta.append("div")
                 .on("click", () => {
                     this.divAlerta.style("display", "none");
-                    this.divProtect.style("display", "none");
+                    this.divProtect.style("display", "block");
+                    this.div.style("display", "block");
                 });
 
             botonAcepta.style("position", "absolute")
@@ -659,12 +675,16 @@ namespace bootCamp {
                 .style("font-family", "cursive")
                 .style("cursor", "pointer")
                 .text("Aceptar");
+
+
+
         }
 
         public ordenarDatos(arrayMapa: iUsuario[]): iUsuario[] {
             this.ascendiente = !this.ascendiente;
             if (this.ascendiente) {
                 arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
+
             } else {
                 arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));
             }
