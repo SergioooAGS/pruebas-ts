@@ -1,5 +1,17 @@
 var bootCamp;
 (function (bootCamp) {
+    let headerDatos;
+    (function (headerDatos) {
+        headerDatos[headerDatos["id"] = 0] = "id";
+        headerDatos[headerDatos["eliminar"] = 1] = "eliminar";
+        headerDatos[headerDatos["editar"] = 2] = "editar";
+        headerDatos[headerDatos["Nombre"] = 3] = "Nombre";
+        headerDatos[headerDatos["ApellidoPaterno"] = 4] = "ApellidoPaterno";
+        headerDatos[headerDatos["ApellidoMaterno"] = 5] = "ApellidoMaterno";
+        headerDatos[headerDatos["Telefono"] = 6] = "Telefono";
+        headerDatos[headerDatos["Correo"] = 7] = "Correo";
+        headerDatos[headerDatos["Usuario"] = 8] = "Usuario";
+    })(headerDatos || (headerDatos = {}));
     class Usuarios {
         constructor() {
             this.id = 0;
@@ -35,7 +47,6 @@ var bootCamp;
                 .attr("font-family", "cursive")
                 .style("pointer-events", "none")
                 .text("Agregar");
-            let _This = this;
             let inputNombre = this.svgContenedor.append("g")
                 .append("foreignObject")
                 .style("width", "180px")
@@ -54,11 +65,10 @@ var bootCamp;
                 .style("height", "30px")
                 .style("font-family", "cursive")
                 .style("border-color", "black")
-                .on("keyup", function () {
-                _This.dibujaFila();
+                .on("keyup", () => {
+                this.dibujaFila(null);
             });
             this.inputbuscar = inputNombre;
-            let _This1 = this;
             let inputTelefono = this.svgContenedor.append("g")
                 .append("foreignObject")
                 .style("width", "180px")
@@ -77,8 +87,8 @@ var bootCamp;
                 .style("height", "30px")
                 .style("font-family", "cursive")
                 .style("border-color", "black")
-                .on("keyup", function () {
-                _This1.dibujaFila();
+                .on("keyup", () => {
+                this.dibujaFila(null);
             });
             this.inputBuscaTelefono = inputTelefono;
             let tituloUsuario = this.svgContenedor.append("g");
@@ -181,7 +191,6 @@ var bootCamp;
             let botonGuardar = this.div.append("div")
                 .on("click", () => {
                 this.datosUsuarios();
-                this.dibujaFila();
                 this.div.style("display", "none");
                 this.divProtect.style("display", "none");
             });
@@ -273,7 +282,7 @@ var bootCamp;
                 .on("click", (e, d) => {
                 if (this.mapaUsuarios.has(this.eliminarMap)) {
                     this.mapaUsuarios.delete(this.eliminarMap);
-                    this.dibujaFila();
+                    this.dibujaFila(null);
                 }
                 this.eliminarMap = -1;
                 this.divDelete.style("display", "none");
@@ -325,18 +334,20 @@ var bootCamp;
             if (name && apellidoP && apellidoM && apellidoM && phone && email && user) {
                 let tUsuario = { id: this.id, nombre: name, apellidoP: apellidoP, apellidoM: apellidoM, telefono: phone, correo: email, usuario: user };
                 this.mapaUsuarios.set(this.id, tUsuario);
-                this.dibujaFila();
+                this.dibujaFila(null);
                 this.id++;
             }
             else {
                 this.divAlerta.style("display", "block");
             }
         }
-        dibujaFila() {
+        dibujaFila(a) {
             let filasT = this.filtrarDatosNombre();
-            let ordenado = this.ordenarDatos(filasT);
+            if (a !== null) {
+                filasT = this.ordenarDatos(filasT, a);
+            }
             let fila = d3.select("tbody").selectAll("tr")
-                .data(ordenado, (d) => d.id);
+                .data(filasT, (d) => d.id);
             fila.join((enter) => {
                 let row = enter.append("tr")
                     .style("text-align", "center")
@@ -412,13 +423,23 @@ var bootCamp;
             let telefonoBuscador = this.inputBuscaTelefono.property("value");
             if (nombresBuscador || telefonoBuscador) {
                 datosMapa = datosMapa.filter(function (value) {
-                    return value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase())
-                        &&
-                            value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
+                    let validarNombre = true;
+                    let validarTelefono = true;
+                    if (nombresBuscador) {
+                        validarNombre = value.nombre.toLowerCase().includes(nombresBuscador.toLowerCase());
+                    }
+                    if (telefonoBuscador) {
+                        validarTelefono = value.telefono.toLowerCase().includes(telefonoBuscador.toLowerCase());
+                    }
+                    return validarNombre && validarTelefono;
                 });
             }
             return datosMapa;
         }
+        //join *
+        //iencabezdo id y nom *
+        //id enum * 
+        //
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
@@ -433,53 +454,59 @@ var bootCamp;
                 .style("background-color", "#cdcdcd")
                 .style("border", "1px #black");
             this.fondoProteccion();
-            let thead = head.append("thead");
-            let tr = thead.append("tr");
-            let headers = ["Id", "Eliminar", "Editar", "Nombre", "Apellido Paterno", "Apellido Materno", "Telefono", "Correo", "Usuario"];
-            headers.forEach(encabezado => {
-                if (encabezado === "Id" || encabezado === "Eliminar" || encabezado === "Editar") {
-                    tr.append("th")
-                        .style("font-family", "cursive")
-                        .style("font-size", "20px")
-                        .style("width", "1500px")
-                        .style("background-color", "#4A4A4A")
-                        .text(encabezado);
-                }
-                else {
-                    console.log(encabezado);
-                    let flechaMovimiento = tr.append("th")
-                        .style("font-family", "cursive")
-                        .style("font-size", "20px")
-                        .style("background-color", "#4A4A4A")
-                        .style("width", "1500px")
-                        .text(encabezado)
-                        .append("img")
-                        .attr("src", "images/flecha-abajo.svg")
-                        .style("width", "20px")
-                        .style("height", "20px")
-                        .style("cursor", "pointer")
-                        .on("click", () => {
-                        this.dibujaFila();
-                        if (this.ascendiente) {
-                            flechaMovimiento.attr("src", "images/flecha-arriba.svg");
-                        }
-                        else {
-                            flechaMovimiento.attr("src", "images/flecha-abajo.svg");
-                        }
-                    });
-                }
+            let thead = head.append("thead")
+                .classed("thead_Usuario", true);
+            const configuraHeaderTable = [
+                { id: headerDatos.id, titulo: "Id" },
+                { id: headerDatos.eliminar, titulo: "Eliminar" },
+                { id: headerDatos.editar, titulo: "Editar" },
+                { id: headerDatos.Nombre, titulo: "Nombre" },
+                { id: headerDatos.ApellidoPaterno, titulo: "Apellido Paterno" },
+                { id: headerDatos.ApellidoMaterno, titulo: "Apellido Materno" },
+                { id: headerDatos.Telefono, titulo: "Telefono" },
+                { id: headerDatos.Correo, titulo: "Correo" },
+                { id: headerDatos.Usuario, titulo: "Usuario" }
+            ];
+            const headerUsuario = d3.select(".thead_Usuario").selectAll("tr")
+                .data(configuraHeaderTable, (f) => f.titulo)
+                .join((enter) => {
+                let fila = enter.append("th")
+                    .style("font-family", "cursive")
+                    .style("font-size", "20px")
+                    .style("width", "1500px")
+                    .style("background-color", "#4A4A4A")
+                    .style("padding", "10px")
+                    .style("text-align", "center")
+                    .text((f) => f.titulo)
+                    .append("img")
+                    .attr("src", "images/flecha-abajo.svg")
+                    .style("width", "20px")
+                    .style("height", "20px")
+                    .style("cursor", "pointer")
+                    .on("click", (e, a) => {
+                    console.log(a);
+                    let elementTarget = d3.select(e.target);
+                    this.dibujaFila(a);
+                    if (this.ascendiente) {
+                        elementTarget.attr("src", "images/flecha-arriba.svg");
+                    }
+                    else {
+                        elementTarget.attr("src", "images/flecha-abajo.svg");
+                    }
+                });
+                return fila;
             });
             head.append("tbody");
             let tUsuario = [
-                { id: 0, nombre: "Aergio", apellidoP: "Garcia", apellidoM: "Autento", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" },
-                { id: 1, nombre: "Blejandro", apellidoP: "Salazar", apellidoM: "Xavier", telefono: "8832456743", correo: "ale@gmail.com", usuario: "aleS" },
-                { id: 2, nombre: "Cay", apellidoP: "Yaz", apellidoM: "Martinez", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" },
-                { id: 3, nombre: "Dar", apellidoP: "Alvaro", apellidoM: "Martinez", telefono: "991243212", correo: "Alvaro@gmail.com", usuario: "AlvaroA" }
+                { id: 0, nombre: "Aergio", apellidoP: "arcia", apellidoM: "Autento", telefono: "7711737058", correo: "sergio@gmail.com", usuario: "sergioGac" },
+                { id: 1, nombre: "Blejandro", apellidoP: "balazar", apellidoM: "Xavier", telefono: "8832456743", correo: "ale@gmail.com", usuario: "aleS" },
+                { id: 2, nombre: "Cay", apellidoP: "Daz", apellidoM: "Lara", telefono: "991243212", correo: "Elvaro@gmail.com", usuario: "halvaroA" },
+                { id: 3, nombre: "Dar", apellidoP: "Zalvaro", apellidoM: "Martinez", telefono: "991243212", correo: "Xlvaro@gmail.com", usuario: "YalvaroA" }
             ];
             for (let u of tUsuario) {
                 this.mapaUsuarios.set(u.id, u);
             }
-            this.dibujaFila();
+            this.dibujaFila(null);
         }
         abrirVentanaRegistro(usuario) {
             this.limpiarVenatana();
@@ -561,13 +588,23 @@ var bootCamp;
                 .style("cursor", "pointer")
                 .text("Aceptar");
         }
-        ordenarDatos(arrayMapa) {
+        ordenarDatos(arrayMapa, a) {
             this.ascendiente = !this.ascendiente;
-            if (this.ascendiente) {
-                arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
+            if (a.id === headerDatos.Nombre) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
+                }
+                else {
+                    arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                }
             }
-            else {
-                arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            else if (a.id === headerDatos.ApellidoPaterno) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.apellidoP.localeCompare(a.apellidoP));
+                }
+                else {
+                    arrayMapa.sort((a, b) => a.apellidoP.localeCompare(b.apellidoP));
+                }
             }
             return arrayMapa;
         }
