@@ -98,6 +98,7 @@ var bootCamp;
                 .style("height", "30px")
                 .style("x", "50")
                 .style("y", "20")
+                .style("color", "black")
                 .style("position", "absolute")
                 .style("font-size", "27px")
                 .style("font-family", "cursive")
@@ -184,7 +185,7 @@ var bootCamp;
             divHeader.style("position", "absolute")
                 .style("top", "0%")
                 .style("left", "0%")
-                .style("background-color", "#4A4A4A");
+                .style("background-color", "#0f2547");
             this.tituloVentanaRegistro = divHeader.append("h3")
                 .text("Registro Usuarios")
                 .style("fill", "white");
@@ -203,8 +204,8 @@ var bootCamp;
             botonGuardar.append("text")
                 .style("stroke", "black")
                 .style("stroke-width", "2px")
-                .attr('x', '775')
-                .attr('y', '585')
+                .attr("x", "775")
+                .attr("y", "585")
                 .attr("font-family", "cursive")
                 .style("cursor", "pointer")
                 .text("Guardar");
@@ -436,10 +437,6 @@ var bootCamp;
             }
             return datosMapa;
         }
-        //join *
-        //iencabezdo id y nom *
-        //id enum * 
-        //
         dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
@@ -451,7 +448,7 @@ var bootCamp;
                 .style("height", 900)
                 .append("xhtml:table")
                 .style("color", "white")
-                .style("background-color", "#cdcdcd")
+                .style("background-color", "#cacaca")
                 .style("border", "1px #black");
             this.fondoProteccion();
             let thead = head.append("thead")
@@ -474,7 +471,7 @@ var bootCamp;
                     .style("font-family", "cursive")
                     .style("font-size", "20px")
                     .style("width", "1500px")
-                    .style("background-color", "#4A4A4A")
+                    .style("background-color", "#183965")
                     .style("padding", "10px")
                     .style("text-align", "center")
                     .text((f) => f.titulo)
@@ -533,7 +530,7 @@ var bootCamp;
         fondoProteccion() {
             this.divProtect = d3.select("body").append("div")
                 .style("class", "validarFormulario");
-            this.divProtect.style("background", "white")
+            this.divProtect.style("background", "#183965")
                 .style("width", "1950px")
                 .style("height", "950px")
                 .style("display", "none")
@@ -604,6 +601,38 @@ var bootCamp;
                 }
                 else {
                     arrayMapa.sort((a, b) => a.apellidoP.localeCompare(b.apellidoP));
+                }
+            }
+            else if (a.id === headerDatos.ApellidoMaterno) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.apellidoM.localeCompare(a.apellidoM));
+                }
+                else {
+                    arrayMapa.sort((a, b) => a.apellidoM.localeCompare(b.apellidoM));
+                }
+            }
+            else if (a.id === headerDatos.Telefono) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.telefono.localeCompare(a.telefono));
+                }
+                else {
+                    arrayMapa.sort((a, b) => a.telefono.localeCompare(b.telefono));
+                }
+            }
+            else if (a.id === headerDatos.Correo) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.correo.localeCompare(a.correo));
+                }
+                else {
+                    arrayMapa.sort((a, b) => a.correo.localeCompare(b.correo));
+                }
+            }
+            else if (a.id === headerDatos.Usuario) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.usuario.localeCompare(a.usuario));
+                }
+                else {
+                    arrayMapa.sort((a, b) => a.usuario.localeCompare(b.usuario));
                 }
             }
             return arrayMapa;

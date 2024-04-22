@@ -1,31 +1,31 @@
 namespace bootCamp {
     export class P1 {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
-        public moduloUsuarios: d3.Selection<SVGElement, any, any, any>;
         public svgHeader: d3.Selection<SVGElement, any, any, any>;
-        svgleft: d3.Selection<SVGElement, any, any, any>;
-        _figuras: dragAndDrop;
-        _usuarios: Usuarios;
-        //_empresas: Empresas;
-        _imgFlecha: d3.Selection<SVGImageElement, any, any, any>;
-        _menu: boolean;
+        public svgleft: d3.Selection<SVGElement, any, any, any>;
+        public _figuras: dragAndDrop;
+        public _usuarios: Usuarios;
+        public _empresas: empresa;
+        public _imgFlecha: d3.Selection<SVGImageElement, any, any, any>;
+        public _menu: boolean;
 
         constructor() {
             this._menu = false;
             const body = d3.select("body");
 
-            this.svgleft = body.append('svg')
+            this.svgleft = body.append("svg")
                 .attr("class", "svgLeft")
                 .attr('id', 'miSVG2')
                 .attr('width', '300px')
                 .attr('height', '809px')
-                .style('background-color', "#4A4A4A")
+                .style('background-color', "#0f2547")
                 .style('position', "absolute")
                 .style('left', "0px")
                 .style('top', "100px")
                 .style("border-bottom-right-radius", "100px")
                 .attr('transform', 'translate(-200, 0)')
                 .attr('id', 'svgleft');
+
 
             this._imgFlecha = this.svgleft.append("image")
                 .attr("class", "img-arrow")
@@ -41,6 +41,7 @@ namespace bootCamp {
                         .duration(900)
                         .attr("transform", !this._menu ? "translate(-200, 0)" : "translate(0, 0)")
                         .on('end', () => {
+                            //let arroow = d3.select("body").selectAll("svg")
                             if (this._menu) {
                                 this._imgFlecha
                                     .attr("transform", "rotate(180 245 40)");
@@ -54,10 +55,9 @@ namespace bootCamp {
                         .attr('transform', !this._menu ? 'translate(0, 0)' : 'translate(200, 0)');
                 });
 
-            var botonDragandDrop = this.svgleft.append("g")
+            let botonDragandDrop = this.svgleft.append("g")
                 .on("click", () => {
                     this.ventanaDrag();
-                    console.log(this._figuras);
                 });
             botonDragandDrop.append("rect")
                 .style('x', '50px')
@@ -78,8 +78,9 @@ namespace bootCamp {
                 .text('Drag');
 
 
-            var botonEmpresas = this.svgleft.append("g")
+            let botonEmpresas = this.svgleft.append("g")
                 .on('click', () => {
+                    this.ventanaEmpresas();
                 });
             botonEmpresas.append("rect")
                 .style('x', '50px')
@@ -99,7 +100,7 @@ namespace bootCamp {
                 .style('pointer-events', 'none')
                 .text('Empresas');
 
-            var botonUsuarios = this.svgleft.append("g")
+            let botonUsuarios = this.svgleft.append("g")
                 .on("click", () => {
                     this.ventanaUsuarios();
                     console.log(this._usuarios);
@@ -122,7 +123,7 @@ namespace bootCamp {
                 .style('pointer-events', 'none')
                 .text('Usuarios');
 
-            var botonSalir = this.svgleft.append("g")
+            let botonSalir = this.svgleft.append("g")
                 .on('click', () => {
                     close();
                     console.log("SingOut")
@@ -153,7 +154,7 @@ namespace bootCamp {
                 .attr('height', '100px')
                 .style("text-shadow", "5px 5px 5px black")
                 .style("border-bottom-right-radius", "100px")
-                .style("background-color", "#4A4A4A")
+                .style("background-color", "#0f2547")
                 .style("font-family", "cursive")
                 .style('position', "absolute")
                 .style('left', "0px")
@@ -170,13 +171,13 @@ namespace bootCamp {
 
             this.svgContenedor = body.append('svg')
                 .attr("id", "svgContenedor")
-                .style('display', 'block')
-                .attr('width', '1800')
-                .attr('height', '795')
-                .style('background-color', "white")
-                .style('position', "absolute")
-                .style('left', "100px")
-                .style('top', "100px");
+                .style("display", "block")
+                .attr("width", "1650")
+                .attr("height", "795")
+                .style("background-color", "white")
+                .style("position", "absolute")
+                .style("left", "100px")
+                .style("top", "100px");
 
             // this.moduloUsuarios = body.append("svg")
             //     .attr("id", "moduloUsuarios")
@@ -196,7 +197,10 @@ namespace bootCamp {
         public ventanaUsuarios() {
             this.svgContenedor.selectAll("*").remove();
             this._usuarios = new Usuarios()
-            //this.svgRegistroUsuario = new P3();
+        }
+        public ventanaEmpresas() {
+            this.svgContenedor.selectAll("*").remove();
+            this._empresas = new empresa();
         }
     }
 }

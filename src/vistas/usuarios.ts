@@ -26,10 +26,8 @@ namespace bootCamp {
         Usuario
     }
 
-
     export class Usuarios {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
-        //public: d3.Selection<HTMLDivElement, any, any, any>;
         public div: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divEditar: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
         public divDelete: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
@@ -42,12 +40,12 @@ namespace bootCamp {
         private ipEmail: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         private ipUser: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         //private filtro: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-        private idNombre: string;
-        private idApellidop: string;
-        private idApellidoM: string;
-        private idTelefono: string;
-        private idCorreo: string;
-        private idUsuario: string;
+        // private idNombre: string;
+        // private idApellidop: string;
+        // private idApellidoM: string;
+        // private idTelefono: string;
+        // private idCorreo: string;
+        // private idUsuario: string;
 
         private tituloVentanaRegistro: d3.Selection<HTMLElement, any, any, any>;
         public inputbuscar: d3.Selection<any, unknown, HTMLElement, any>;
@@ -148,6 +146,7 @@ namespace bootCamp {
                 .style("height", "30px")
                 .style("x", "50")
                 .style("y", "20")
+                .style("color", "black")
                 .style("position", "absolute")
                 .style("font-size", "27px")
                 .style("font-family", "cursive")
@@ -257,7 +256,7 @@ namespace bootCamp {
             divHeader.style("position", "absolute")
                 .style("top", "0%")
                 .style("left", "0%")
-                .style("background-color", "#4A4A4A");
+                .style("background-color", "#0f2547");
 
             this.tituloVentanaRegistro = divHeader.append("h3")
                 .text("Registro Usuarios")
@@ -268,7 +267,6 @@ namespace bootCamp {
                     this.datosUsuarios();
                     this.div.style("display", "none");
                     this.divProtect.style("display", "none");
-
                 });
             botonGuardar.style("position", "absolute")
                 .style("top", "83%")
@@ -280,8 +278,8 @@ namespace bootCamp {
             botonGuardar.append("text")
                 .style("stroke", "black")
                 .style("stroke-width", "2px")
-                .attr('x', '775')
-                .attr('y', '585')
+                .attr("x", "775")
+                .attr("y", "585")
                 .attr("font-family", "cursive")
                 .style("cursor", "pointer")
                 .text("Guardar");
@@ -543,11 +541,6 @@ namespace bootCamp {
             return datosMapa;
         }
 
-        //join *
-        //iencabezdo id y nom *
-        //id enum * 
-        //
-
         public dibujaHead() {
             let tablaGrupo = this.svgContenedor.append("g")
                 .attr("transform", "translate(50, 100)");
@@ -560,7 +553,7 @@ namespace bootCamp {
                 .style("height", 900)
                 .append("xhtml:table")
                 .style("color", "white")
-                .style("background-color", "#cdcdcd")
+                .style("background-color", "#cacaca")
                 .style("border", "1px #black");
             this.fondoProteccion();
             let thead = head.append("thead")
@@ -584,7 +577,7 @@ namespace bootCamp {
                         .style("font-family", "cursive")
                         .style("font-size", "20px")
                         .style("width", "1500px")
-                        .style("background-color", "#4A4A4A")
+                        .style("background-color", "#183965")
                         .style("padding", "10px")
                         .style("text-align", "center")
                         .text((f) => f.titulo)
@@ -618,7 +611,6 @@ namespace bootCamp {
             for (let u of tUsuario) {
                 this.mapaUsuarios.set(u.id, u);
             }
-
             this.dibujaFila(null);
         }
 
@@ -649,7 +641,7 @@ namespace bootCamp {
         public fondoProteccion() {
             this.divProtect = d3.select("body").append("div")
                 .style("class", "validarFormulario");
-            this.divProtect.style("background", "white")
+            this.divProtect.style("background", "#183965")
                 .style("width", "1950px")
                 .style("height", "950px")
                 .style("display", "none")
@@ -726,7 +718,32 @@ namespace bootCamp {
                 } else {
                     arrayMapa.sort((a, b) => a.apellidoP.localeCompare(b.apellidoP));
                 }
+            } else if (a.id === headerDatos.ApellidoMaterno) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.apellidoM.localeCompare(a.apellidoM));
+                } else {
+                    arrayMapa.sort((a, b) => a.apellidoM.localeCompare(b.apellidoM));
+                }
+            } else if (a.id === headerDatos.Telefono) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.telefono.localeCompare(a.telefono));
+                } else {
+                    arrayMapa.sort((a, b) => a.telefono.localeCompare(b.telefono));
+                }
+            } else if (a.id === headerDatos.Correo) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.correo.localeCompare(a.correo));
+                } else {
+                    arrayMapa.sort((a, b) => a.correo.localeCompare(b.correo));
+                }
+            } else if (a.id === headerDatos.Usuario) {
+                if (this.ascendiente) {
+                    arrayMapa.sort((a, b) => b.usuario.localeCompare(a.usuario));
+                } else {
+                    arrayMapa.sort((a, b) => a.usuario.localeCompare(b.usuario));
+                }
             }
+
             return arrayMapa;
         }
     }
