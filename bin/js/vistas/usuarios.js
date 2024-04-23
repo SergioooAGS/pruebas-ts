@@ -451,7 +451,7 @@ var bootCamp;
                 .style("background-color", "#cacaca")
                 .style("border", "1px #black");
             this.fondoProteccion();
-            let thead = head.append("thead")
+            head.append("thead")
                 .classed("thead_Usuario", true);
             const configuraHeaderTable = [
                 { id: headerDatos.id, titulo: "Id" },
@@ -464,7 +464,7 @@ var bootCamp;
                 { id: headerDatos.Correo, titulo: "Correo" },
                 { id: headerDatos.Usuario, titulo: "Usuario" }
             ];
-            const headerUsuario = d3.select(".thead_Usuario").selectAll("tr")
+            d3.select(".thead_Usuario").selectAll("tr")
                 .data(configuraHeaderTable, (f) => f.titulo)
                 .join((enter) => {
                 let fila = enter.append("th")
@@ -474,7 +474,8 @@ var bootCamp;
                     .style("background-color", "#183965")
                     .style("padding", "10px")
                     .style("text-align", "center")
-                    .text((f) => f.titulo)
+                    .text((f) => f.titulo);
+                fila.filter((f) => f.titulo !== "Eliminar" && f.titulo !== "Editar")
                     .append("img")
                     .attr("src", "images/flecha-abajo.svg")
                     .style("width", "20px")
