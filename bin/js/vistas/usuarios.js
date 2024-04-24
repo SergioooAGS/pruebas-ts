@@ -12,6 +12,12 @@ var bootCamp;
         headerDatos[headerDatos["Correo"] = 7] = "Correo";
         headerDatos[headerDatos["Usuario"] = 8] = "Usuario";
     })(headerDatos || (headerDatos = {}));
+    let estadoDatos;
+    (function (estadoDatos) {
+        estadoDatos[estadoDatos["ascendente"] = 0] = "ascendente";
+        estadoDatos[estadoDatos["descendente"] = 1] = "descendente";
+        estadoDatos[estadoDatos["normal"] = 2] = "normal";
+    })(estadoDatos || (estadoDatos = {}));
     class Usuarios {
         constructor() {
             this.id = 0;
@@ -468,19 +474,15 @@ var bootCamp;
                 .data(configuraHeaderTable, (f) => f.titulo)
                 .join((enter) => {
                 let fila = enter.append("th")
+                    .attr("class", (f) => f.id)
                     .style("font-family", "cursive")
                     .style("font-size", "20px")
                     .style("width", "1500px")
                     .style("background-color", "#183965")
                     .style("padding", "10px")
                     .style("text-align", "center")
-                    .text((f) => f.titulo);
-                fila.filter((f) => f.titulo !== "Eliminar" && f.titulo !== "Editar")
-                    .append("img")
-                    .attr("src", "images/flecha-abajo.svg")
-                    .style("width", "20px")
-                    .style("height", "20px")
                     .style("cursor", "pointer")
+                    .text((f) => f.titulo)
                     .on("click", (e, a) => {
                     console.log(a);
                     let elementTarget = d3.select(e.target);
@@ -491,7 +493,23 @@ var bootCamp;
                     else {
                         elementTarget.attr("src", "images/flecha-abajo.svg");
                     }
-                });
+                    console.log(elementTarget);
+                })
+                    .filter((f) => f.titulo !== "Eliminar" && f.titulo !== "Editar")
+                    .append("img")
+                    .attr("src", "images/flecha-abajo.svg")
+                    .style("width", "20px")
+                    .style("height", "20px");
+                // .on("click", (e, a: iTituloTabla) => {
+                //     console.log(a);
+                //     let elementTarget = d3.select(e.target);
+                //     this.dibujaFila(a);
+                //     if (this.ascendiente) {
+                //         elementTarget.attr("src", "images/flecha-arriba.svg");
+                //     } else {
+                //         elementTarget.attr("src", "images/flecha-abajo.svg");
+                //     }
+                // });
                 return fila;
             });
             head.append("tbody");
@@ -537,6 +555,15 @@ var bootCamp;
                 .style("display", "none")
                 .style("border", "1px solid black")
                 .style("opacity", "0.7");
+        }
+        flechaMov() {
+            let flecha = d3.select("thead").append("img");
+            if (this.ascendiente) {
+                flecha.attr("src", "images/flecha-arriba.svg");
+            }
+            else {
+                flecha.attr("src", "images/flecha-abajo.svg");
+            }
         }
         alertaValidar() {
             this.divAlerta = d3.select("body").append("div")

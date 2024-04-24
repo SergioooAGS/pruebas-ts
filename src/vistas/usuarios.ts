@@ -26,6 +26,13 @@ namespace bootCamp {
         Usuario
     }
 
+    enum estadoDatos {
+        ascendente,
+        descendente,
+        normal
+    }
+
+
     export class Usuarios {
         public svgContenedor: d3.Selection<SVGElement, any, any, any>;
         public div: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
@@ -569,23 +576,20 @@ namespace bootCamp {
                 { id: headerDatos.Correo, titulo: "Correo" },
                 { id: headerDatos.Usuario, titulo: "Usuario" }
             ];
+
             d3.select(".thead_Usuario").selectAll("tr")
                 .data(configuraHeaderTable, (f: iTituloTabla) => f.titulo)
                 .join((enter) => {
                     let fila = enter.append("th")
+                        .attr("class", (f) => f.id)
                         .style("font-family", "cursive")
                         .style("font-size", "20px")
                         .style("width", "1500px")
                         .style("background-color", "#183965")
                         .style("padding", "10px")
                         .style("text-align", "center")
-                        .text((f) => f.titulo)
-                    fila.filter((f) => f.titulo !== "Eliminar" && f.titulo !== "Editar")
-                        .append("img")
-                        .attr("src", "images/flecha-abajo.svg")
-                        .style("width", "20px")
-                        .style("height", "20px")
                         .style("cursor", "pointer")
+                        .text((f) => f.titulo)
                         .on("click", (e, a: iTituloTabla) => {
                             console.log(a);
                             let elementTarget = d3.select(e.target);
@@ -595,7 +599,25 @@ namespace bootCamp {
                             } else {
                                 elementTarget.attr("src", "images/flecha-abajo.svg");
                             }
-                        });
+                            console.log(elementTarget);
+                        })
+                        .filter((f) => f.titulo !== "Eliminar" && f.titulo !== "Editar")
+                        .append("img")
+                        .attr("src", "images/flecha-abajo.svg")
+                        .style("width", "20px")
+                        .style("height", "20px");
+
+                    // .on("click", (e, a: iTituloTabla) => {
+                    //     console.log(a);
+
+                    //     let elementTarget = d3.select(e.target);
+                    //     this.dibujaFila(a);
+                    //     if (this.ascendiente) {
+                    //         elementTarget.attr("src", "images/flecha-arriba.svg");
+                    //     } else {
+                    //         elementTarget.attr("src", "images/flecha-abajo.svg");
+                    //     }
+                    // });
                     return fila;
                 });
 
@@ -647,6 +669,15 @@ namespace bootCamp {
                 .style("display", "none")
                 .style("border", "1px solid black")
                 .style("opacity", "0.7");
+        }
+
+        public flechaMov() {
+            let flecha = d3.select("thead").append("img")
+            if (this.ascendiente) {
+                flecha.attr("src", "images/flecha-arriba.svg");
+            } else {
+                flecha.attr("src", "images/flecha-abajo.svg");
+            }
         }
 
         public alertaValidar() {
