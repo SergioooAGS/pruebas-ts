@@ -10,7 +10,7 @@ namespace bootCamp {
     }
 
     interface iTituloTabla {
-        id: number;
+        id: headerDatos;
         titulo: string;
     }
 
@@ -46,8 +46,6 @@ namespace bootCamp {
         private ipPhone: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         private ipEmail: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
         private ipUser: d3.Selection<HTMLInputElement, unknown, HTMLElement, any>;
-
-
         private tituloVentanaRegistro: d3.Selection<HTMLElement, any, any, any>;
         public inputbuscar: d3.Selection<any, unknown, HTMLElement, any>;
         public inputBuscaTelefono: d3.Selection<any, unknown, HTMLElement, any>;
@@ -56,6 +54,8 @@ namespace bootCamp {
         public ascendiente: boolean;
         private ordenamientoDatos: estadoDatos = estadoDatos.normal;
         private flechaOrden: boolean;
+        private imageColumna: d3.Selection<HTMLImageElement, unknown, HTMLElement, any>;;
+        private ordenColumna: iTituloTabla;
         private id = 0;
 
 
@@ -268,7 +268,7 @@ namespace bootCamp {
                 .on("click", () => {
                     this.datosUsuarios();
                     this.div.style("display", "none");
-                    this.divProtect.style("display", "block");
+                    this.divProtect.style("display", "none");
                 });
             botonGuardar.style("position", "absolute")
                 .style("top", "83%")
@@ -587,27 +587,37 @@ namespace bootCamp {
                         .style("cursor", "pointer")
                         .text((f) => f.titulo)
                         .on("click", (e, a: iTituloTabla) => {
-                            if (this.ordenamientoDatos == estadoDatos.normal) {
+                            if (a.id == headerDatos.editar || a.id == headerDatos.eliminar)
+                                return;
+                            let arrow = d3.select(e.target).select<HTMLImageElement>("img");
+                            arrow.style("display", "block");
+                            if (this.ordenColumna == undefined || this.ordenColumna.id == a.id) {
+
+                                if (this.ordenamientoDatos == estadoDatos.normal) {
+                                    this.ordenamientoDatos = estadoDatos.ascendente;
+                                    arrow.attr("src", "images/flecha-abajo.svg");
+                                } else if (this.ordenamientoDatos == estadoDatos.ascendente) {
+                                    this.ordenamientoDatos = estadoDatos.descendente;
+                                    arrow.attr("src", "images/flecha-arriba.svg");
+                                } else if (this.ordenamientoDatos == estadoDatos.descendente) {
+                                    this.ordenamientoDatos = estadoDatos.normal;
+                                    arrow.style("display", "none");
+                                }
+                            } else {
                                 this.ordenamientoDatos = estadoDatos.ascendente;
-                            } else if (this.ordenamientoDatos == estadoDatos.ascendente) {
-                                this.ordenamientoDatos = estadoDatos.descendente;
-                            } else if (this.ordenamientoDatos == estadoDatos.descendente) {
-                                this.ordenamientoDatos = estadoDatos.normal;
-                            }
-                            console.log(a);
-                            this.dibujaFila(a);
-                            let arrow = d3.select(e.target).select("img");
-                            if (this.ordenamientoDatos == estadoDatos.ascendente) {
                                 arrow.attr("src", "images/flecha-abajo.svg");
-                            } else if (this.ordenamientoDatos == estadoDatos.descendente) {
-                                arrow.attr("src", "images/flecha-arriba.svg");
-                            } else if (this.ordenamientoDatos == estadoDatos.normal) {
-                                arrow.attr("src", "images/img1.png");
+                                this.imageColumna.style("display", "none");
                             }
+
+                            this.imageColumna = arrow;
+                            console.log(this.ordenColumna, a.titulo);
+                            console.log(this.ordenamientoDatos);
+
+                            this.ordenColumna = a;
+                            this.dibujaFila(a);
                         })
-                        .filter((f) => f.titulo !== "Eliminar" && f.titulo !== "Editar")
                         .append("img")
-                        .attr("src", "images/img1.png")
+                        .style("display", "none")
                         .style("width", "20px")
                         .style("height", "20px");
                     return fila;
@@ -663,7 +673,6 @@ namespace bootCamp {
                 .style("opacity", "0.7");
         }
 
-
         public alertaValidar() {
             this.divAlerta = d3.select("body").append("div")
                 .style("background-color", "white")
@@ -685,7 +694,6 @@ namespace bootCamp {
                 .style("left", "0%")
                 .style("display", "none")
                 .style("border", "1px solid black");
-            //.style("opacity", "0.7");
 
             let tituloValidar = this.divAlerta.append("h1")
                 .style("text-align", "center")
@@ -729,11 +737,9 @@ namespace bootCamp {
                 .style("opacity", "0.7");
         }
 
-
         public ordenarDatos(arrayMapa: iUsuario[], a: iTituloTabla): iUsuario[] {
             this.ascendiente = !this.ascendiente;
             let ArregloDefault = JSON.parse(JSON.stringify(arrayMapa));
-            //pendiente ordenar por columna
             if (a.id === headerDatos.Nombre) {
                 if (this.ordenamientoDatos == estadoDatos.ascendente) {
                     arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));

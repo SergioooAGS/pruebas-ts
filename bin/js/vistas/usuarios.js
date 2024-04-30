@@ -19,6 +19,7 @@ var bootCamp;
         estadoDatos[estadoDatos["normal"] = 2] = "normal";
     })(estadoDatos || (estadoDatos = {}));
     class Usuarios {
+        ;
         constructor() {
             this.ordenamientoDatos = estadoDatos.normal;
             this.id = 0;
@@ -201,7 +202,7 @@ var bootCamp;
                 .on("click", () => {
                 this.datosUsuarios();
                 this.div.style("display", "none");
-                this.divProtect.style("display", "block");
+                this.divProtect.style("display", "none");
             });
             botonGuardar.style("position", "absolute")
                 .style("top", "83%")
@@ -486,31 +487,37 @@ var bootCamp;
                     .style("cursor", "pointer")
                     .text((f) => f.titulo)
                     .on("click", (e, a) => {
-                    if (this.ordenamientoDatos == estadoDatos.normal) {
-                        this.ordenamientoDatos = estadoDatos.ascendente;
-                    }
-                    else if (this.ordenamientoDatos == estadoDatos.ascendente) {
-                        this.ordenamientoDatos = estadoDatos.descendente;
-                    }
-                    else if (this.ordenamientoDatos == estadoDatos.descendente) {
-                        this.ordenamientoDatos = estadoDatos.normal;
-                    }
-                    console.log(a);
-                    this.dibujaFila(a);
+                    if (a.id == headerDatos.editar || a.id == headerDatos.eliminar)
+                        return;
                     let arrow = d3.select(e.target).select("img");
-                    if (this.ordenamientoDatos == estadoDatos.ascendente) {
+                    arrow.style("display", "block");
+                    if (this.ordenColumna == undefined || this.ordenColumna.id == a.id) {
+                        if (this.ordenamientoDatos == estadoDatos.normal) {
+                            this.ordenamientoDatos = estadoDatos.ascendente;
+                            arrow.attr("src", "images/flecha-abajo.svg");
+                        }
+                        else if (this.ordenamientoDatos == estadoDatos.ascendente) {
+                            this.ordenamientoDatos = estadoDatos.descendente;
+                            arrow.attr("src", "images/flecha-arriba.svg");
+                        }
+                        else if (this.ordenamientoDatos == estadoDatos.descendente) {
+                            this.ordenamientoDatos = estadoDatos.normal;
+                            arrow.style("display", "none");
+                        }
+                    }
+                    else {
+                        this.ordenamientoDatos = estadoDatos.ascendente;
                         arrow.attr("src", "images/flecha-abajo.svg");
+                        this.imageColumna.style("display", "none");
                     }
-                    else if (this.ordenamientoDatos == estadoDatos.descendente) {
-                        arrow.attr("src", "images/flecha-arriba.svg");
-                    }
-                    else if (this.ordenamientoDatos == estadoDatos.normal) {
-                        arrow.attr("src", "images/img1.png");
-                    }
+                    this.imageColumna = arrow;
+                    console.log(this.ordenColumna, a.titulo);
+                    console.log(this.ordenamientoDatos);
+                    this.ordenColumna = a;
+                    this.dibujaFila(a);
                 })
-                    .filter((f) => f.titulo !== "Eliminar" && f.titulo !== "Editar")
                     .append("img")
-                    .attr("src", "images/img1.png")
+                    .style("display", "none")
                     .style("width", "20px")
                     .style("height", "20px");
                 return fila;
@@ -579,7 +586,6 @@ var bootCamp;
                 .style("left", "0%")
                 .style("display", "none")
                 .style("border", "1px solid black");
-            //.style("opacity", "0.7");
             let tituloValidar = this.divAlerta.append("h1")
                 .style("text-align", "center")
                 .style("font-family", "cursive")
@@ -619,7 +625,6 @@ var bootCamp;
         ordenarDatos(arrayMapa, a) {
             this.ascendiente = !this.ascendiente;
             let ArregloDefault = JSON.parse(JSON.stringify(arrayMapa));
-            //pendiente ordenar por columna
             if (a.id === headerDatos.Nombre) {
                 if (this.ordenamientoDatos == estadoDatos.ascendente) {
                     arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));

@@ -41,7 +41,6 @@ namespace bootCamp {
                         .duration(900)
                         .attr("transform", !this._menu ? "translate(-200, 0)" : "translate(0, 0)")
                         .on('end', () => {
-                            //let arroow = d3.select("body").selectAll("svg")
                             if (this._menu) {
                                 this._imgFlecha
                                     .attr("transform", "rotate(180 245 40)");

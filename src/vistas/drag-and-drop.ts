@@ -11,11 +11,8 @@ namespace bootCamp {
         private newCircle: d3.Selection<SVGCircleElement, any, any, any>;
         private mapa: Map<number, iCirculo>;
         private id = 0;
-        // circleArr: iCirculo[];
         constructor() {
-            //app._figuras.svgContenedor
             this.svgContenedor = d3.select("#svgContenedor");
-            //this.circleArr = new Array();
             this.mapa = new Map();
             this.id = 0;
             this.svgContenedor.append("image")
@@ -23,7 +20,8 @@ namespace bootCamp {
                 .attr("class", "imgBasura")
                 .attr('href', 'images/traash.svg')
                 .attr('width', '100')
-                .attr('height', '100')
+                .attr('height', '100');
+
             var g = this.svgContenedor.append("g")
                 .on('click', () => {
                     this.createCircle();
@@ -50,15 +48,13 @@ namespace bootCamp {
                 .text('Add Circle');
         }
         private createCircle() {
-            const colors = d3.interpolate("blue", "red");
-            const newColor = colors(Math.random());
-
+            let colors = d3.interpolate("blue", "red");
+            let newColor = colors(Math.random());
             let tRadio: number = 10;
             if (this.id > 0) {
                 tRadio = this.id * 10;
             }
             let tCirculo: iCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300 + (tRadio * 2), y: 300 };
-            //this.circleArr.push(tCirculo);
             this.mapa.set(this.id, tCirculo);
             this.dibujaCirculos();
             this.id++;
@@ -125,7 +121,6 @@ namespace bootCamp {
         }
         public dragEnd(event: any, d: iCirculo): void {
             let circleX = +this.newCircle.attr("cx") || 0;
-
             let circleY = +this.newCircle.attr("cy") || 0;
             let imgBasura = d3.select("#imageB");
             let imageX = +imgBasura.attr("x") || 0;
@@ -138,19 +133,10 @@ namespace bootCamp {
                 circleY >= imageY &&
                 circleY <= imageY + imageHeight
             ) {
-                //let circleId = d.id;
-
                 if (this.mapa.has(d.id)) {
                     this.mapa.delete(d.id);
                     this.dibujaCirculos();
                 }
-
-                // let index = this.circleArr.findIndex(circle => circle.id === circleId);
-                // if (index !== -1) {
-                //     this.circleArr.splice(index, 1);
-                //     console.log(circleId);
-                //     this.dibujaCirculos();
-                // }
             }
         }
     }

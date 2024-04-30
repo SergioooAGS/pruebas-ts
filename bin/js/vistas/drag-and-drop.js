@@ -1,12 +1,9 @@
 var bootCamp;
 (function (bootCamp) {
     class dragAndDrop {
-        // circleArr: iCirculo[];
         constructor() {
             this.id = 0;
-            //app._figuras.svgContenedor
             this.svgContenedor = d3.select("#svgContenedor");
-            //this.circleArr = new Array();
             this.mapa = new Map();
             this.id = 0;
             this.svgContenedor.append("image")
@@ -40,14 +37,13 @@ var bootCamp;
                 .text('Add Circle');
         }
         createCircle() {
-            const colors = d3.interpolate("blue", "red");
-            const newColor = colors(Math.random());
+            let colors = d3.interpolate("blue", "red");
+            let newColor = colors(Math.random());
             let tRadio = 10;
             if (this.id > 0) {
                 tRadio = this.id * 10;
             }
             let tCirculo = { id: this.id, color: newColor, radio: tRadio, x: 300 + (tRadio * 2), y: 300 };
-            //this.circleArr.push(tCirculo);
             this.mapa.set(this.id, tCirculo);
             this.dibujaCirculos();
             this.id++;
@@ -121,17 +117,10 @@ var bootCamp;
                 circleX <= imageX + imageWidth &&
                 circleY >= imageY &&
                 circleY <= imageY + imageHeight) {
-                //let circleId = d.id;
                 if (this.mapa.has(d.id)) {
                     this.mapa.delete(d.id);
                     this.dibujaCirculos();
                 }
-                // let index = this.circleArr.findIndex(circle => circle.id === circleId);
-                // if (index !== -1) {
-                //     this.circleArr.splice(index, 1);
-                //     console.log(circleId);
-                //     this.dibujaCirculos();
-                // }
             }
         }
     }

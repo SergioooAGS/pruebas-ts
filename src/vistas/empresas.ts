@@ -23,6 +23,12 @@ namespace bootCamp {
 		rfc
 	}
 
+	enum estadoDatos {
+		ascendente,
+		descendente,
+		normal
+	}
+
 	export class empresa {
 		public svgContenedor: d3.Selection<SVGElement, any, any, any>;
 		public div: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>;
@@ -41,6 +47,7 @@ namespace bootCamp {
 		public eliminarMap: number;
 		public ascendiente: boolean;
 		private flechaOrden: boolean;
+		private ordenamientoDatos: estadoDatos = estadoDatos.normal;
 		private id = 0;
 
 		constructor() {
@@ -520,7 +527,7 @@ namespace bootCamp {
 				{ id: datosTabla.telefono, datos: "Telefono" },
 				{ id: datosTabla.rfc, datos: "RFC" }
 			];
-			const headerUsuario = d3.select(".thead_Usuario").selectAll("tr")
+			d3.select(".thead_Usuario").selectAll("tr")
 				.data(configuraHeaderTable, (f: iHeadTabla) => f.datos)
 				.join((enter) => {
 					let fila = enter.append("th")
@@ -530,22 +537,32 @@ namespace bootCamp {
 						.style("background-color", "#183965")
 						.style("padding", "10px")
 						.style("text-align", "center")
-						.text((f) => f.datos)
-						.append("img")
-						.attr("src", "images/flecha-abajo.svg")
-						.style("width", "20px")
-						.style("height", "20px")
 						.style("cursor", "pointer")
+						.text((f) => f.datos)
 						.on("click", (e, a: iHeadTabla) => {
-							console.log(a);
-							let elementTarget = d3.select(e.target);
-							this.dibujaFila(a);
-							if (this.ascendiente) {
-								elementTarget.attr("src", "images/flecha-arriba.svg");
-							} else {
-								elementTarget.attr("src", "images/flecha-abajo.svg");
+							if (this.ordenamientoDatos == estadoDatos.normal) {
+								this.ordenamientoDatos = estadoDatos.ascendente;
+							} else if (this.ordenamientoDatos == estadoDatos.ascendente) {
+								this.ordenamientoDatos = estadoDatos.descendente;
+							} else if (this.ordenamientoDatos == estadoDatos.descendente) {
+								this.ordenamientoDatos = estadoDatos.normal;
 							}
-						});
+							console.log(a);
+							this.dibujaFila(a);
+							let arrow = d3.select(e.target).select("img");
+							if (this.ordenamientoDatos == estadoDatos.ascendente) {
+								arrow.attr("src", "images/flecha-abajo.svg");
+							} else if (this.ordenamientoDatos == estadoDatos.descendente) {
+								arrow.attr("src", "images/flecha-arriba.svg");
+							} else if (this.ordenamientoDatos == estadoDatos.normal) {
+								arrow.attr("src", "images/img1.png");
+							}
+						})
+						.filter((f) => f.datos !== "Eliminar" && f.datos !== "Editar")
+						.append("img")
+						.attr("src", "images/img1.png")
+						.style("width", "20px")
+						.style("height", "20px");
 					return fila;
 				});
 
@@ -654,29 +671,38 @@ namespace bootCamp {
 
 		public ordenarDatos(arrayMapa: iEmpresas[], a: iHeadTabla): iEmpresas[] {
 			this.ascendiente = !this.ascendiente;
+			let ArregloDefault = JSON.parse(JSON.stringify(arrayMapa));
 			if (a.id === datosTabla.nombre) {
-				if (this.ascendiente) {
-					arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
-				} else {
+				if (this.ordenamientoDatos == estadoDatos.ascendente) {
 					arrayMapa.sort((a, b) => a.nombre.localeCompare(b.nombre));
+				} else if (this.ordenamientoDatos == estadoDatos.descendente) {
+					arrayMapa.sort((a, b) => b.nombre.localeCompare(a.nombre));
+				} else if (this.ordenamientoDatos == estadoDatos.normal) {
+					arrayMapa = ArregloDefault;
 				}
 			} else if (a.id === datosTabla.correo) {
-				if (this.ascendiente) {
-					arrayMapa.sort((a, b) => b.correo.localeCompare(a.correo));
-				} else {
+				if (this.ordenamientoDatos == estadoDatos.ascendente) {
 					arrayMapa.sort((a, b) => a.correo.localeCompare(b.correo));
+				} else if (this.ordenamientoDatos == estadoDatos.descendente) {
+					arrayMapa.sort((a, b) => b.correo.localeCompare(a.correo));
+				} else if (this.ordenamientoDatos == estadoDatos.normal) {
+					arrayMapa = ArregloDefault;
 				}
 			} else if (a.id === datosTabla.telefono) {
-				if (this.ascendiente) {
-					arrayMapa.sort((a, b) => b.telefono.localeCompare(a.telefono));
-				} else {
+				if (this.ordenamientoDatos == estadoDatos.ascendente) {
 					arrayMapa.sort((a, b) => a.telefono.localeCompare(b.telefono));
+				} else if (this.ordenamientoDatos == estadoDatos.descendente) {
+					arrayMapa.sort((a, b) => b.telefono.localeCompare(a.telefono));
+				} else if (this.ordenamientoDatos == estadoDatos.normal) {
+					arrayMapa = ArregloDefault;
 				}
 			} else if (a.id === datosTabla.rfc) {
-				if (this.ascendiente) {
+				if (this.ordenamientoDatos == estadoDatos.ascendente) {
 					arrayMapa.sort((a, b) => b.rfc.localeCompare(a.rfc));
-				} else {
+				} else if (this.ordenamientoDatos == estadoDatos.descendente) {
 					arrayMapa.sort((a, b) => a.rfc.localeCompare(b.rfc));
+				} else if (this.ordenamientoDatos == estadoDatos.normal) {
+					arrayMapa = ArregloDefault;
 				}
 			}
 
